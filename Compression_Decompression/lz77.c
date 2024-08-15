@@ -209,3 +209,8 @@ void add_sequence_to_output(U_8* output_pointer, Encoded_sequence_t current_sequ
 	(*output_pointer) = current_sequence.mis_match_byte;
 	output_pointer++;
 }
+
+U_32 get_size_of_encoded_sequence_struct()
+{
+	return sizeof(Encoded_sequence_t);
+}
