@@ -1,5 +1,10 @@
-﻿int main() {
-    const char* original_file = "input.mp4";
+﻿#include "file_managment.h"
+#include "compressor_decompressor.h"
+#include <stdio.h>
+
+int main()
+{
+    const char* original_file = "input.png";
     const char* compressed_file = "compressed.bin";
     const char* decompressed_file = "decompressed";
 
