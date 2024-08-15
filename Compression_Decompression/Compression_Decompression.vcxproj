@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClInclude Include="compressor_decompressor.h" />
     <ClInclude Include="file_managment.h" />
+    <ClInclude Include="general_define.h" />
     <ClInclude Include="huffman_code.h" />
     <ClInclude Include="lz77.h" />
   </ItemGroup>

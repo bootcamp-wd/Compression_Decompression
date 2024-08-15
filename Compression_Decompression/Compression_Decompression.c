@@ -18,5 +18,4 @@ int main()
     printf("\nSimulating decompression...\n");
     process_file(compressed_file, decompressed_file, 0);
 
-    return 0;
 }
