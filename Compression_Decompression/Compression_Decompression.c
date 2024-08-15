@@ -7,28 +7,6 @@
 
 int main()
 {
-	unsigned char* input_data = "abcabd";
-	unsigned char* output_data;
-	int window_size = 5;
-	int input_size = strlen(input_data) * sizeof(unsigned char), output_size;
 
-	output_data = (unsigned char*)malloc(input_size * 5);
-	if (output_data == NULL)
-	{
-		output_size = 0;
-		printf("Error! Memory allocation failed in lz77_encode\n");
-		exit(1);
-	}
-
-	lz77_encode(input_data, input_size, output_data, &output_size, 12, 12);
-
-	for (int i = 0; i < output_size; i+=2)
-	{
-		printf("%hi", output_data[i]);
-		i += 2;
-		printf("%hi", output_data[i]);
-		i += 2;
-		printf("%c", output_data[i]);
-	}
 }
 

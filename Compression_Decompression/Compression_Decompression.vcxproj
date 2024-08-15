@@ -128,10 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Compression_Decompression.c" />
+    <ClCompile Include="decompression.c" />
     <ClCompile Include="huffman_code.c" />
     <ClCompile Include="lz77.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="decompression.h" />
     <ClInclude Include="general_define.h" />
     <ClInclude Include="huffman_code.h" />
     <ClInclude Include="lz77.h" />
