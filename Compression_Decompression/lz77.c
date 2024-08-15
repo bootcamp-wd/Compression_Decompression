@@ -212,4 +212,3 @@ void add_sequence_to_output(U_8* output_pointer,
 
 }
 
-
