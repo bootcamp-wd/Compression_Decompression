@@ -181,14 +181,7 @@ void lz77_decode(U_8* input_data, U_32* input_size, U_8* output_data)
 Encoded_sequence_t convert_into_encoded_sequence(U_8* input_pointer)
 {
 	Encoded_sequence_t sequence;
-
 	memcpy(&sequence, input_pointer, sizeof(Encoded_sequence_t));
-
-	/*memcpy(&sequence.distance, *input_pointer, sizeof(sequence.distance));
-
-	memcpy(&sequence.length, *input_pointer, sizeof(sequence.length));
-
-	memcpy(sequence.mis_match_byte, *input_pointer, sizeof(sequence.mis_match_byte));*/
 
 	return sequence;
 }
