@@ -38,10 +38,14 @@
     <ClInclude Include="huffman_code.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+
+    <ClInclude Include="general_define.h">
+
     <ClInclude Include="file_managment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="compressor_decompressor.h">
+
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
