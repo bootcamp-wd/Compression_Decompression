@@ -22,8 +22,8 @@ void lz77_encode(const unsigned char* input_buffer, int const input_size, unsign
 	{
 		return;
 	}
-	Encoded_sequence* cur_seq;
-	cur_seq = (Encoded_sequence*)malloc(sizeof(Encoded_sequence));
+	Encoded_sequence_t* cur_seq;
+	cur_seq = (Encoded_sequence_t*)malloc(sizeof(Encoded_sequence_t));
 	if (cur_seq == NULL)
 	{
 		printf("memory allocation failed in lz77_encode\n");
@@ -37,8 +37,8 @@ void lz77_encode(const unsigned char* input_buffer, int const input_size, unsign
 	cur_seq->length = 0;
 	cur_seq->mis_match_byte = *input_buffer;
 
-	memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence));
-	(*output_size) += sizeof(Encoded_sequence);
+	memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence_t));
+	(*output_size) += sizeof(Encoded_sequence_t);
 	cur_index_seq++;
 
 	dict_pointer_first = dict_pointer_last = input_buffer;
@@ -52,8 +52,8 @@ void lz77_encode(const unsigned char* input_buffer, int const input_size, unsign
 			buffer_search_pointer_first + 1) == buffer_search_size)
 		{
 			cur_seq->mis_match_byte = *buffer_search_pointer_last;
-			memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence));
-			(*output_size) += sizeof(Encoded_sequence);
+			memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence_t));
+			(*output_size) += sizeof(Encoded_sequence_t);
 			//initialize the vars from begin to the next sequence
 			cur_seq->distance = 0;
 			cur_seq->length = 0;
@@ -77,8 +77,8 @@ void lz77_encode(const unsigned char* input_buffer, int const input_size, unsign
 			else
 			{
 				cur_seq->mis_match_byte = *(buffer_search_pointer_last);
-				memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence));
-				(*output_size) += sizeof(Encoded_sequence);
+				memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence_t));
+				(*output_size) += sizeof(Encoded_sequence_t);
 
 				cur_seq->distance = 0;
 				cur_seq->length = 0;
@@ -183,7 +183,7 @@ Encoded_sequence_t convert_into_encoded_sequence(U_8* input_pointer)
 {
 	Encoded_sequence_t sequence = { -1,-1 ,'NULL' };
 
-	memcpy(&sequence, *input_pointer, sizeof(sequence));
+	memcpy(&sequence, *input_pointer, sizeof(Encoded_sequence_t));
 
 	/*memcpy(&sequence.distance, *input_pointer, sizeof(sequence.distance));
 
