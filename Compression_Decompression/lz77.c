@@ -24,6 +24,11 @@ void lz77_encode(const unsigned char* input_buffer, int const input_size, unsign
 	}
 	Encoded_sequence* cur_seq;
 	cur_seq = (Encoded_sequence*)malloc(sizeof(Encoded_sequence));
+	if (cur_seq == NULL)
+	{
+		printf("memory allocation failed in lz77_encode\n");
+		exit(1);
+	}
 	//the cur_index_seq keeps the index of the current byte that stands on
 	int cur_index_seq = 0;
 
