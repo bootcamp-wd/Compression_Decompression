@@ -1,5 +1,7 @@
 #ifndef HUFFMAN_CODE_H
 #define HUFFMAN_CODE_H
+
+#include "general_defines.c"
 typedef struct huffman_decode_node {
 	struct huffman_decode_node* left;
 	struct huffman_decode_node* right;

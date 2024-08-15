@@ -132,6 +132,7 @@
     <ClCompile Include="lz77.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="general_define.h" />
     <ClInclude Include="huffman_code.h" />
     <ClInclude Include="lz77.h" />
   </ItemGroup>

@@ -32,5 +32,8 @@
     <ClInclude Include="huffman_code.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="general_define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
