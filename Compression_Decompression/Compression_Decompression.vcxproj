@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="compression.c" />
     <ClCompile Include="Compression_Decompression.c" />
     <ClCompile Include="huffman_code.c" />
     <ClCompile Include="lz77.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="compression.h" />
     <ClInclude Include="huffman_code.h" />
     <ClInclude Include="lz77.h" />
   </ItemGroup>
