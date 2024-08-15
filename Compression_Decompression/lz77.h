@@ -26,4 +26,6 @@ Encoded_sequence_t convert_into_encoded_sequence(U_8* input_pointer);
 
 void add_sequence_to_output(U_8* output_pointer, Encoded_sequence_t current_sequence);
 
+U_32 get_size_of_encoded_sequence_struct();
+
 #endif // !LZ77_H
