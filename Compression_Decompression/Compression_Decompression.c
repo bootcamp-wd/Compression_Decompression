@@ -1,8 +1,9 @@
-﻿#include "file_managment.h"
-#include "compressor_decompressor.h"
 #include <stdio.h>
 #include <string.h>
 #include "lz77.h"
+#include "file_managment.h"
+#include "compressor_decompressor.h"
+
 
 int main()
 {
@@ -17,5 +18,4 @@ int main()
     // Simulate decompression
     printf("\nSimulating decompression...\n");
     process_file(compressed_file, decompressed_file, 0);
-
 }

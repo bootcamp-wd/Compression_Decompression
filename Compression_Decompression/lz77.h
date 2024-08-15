@@ -14,7 +14,7 @@ typedef struct encoded_sequence
 }Encoded_sequence_t;
 
 
-void lz77_encode(const U_8* input_data, U_32 const input_size, U_8* output_data, U_8* output_size,
+void lz77_encode(const U_8* const input_buffer, U_32 const input_size, U_8* output_buffer, U_32* output_size,
 	U_32 const dictionary_size, U_32 const buffer_search_size);
 
 unsigned char* search_in_dictionary(U_8* dict_pointer_first, U_8* dict_pointer_last,

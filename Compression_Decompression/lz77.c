@@ -12,7 +12,6 @@
 void lz77_encode(U_8* const input_buffer, U_32 const input_size, U_8* output_buffer, U_32* output_size,
 	U_32 const dictionary_size, U_32 const buffer_search_size)
 {
-
 	U_8* dict_pointer_first;
 	U_8* dict_pointer_last;
 	U_8* buffer_search_pointer_first;
@@ -23,8 +22,8 @@ void lz77_encode(U_8* const input_buffer, U_32 const input_size, U_8* output_buf
 	{
 		return;
 	}
-	Encoded_sequence_t* cur_seq;
-	cur_seq = (Encoded_sequence_t*)malloc(sizeof(Encoded_sequence_t));
+
+	Encoded_sequence_t* cur_seq = (Encoded_sequence_t*)malloc(sizeof(Encoded_sequence_t));
 	if (cur_seq == NULL)
 	{
 		printf("memory allocation failed in lz77_encode\n");
@@ -149,8 +148,7 @@ U_8* search_in_dictionary(U_8* dict_pointer_first, U_8* dict_pointer_last,
  * Returned     : none
  *
  ***************************************************************************/
-void lz77_decode(U_8* input_data, U_32* input_size,
-	U_8* output_data)
+void lz77_decode(U_8* input_data, U_32* input_size, U_8* output_data)
 {
 	//pointers to the buffers of the input 
 	U_8* input_pointer;
@@ -182,9 +180,9 @@ void lz77_decode(U_8* input_data, U_32* input_size,
  ***************************************************************************/
 Encoded_sequence_t convert_into_encoded_sequence(U_8* input_pointer)
 {
-	Encoded_sequence_t sequence = { -1,-1 ,'NULL' };
+	Encoded_sequence_t sequence;
 
-	memcpy(&sequence, *input_pointer, sizeof(sequence));
+	memcpy(&sequence, input_pointer, sizeof(Encoded_sequence_t));
 
 	/*memcpy(&sequence.distance, *input_pointer, sizeof(sequence.distance));
 
@@ -202,14 +200,11 @@ Encoded_sequence_t convert_into_encoded_sequence(U_8* input_pointer)
  * Returned     : none
  *
  ***************************************************************************/
-void add_sequence_to_output(U_8* output_pointer,
-	Encoded_sequence_t current_sequence) {
-
+void add_sequence_to_output(U_8* output_pointer, Encoded_sequence_t current_sequence)
+{
 	U_8* sequence_to_copy = output_pointer - current_sequence.distance;
 
 	memcpy(output_pointer, sequence_to_copy, current_sequence.length);
 
-	memcpy(output_pointer + current_sequence.length, current_sequence.mis_match_byte, sizeof(current_sequence.mis_match_byte));
-
+	memcpy(output_pointer + current_sequence.length, &current_sequence.mis_match_byte, sizeof(current_sequence.mis_match_byte));
 }
-
