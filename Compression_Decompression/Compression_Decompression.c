@@ -1,6 +1,8 @@
 ﻿#include "file_managment.h"
 #include "compressor_decompressor.h"
 #include <stdio.h>
+#include <string.h>
+#include "lz77.h"
 
 int main()
 {
