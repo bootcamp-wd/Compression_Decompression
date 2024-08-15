@@ -30,7 +30,7 @@ int main()
 		i += 2;
 		printf("%c", output_data[i]);
 	}
-	output_size /= 2;
+	printf("\n");
 	unsigned char* output_buffer_lz_decode = (unsigned char*)malloc(6 * sizeof(char));
 
 	lz77_decode(output_data, &output_size, output_buffer_lz_decode);
