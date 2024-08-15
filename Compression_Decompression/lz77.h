@@ -14,11 +14,11 @@ typedef struct encoded_sequence
 }Encoded_sequence_t;
 
 
-void lz77_encode(const unsigned char* input_data, int const input_size, unsigned char* output_data, int* output_size,
-	unsigned int const dictionary_size, unsigned int const buffer_search_size);
+void lz77_encode(const U_8* input_data, U_32 const input_size, U_8* output_data, U_8* output_size,
+	U_32 const dictionary_size, U_32 const buffer_search_size);
 
-unsigned char* search_in_dictionary(unsigned char* dict_pointer_first, unsigned char* dict_pointer_last,
-	unsigned char* buffer_search_pointer_first, unsigned char* buffer_search_pointer_last);
+unsigned char* search_in_dictionary(U_8* dict_pointer_first, U_8* dict_pointer_last,
+	U_8* buffer_search_pointer_first, U_8* buffer_search_pointer_last);
 
 void lz77_decode(U_8* input_data, U_32* input_size, U_8* output_data);
 

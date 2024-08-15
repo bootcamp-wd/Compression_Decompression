@@ -9,13 +9,14 @@
 *				  buffer_search_size - the largest size that the buffer_search can be
 * Returned		: none
 * *************************************************************************/
-void lz77_encode(const unsigned char* input_buffer, int const input_size, unsigned char* output_buffer, int* output_size,
-	unsigned int const dictionary_size, unsigned int const buffer_search_size)
+void lz77_encode(U_8* const input_buffer, U_32 const input_size, U_8* output_buffer, U_32* output_size,
+	U_32 const dictionary_size, U_32 const buffer_search_size)
 {
-	unsigned char* dict_pointer_first;
-	unsigned char* dict_pointer_last;
-	unsigned char* buffer_search_pointer_first;
-	unsigned char* buffer_search_pointer_last;
+
+	U_8* dict_pointer_first;
+	U_8* dict_pointer_last;
+	U_8* buffer_search_pointer_first;
+	U_8* buffer_search_pointer_last;
 
 	*output_size = 0;
 	if (input_size == 0)
@@ -64,7 +65,7 @@ void lz77_encode(const unsigned char* input_buffer, int const input_size, unsign
 		{
 			//the start_seq_pointer points to the begining of the sequence that equals to the 
 			//current buffer_search that includes in the dictionary, if there isn't it's NULL
-			unsigned char* start_seq_pointer = search_in_dictionary(dict_pointer_first, dict_pointer_last,
+			U_8* start_seq_pointer = search_in_dictionary(dict_pointer_first, dict_pointer_last,
 				buffer_search_pointer_first, buffer_search_pointer_last);
 			//if there is equal sequence in the dictionary
 			if (start_seq_pointer)
@@ -105,14 +106,14 @@ void lz77_encode(const unsigned char* input_buffer, int const input_size, unsign
 *				  buffer_search_pointer_last -  pointer to the end of the buffer search
 * Returned		: pointer to the begining of the similiar sequence, if not exist - NULL
 * *************************************************************************/
-unsigned char* search_in_dictionary(unsigned char* dict_pointer_first, unsigned char* dict_pointer_last,
-	unsigned char* buffer_search_pointer_first, unsigned char* buffer_search_pointer_last)
+U_8* search_in_dictionary(U_8* dict_pointer_first, U_8* dict_pointer_last,
+	U_8* buffer_search_pointer_first, U_8* buffer_search_pointer_last)
 {
-	unsigned char* start_seq_pointer = NULL;
-	unsigned char loc_buffer_search = 0;
-	unsigned int size_buffer_search = buffer_search_pointer_last - buffer_search_pointer_first;
+	U_8* start_seq_pointer = NULL;
+	U_8 loc_buffer_search = 0;
+	U_32 size_buffer_search = buffer_search_pointer_last - buffer_search_pointer_first;
 	//loop that moves all the dictionary
-	for (unsigned int i = 0; (dict_pointer_first + i) <= dict_pointer_last; i++)
+	for (U_32 i = 0; (dict_pointer_first + i) <= dict_pointer_last; i++)
 	{
 		//if the current byte in the buffer_search is equal to the current in the dictionary
 		if (buffer_search_pointer_first[loc_buffer_search] == *(dict_pointer_first + i))
@@ -123,7 +124,7 @@ unsigned char* search_in_dictionary(unsigned char* dict_pointer_first, unsigned 
 			}
 
 			//the buffer_search is exist in the dictionary
-			if (loc_buffer_search == size_buffer_search / sizeof(unsigned char))
+			if (loc_buffer_search == size_buffer_search / sizeof(U_8))
 			{
 				return start_seq_pointer;
 			}
@@ -183,7 +184,7 @@ Encoded_sequence_t convert_into_encoded_sequence(U_8* input_pointer)
 {
 	Encoded_sequence_t sequence = { -1,-1 ,'NULL' };
 
-	memcpy(&sequence, *input_pointer, sizeof(Encoded_sequence_t));
+	memcpy(&sequence, *input_pointer, sizeof(sequence));
 
 	/*memcpy(&sequence.distance, *input_pointer, sizeof(sequence.distance));
 
