@@ -24,12 +24,24 @@
     <ClCompile Include="huffman_code.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="file_managment.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compressor_decompressor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lz77.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="huffman_code.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file_managment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compressor_decompressor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
