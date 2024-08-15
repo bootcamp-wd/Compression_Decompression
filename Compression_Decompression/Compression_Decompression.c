@@ -34,9 +34,11 @@ int main()
 	unsigned char* output_buffer_lz_decode = (unsigned char*)malloc(6 * sizeof(char));
 
 	lz77_decode(output_data, &output_size, output_buffer_lz_decode);
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < strlen(input_data); i++)
 	{
 		printf("%c", output_buffer_lz_decode[i]);
 	}
+
+	free(output_data);
 }
 

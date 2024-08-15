@@ -202,9 +202,17 @@ Encoded_sequence_t convert_into_encoded_sequence(U_8* input_pointer)
  ***************************************************************************/
 void add_sequence_to_output(U_8* output_pointer, Encoded_sequence_t current_sequence)
 {
+	U_8 byte_to_copy;
 	U_8* sequence_to_copy = output_pointer - current_sequence.distance;
-
-	memcpy(output_pointer, sequence_to_copy, current_sequence.length);
-
-	memcpy(output_pointer + current_sequence.length, &current_sequence.mis_match_byte, sizeof(current_sequence.mis_match_byte));
+	if (current_sequence.length > 0)
+	{
+		for (U_32 i = 0; i < current_sequence.length; i++)
+		{
+			byte_to_copy = *(sequence_to_copy + i);
+			(*output_pointer) = byte_to_copy;
+			output_pointer++;
+		}
+	}
+	(*output_pointer) = current_sequence.mis_match_byte;
+	output_pointer++;
 }
