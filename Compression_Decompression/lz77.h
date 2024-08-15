@@ -22,4 +22,3 @@ void add_sequence_to_output(U_8* output_pointer, Encoded_sequence_t current_sequ
 
 #endif // !LZ77_H
 
-#endif // !LZ77_H
