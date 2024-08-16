@@ -41,10 +41,10 @@ int huffman_ascii_compare(const void* elem1, const void* elem2) {
 /***************************************************************************
  *                            HUFFMAN ENCODE FUNCTION
  * Name         : huffman_encode - encode data using Huffman coding
- * Parameters   : data_to_compress - pointer of the buffer to compress
- *                compressed_data - pointer of the compressed data buffer
- *                compression_metadata - pointer of the compression metadata buffer
- *                input_size - size of the input data (data to compress)
+ * Parameters   : data_to_compress - pointer of the input buffer to compress
+ *                output_buffer - pointer of the compressed data buffer
+ *                input_size - size of the input buffer (data to compress)
+ *                output_size - pointer to the final output buffer size
  * Returned     : none
  ***************************************************************************/
 //output_buffer//
@@ -80,13 +80,12 @@ void huffman_encode(const unsigned char* data_to_compress, unsigned char* output
     huffman_generate_codes(root);
 
     unsigned char* compression_metadata = output_buffer;
-    *compression_metadata = last_index-start_index + 1;//it is byte because we know it is aximum 511
+    *compression_metadata = last_index-start_index + 1;//it is byte because known it is maximum 511
     compression_metadata += sizeof(unsigned char);
-
-    //by_ascii , left , right
     
     printf("Before memcpy: input_size = %d\n", input_size);
     printf("compression_metadata: %p\n", (void*)compression_metadata);
+
     // Store Huffman tree nodes in metadata
     for (int i = start_index; i <= last_index; i++) {
         //memcpy(compression_metadata, &nodes[i], sizeof(Huffman_node_t));
@@ -151,6 +150,8 @@ void huffman_encode(const unsigned char* data_to_compress, unsigned char* output
  *                            BUILD TREE FUNCTION
  * Name         : build_tree - build the Huffman tree
  * Parameters   : nodes - array of Huffman nodes combine the priority queue
+ *                start_index - pointer to index of the first value (contain values) in the nodes array
+ *                last_index - pointer to index of the last value (contain values) in the nodes array
  * Returned     : pointer to the root of the Huffman tree
  ***************************************************************************/
 Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes ,int* start_index , int* last_index)
@@ -242,7 +243,6 @@ void huffman_free_tree(Huffman_node_t* nodes, int last_index) {
     }
 }
 
-
 /***************************************************************************
  *                           HUFFMAN_DECODE FUNCTION
  * Name         : decode the data with huffman decompression algorithm
@@ -329,9 +329,8 @@ void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char*
 		    //advance the pointer of the bytes
 		    if (*bits_index % 8 == 0) {
 			    input_pointer++;
-		    }
-	}
-
+	 	    }
+	    }
 	return root->by_ascii;
 }
 
