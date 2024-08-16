@@ -143,9 +143,9 @@ void huffman_encode(const unsigned char* data_to_compress, unsigned char* output
     huffman_free_tree(nodes , last_index);
 }
 
-void huffman_decode(const unsigned char* data_to_decompress, unsigned char** decompressed_data, int* input_size)
-{
-}
+//void huffman_decode(const unsigned char* data_to_decompress, unsigned char** decompressed_data, int* input_size)
+//{
+//}
 
 /***************************************************************************
  *                            BUILD TREE FUNCTION
