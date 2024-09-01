@@ -315,8 +315,8 @@ Huffman_decode_node* rescu_metadata(unsigned char* input_buffer, Huffman_decode_
 			memcpy(root+j, input_buffer- decode_node_size, decode_node_size);
 			input_buffer -= decode_node_size;
             printf("root:%c", (root+j)->by_ascii);
-            printf("left:%c", (root +j)->left -'0');
-            printf("right:%c\n",(root +j)->right -'0');
+            printf("left:%c", (root +j+1 )->left -'0');
+            printf("right:%c\n",(root +j+2)->right -'0');
 		}
         
         return root;

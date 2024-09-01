@@ -12,7 +12,7 @@ int main()
 	const char res[100];
 	const char out[28];
 	int res_size;
-	huffman_encode(st, res, 27, &res_size);
+	huffman_encode(st, res, 5, &res_size);
 	//printf("%s", res);
 	huffman_decode(res, &res_size, out);
 }
