@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
-
 #include "huffman_code.h"
 #include "priority_queue.h"
 
@@ -95,21 +94,21 @@ void huffman_encode(const unsigned char* data_to_compress, unsigned char* output
 
         // Store the left child index or NULL if there is no left child
         if (nodes[i].left) {
-            *compression_metadata = (unsigned char)((nodes[i].left - nodes) - start_index);
+            *compression_metadata = (unsigned short)((nodes[i].left - nodes) - start_index) ;
         }
         else {
             *compression_metadata = NULL;
         }
-        compression_metadata += sizeof(unsigned char);
+        compression_metadata += sizeof(unsigned short);
 
         // Store the right child index or NULL if there is no right child
         if (nodes[i].right) {
-            *compression_metadata = (unsigned char)((nodes[i].right - nodes) - start_index);
+            *compression_metadata = (unsigned short)((nodes[i].right - nodes) - start_index) ;
         }
         else {
             *compression_metadata = NULL;
         }
-        compression_metadata += sizeof(unsigned char);
+        compression_metadata += sizeof(unsigned short);
     }
     printf("After memcpy: input_size = %d\n", input_size);
 

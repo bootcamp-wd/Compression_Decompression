@@ -19,13 +19,13 @@ int main()
 //    // Simulate decompression
 //    printf("\nSimulating decompression...\n");
 //    process_file(compressed_file, decompressed_file, 0);
-	int size = 9, output_size = 0;
+	int size = 5, output_size = 0;
 	unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;
 	if (compressed_data == NULL) {
 		// Handle memory allocation failure
 	}
 	unsigned char* metadata = (char*)malloc(sizeof(char) * 10);
-	huffman_encode("abcdefghi", &compressed_data,  size, &output_size);
+	huffman_encode("april", &compressed_data,  size, &output_size);
 
 	return 0;
 
