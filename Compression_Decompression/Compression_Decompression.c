@@ -3,6 +3,7 @@
 #include "lz77.h"
 #include "file_managment.h"
 #include "compressor_decompressor.h"
+#include "huffman_code.h"
 
 
 int main()
@@ -24,11 +25,4 @@ int main()
 
 
 
-    //// Simulate compression
-    //printf("Simulating compression...\n");
-    //process_file(original_file, compressed_file, 1);
 
-    //// Simulate decompression
-    //printf("\nSimulating decompression...\n");
-    //process_file(compressed_file, decompressed_file, 0);
-}

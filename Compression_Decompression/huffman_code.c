@@ -80,7 +80,8 @@ void huffman_encode(const unsigned char* data_to_compress, unsigned char* output
     huffman_generate_codes(root);
 
     unsigned char* compression_metadata = output_buffer;
-    *compression_metadata = last_index-start_index + 1;//it is byte because known it is maximum 511
+    //numberr of nodes
+    *compression_metadata = last_index-start_index + 1;// byte because known it is maximum 511
     compression_metadata += sizeof(unsigned char);
     
     printf("Before memcpy: input_size = %d\n", input_size);
@@ -88,18 +89,27 @@ void huffman_encode(const unsigned char* data_to_compress, unsigned char* output
 
     // Store Huffman tree nodes in metadata
     for (int i = start_index; i <= last_index; i++) {
-        //memcpy(compression_metadata, &nodes[i], sizeof(Huffman_node_t));
-        //compression_metadata += sizeof(Huffman_node_t);
-
+        // Store the ASCII value of the current node
         *compression_metadata = nodes[i].by_ascii;
         compression_metadata += sizeof(unsigned char);
 
-        *compression_metadata = (nodes[i].left - nodes) - start_index;
+        // Store the left child index or NULL if there is no left child
+        if (nodes[i].left) {
+            *compression_metadata = (unsigned char)((nodes[i].left - nodes) - start_index);
+        }
+        else {
+            *compression_metadata = NULL;
+        }
         compression_metadata += sizeof(unsigned char);
 
-        *compression_metadata = (nodes[i].right - nodes) - start_index;
+        // Store the right child index or NULL if there is no right child
+        if (nodes[i].right) {
+            *compression_metadata = (unsigned char)((nodes[i].right - nodes) - start_index);
+        }
+        else {
+            *compression_metadata = NULL;
+        }
         compression_metadata += sizeof(unsigned char);
-
     }
     printf("After memcpy: input_size = %d\n", input_size);
 
@@ -139,6 +149,7 @@ void huffman_encode(const unsigned char* data_to_compress, unsigned char* output
     printf("\n");
 
     *output_size = (compressed_data_bit_index + 7) / 8 + 1;  // +1 for the remaining bits byte
+    //failure here:
     huffman_free_tree(nodes , last_index);
 }
 
