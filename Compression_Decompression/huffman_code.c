@@ -238,7 +238,7 @@ void huffman_free_tree(Huffman_node_t* nodes, int last_index) {
     for (int i = ASCII_SIZE; i <= last_index; i++) {
         if (nodes[i].left != NULL || nodes[i].right != NULL) {
             //free(nodes[i].code);  // Free the code allocated in `generate_codes_recursive`
-            free(nodes+i);      // Free the parent node itself
+        //    free(nodes+i);      // Free the parent node itself
         }
     }
 }
@@ -259,7 +259,12 @@ void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char*
 	int metadata_size;
 	metadata_size = rescu_metadata(input_buffer, root);
 
-	*input_size -= metadata_size;
+//check
+   // printf("root,%c", root->by_ascii);
+
+
+    printf("%d input_size",*input_size);
+	//*input_size -= metadata_size;
 
 	unsigned char* input_pointer;
 	unsigned char* output_pointer;
@@ -269,18 +274,23 @@ void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char*
 
 	int bits_index = 0;
 
-	while (bits_index < *input_size * 8) {
+	while (bits_index < (*input_size-2) * 8) {
 
 		unsigned char decompressed_byte = find_ascii_in_tree(input_pointer, root, &bits_index);
 
 		//write to output buffer the decomprresed byte
 		*output_pointer = decompressed_byte;
 		output_pointer++;
-		free(root);//free the tree
 	}
+    //last byte
+    input_pointer++;
+    int sum_bites_in_last_byte = *input_pointer-'0';
+    input_pointer--;
+    find_ascii_in_tree(input_pointer, root, &bits_index);
+    free(root);//free the tree
 }
 	/***************************************************************************
- *                           RESCU_DATA FUNCTION
+ *                           RESCU_METADATA FUNCTION
  * Name         : rescu the metadata from the input buffer and return the metadata size;
  * Parameters   : input_buffer - pointer to the input data buffer
  *                root - pointer to array to keep the huffman codes 
@@ -289,13 +299,19 @@ void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char*
  ***************************************************************************/
 	int rescu_metadata(unsigned char* input_buffer, Huffman_decode_node* root)
 	{
+        int decode_node_size = sizeof(Huffman_decode_node);
 		unsigned int nodes_length = *input_buffer;
-		input_buffer += sizeof(int); //move the pointer
-		root = (Huffman_decode_node*)malloc((nodes_length * sizeof(Huffman_decode_node)));
-		for (unsigned int i = 0; i < nodes_length; i++) {
-			memcpy(root+(i*sizeof(Huffman_decode_node)), input_buffer, sizeof(Huffman_decode_node));
-			input_buffer += sizeof(Huffman_decode_node);
+        //move the pointer to the end of the input_file
+		input_buffer += sizeof(int)+ (nodes_length* decode_node_size);
+		root = (Huffman_decode_node*)malloc((nodes_length * decode_node_size));
+        for (unsigned int i = nodes_length,j=0; i  > 0; i--,j+= decode_node_size) {
+			memcpy(root+j, input_buffer- decode_node_size, decode_node_size);
+			input_buffer -= decode_node_size;
+            printf("root:%c", (root+j)->by_ascii);
+            printf("left:%c", (root +j+1 )->left -'0');
+            printf("right:%c\n",(root +j+2)->right -'0');
 		}
+        
 		return sizeof(int) + nodes_length * sizeof(Huffman_decode_node);//size of the metadata
 	}
 
