@@ -268,7 +268,7 @@ void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char*
 	Huffman_decode_node* root = NULL;
 
 	int metadata_size;
-	metadata_size = rescu_metadata(input_buffer, root);
+	root = rescu_metadata(input_buffer, root);
 
 //check
    // printf("root,%c", root->by_ascii);
@@ -285,7 +285,7 @@ void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char*
 
 	int bits_index = 0;
 
-	while (bits_index < (*input_size-2) * 8) {
+	while (bits_index < ((*input_size)-2) * 8) {
 
 		unsigned char decompressed_byte = find_ascii_in_tree(input_pointer, root, &bits_index);
 
@@ -308,7 +308,7 @@ void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char*
  * Returned     : metadata size
  *
  ***************************************************************************/
-	int rescu_metadata(unsigned char* input_buffer, Huffman_decode_node* root)
+Huffman_decode_node* rescu_metadata(unsigned char* input_buffer, Huffman_decode_node* root)
 	{
         int decode_node_size = sizeof(Huffman_decode_node);
 		unsigned int nodes_length = *input_buffer;
@@ -323,7 +323,7 @@ void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char*
             printf("right:%c\n",(root +j+2)->right -'0');
 		}
         
-		return sizeof(int) + nodes_length * sizeof(Huffman_decode_node);//size of the metadata
+        return root;
 	}
 
 /***************************************************************************
@@ -341,16 +341,16 @@ void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char*
 		nodes = root;
 	    unsigned char mask;
 	    //move over the tree according to the received bits until finding leaves where the ascii code 
-	    while (root->by_ascii == 0) 
+        while (nodes->left == NULL && nodes->right == NULL)
         {
 		    //Moving the mask according to the index
 		    mask = 0b10000000 >> (*bits_index % 8);
 
 		    if ((*input_pointer & mask) == 0) {
-			    root = &nodes[root->right-'0'];
+			    nodes = &root[nodes->right-'0'];
 		    }
 		    else {
-			    root = &nodes[root->left-'0'];
+			    nodes = &root[nodes->left-'0'];
 		    }
 		    (*bits_index)++;
 		    //advance the pointer of the bytes
@@ -358,6 +358,32 @@ void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char*
 			    input_pointer++;
 	 	    }
 	    }
-	return root->by_ascii;
+	return nodes->by_ascii;
 }
+
+    void find_ascii_last_byte(char last_byte, char sum_bites, Huffman_decode_node* root, int bites_index, unsigned char* output_pointer)
+    {
+        int sum_bites_in_last_byte = sum_bites - '0';
+        Huffman_decode_node* nodes;
+        nodes = root;
+        unsigned char mask;
+        for (int i = bites_index % 8; i < sum_bites_in_last_byte;) {
+            //move over the tree according to the received bits until finding leaves where the ascii code 
+            while (nodes->left == NULL && nodes->right == NULL)
+            {
+                //Moving the mask according to the index
+                mask = 0b10000000 >> (bites_index % 8);
+
+                if ((last_byte & mask) == 0) {
+                    nodes = &root[nodes->right - '0'];
+                }
+                else {
+                    nodes = &root[nodes->left - '0'];
+                }
+                i++;
+            }
+            output_pointer = nodes->by_ascii;
+            output_pointer++;
+        }
+    }
 

@@ -20,8 +20,9 @@ void huffman_generate_codes(Huffman_node_t* root);
 void generate_codes_recursive(Huffman_node_t* node, unsigned int current_code, int current_length);
 void huffman_free_tree(Huffman_node_t* nodes, int last_index);
 
-int rescu_metadata(unsigned char* input_buffer, Huffman_decode_node* root);
+Huffman_decode_node* rescu_metadata(unsigned char* input_buffer, Huffman_decode_node* root);
 void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char* output_buffer);
 unsigned char find_ascii_in_tree(unsigned char* input_pointer, Huffman_decode_node* root, int* bits_index);
-
+void find_ascii_last_byte(char last_byte, char sum_bites, Huffman_decode_node* root,
+	int bites_index, unsigned char* output_pointer);
 #endif // !HUFFMAN_CODE_H
