@@ -291,7 +291,7 @@ void huffman_decode(unsigned char* input_buffer, int* input_size, unsigned char*
 
 		//write to output buffer the decomprresed byte
 		*output_pointer = decompressed_byte;
-		output_pointer++;
+		output_pointer++; 
 	}
     //last byte
     input_pointer++;
