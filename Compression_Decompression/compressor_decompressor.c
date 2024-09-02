@@ -82,8 +82,8 @@ void process_file(const char* input_path, const char* output_path,int compress_l
 }
 
 // Function to simulate compression by simply copying data
-void simulate_compress_data(const unsigned char* input_buffer, int input_size,
-    unsigned char* output_buffer, int* output_size,int compress_level)
+void simulate_compress_data(const U_08* input_buffer, U_32 input_size,
+    U_08* output_buffer, U_32* output_size,U_32 compress_level)
 {
     output_buffer = (unsigned char*)malloc((input_size*3+sizeof(int)));//alocat the memory 
     *output_buffer = input_size;//save the size of the data

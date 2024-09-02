@@ -6,14 +6,14 @@
 #include "huffman_code.h"
 
 
-int main()
+U_32 main()
 {
-	const char st[28] = "april";
-	const char res[100];
-	const char out[28];
-	int res_size;
+	const U_08 st[28] = "april";
+	const U_08 res[100];
+	const U_08 out[28];
+	U_32 res_size;
 	huffman_encode(st, res, 5, &res_size);
-	//printf("%s", res);
+	//prU_32f("%s", res);
 	huffman_decode(res, &res_size, out);
 }
 
