@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "lz77.h"
+#include "lz77_test.c"
 #include "file_managment.h"
 #include "compressor_decompressor.h"
 #include "huffman_code.h"
@@ -16,9 +16,3 @@ U_32 main()
 	//prU_32f("%s", res);
 	huffman_decode(res, &res_size, out);
 }
-
-
-
-
-
-
