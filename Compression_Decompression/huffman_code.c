@@ -312,6 +312,9 @@ Huffman_decode_node* rescu_metadata(unsigned char* input_buffer, Huffman_decode_
 	{
         int decode_node_size = sizeof(Huffman_decode_node);
 		unsigned int nodes_length = *input_buffer;
+        printf("%c",*input_buffer );
+        input_buffer=input_buffer+1;
+        printf("%hi", *input_buffer);
         //move the pointer to the end of the input_file
 		input_buffer += sizeof(int)+ (nodes_length* decode_node_size);
 		root = (Huffman_decode_node*)malloc((nodes_length * decode_node_size));
