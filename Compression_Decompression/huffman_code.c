@@ -47,7 +47,6 @@ int huffman_ascii_compare(const void* elem1, const void* elem2) {
  *                output_size - pointer to the final output buffer size
  * Returned     : none
  ***************************************************************************/
-//output_buffer//
 void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 input_size , U_32* output_size)
 {
     assert(data_to_compress != NULL);
@@ -79,44 +78,41 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 inpu
     Huffman_node_t* root = huffman_build_tree(nodes,&start_index,&last_index);
     huffman_generate_codes(root);
 
-    huffman_metadata* compression_metadata = output_buffer;
-    //number of nodes
-    compression_metadata->tree_length = last_index-start_index + 1;// byte because known it is maximum 511
-    
-    printf("Before memcpy: input_size = %d\n", input_size);
-    printf("compression_metadata: %p\n", (void*)compression_metadata);
+    // Calculate the total size needed for metadata and nodes
+    size_t metadata_size = sizeof(huffman_metadata);
+    size_t nodes_size = sizeof(Huffman_decode_node) * (last_index - start_index + 1);
+    size_t total_size = metadata_size + nodes_size;
+
+    // Ensure the buffer is large enough
+    assert(total_size <= output_size);//suppose to be *output_size
+
+    // Point to the start of the buffer for the metadata
+    huffman_metadata* compression_metadata = (huffman_metadata*)output_buffer;
+
+    // Point the nodes array to the location right after the metadata in the buffer
+    compression_metadata->nodes = (Huffman_decode_node*)(output_buffer + metadata_size);
+
+    // Set the tree_length
+    compression_metadata->tree_length = last_index - start_index + 1;
 
     U_32 metadata_nodes_i = 0;
     // Store Huffman tree nodes in metadata
     for (int i = start_index; i <= last_index; i++) {
-        // Store the ASCII value of the current node
         compression_metadata->nodes[metadata_nodes_i].by_ascii = nodes[i].by_ascii;
-        // Store the left child index or NULL if there is no left child
-        if (nodes[i].left) {
-            compression_metadata->nodes[metadata_nodes_i].left = (U_16)((nodes[i].left - nodes) - start_index) ;
-        }
-        else {
-            compression_metadata->nodes[metadata_nodes_i].left = 512;
-        }
-        // Store the right child index or NULL if there is no right child
-        if (nodes[i].right) {
-            compression_metadata->nodes[metadata_nodes_i].right = (U_16)((nodes[i].right - nodes) - start_index);
-        }
-        else {
-            compression_metadata->nodes[metadata_nodes_i].left = 512;
-        }
+        compression_metadata->nodes[metadata_nodes_i].left = nodes[i].left ? (U_16)((nodes[i].left - nodes) - start_index) : 512;
+        compression_metadata->nodes[metadata_nodes_i].right = nodes[i].right ? (U_16)((nodes[i].right - nodes) - start_index) : 512;
+        metadata_nodes_i++;
     }
-    printf("After memcpy: input_size = %d\n", input_size);
 
-    // Sort nodes by ASCII value for efficient encoding
+    // Handle sorting if necessary (consider whether this is essential)
     qsort(nodes, ASCII_SIZE, sizeof(Huffman_node_t), huffman_ascii_compare);
 
-    compression_metadata++;
-    U_08* compressed_data = compression_metadata;
+    // Correctly calculate the start of compressed data
+    U_08* compressed_data = (U_08*)(compression_metadata->nodes + compression_metadata->tree_length);
     U_32 compressed_data_bit_index = 0;
+
     // Encode the data to compressed_data buffer
     for (int i = 0; i < input_size; i++) {
-        
         U_08* code = nodes[data_to_compress[i]].code;
         int code_length = nodes[data_to_compress[i]].code_length;
 
@@ -130,28 +126,21 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 inpu
             compressed_data_bit_index++;
         }
     }
-    //Add the remaining bit
-    compressed_data[(compressed_data_bit_index - 1) / 8 + 1] = (compressed_data_bit_index ) % 8 + '0';
-   
+
+    // Handle any remaining bits in the last byte
+    if (compressed_data_bit_index % 8 != 0) {
+        compressed_data[(compressed_data_bit_index / 8)] |= (compressed_data_bit_index % 8) << 3;
+    }
+
     // Print the compressed data as bits
     for (int i = 0; i < compressed_data_bit_index; i++) {
-        if (compressed_data[i / 8] & (1 << (7 - (i % 8)))) {
-            printf("1");
-        }
-        else {
-            printf("0");
-        }
+        printf("%d", (compressed_data[i / 8] & (1 << (7 - (i % 8)))) ? 1 : 0);
     }
     printf("\n");
-
     *output_size = (compressed_data_bit_index + 7) / 8 + 1;  // +1 for the remaining bits byte
     //failure here:
     //huffman_free_tree(nodes , last_index);
 }
-
-//void huffman_decode(const U_08* data_to_decompress, U_08** decompressed_data, int* input_size)
-//{
-//}
 
 /***************************************************************************
  *                            BUILD TREE FUNCTION
