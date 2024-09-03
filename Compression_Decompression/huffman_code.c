@@ -92,18 +92,18 @@ void encode_data(const U_08* data_to_compress, U_32 input_size, Huffman_node_t* 
 
 void finalize_compressed_data(U_08* compressed_data, U_32 compressed_data_bit_index)
 {
-
-    // Handle any remaining bits in the last byte
+    compressed_data[compressed_data_bit_index / 8 + 1] = 0;
+    // Handle remaining bits in the last byte
     if (compressed_data_bit_index % 8 != 0)
     {
-        //?
-        compressed_data[(compressed_data_bit_index / 8)] |= (compressed_data_bit_index % 8) << 3;
+        compressed_data[compressed_data_bit_index / 8 + 1] = (compressed_data_bit_index % 8);
     }
 
-    // Print the compressed data as bits
-    for (U_32 i = 0; i < compressed_data_bit_index; i++)
+
+    // Print the compressed data as bits (for debugging)
+    for (U_32 i = 0; i < (compressed_data_bit_index + 12); i++)
     {
-        printf("%d", (compressed_data[i / 8] & (1 << (7 - (i % 8)))) ? 1 : 0);
+        printf("%d", !!(compressed_data[i / 8] & (1 << (7 - (i % 8)))) );
     }
 }
 
