@@ -3,11 +3,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lz77.h"
+#include "huffman_code.h"
 
 #define BUFFER_SIZE 4096
 
 // Function to process the file (either compress or decompress)
-void process_file(const char* input_path, const char* output_path, int compress)
+void process_file(const char* input_path, const char* output_path,int compress_level ,int compress)
 {
     unsigned char* buffer = NULL, * processed = NULL;
     int file_size = 0, processed_size = 0;
@@ -43,7 +45,7 @@ void process_file(const char* input_path, const char* output_path, int compress)
         fclose(metadata_file);
 
         // Simulate compression
-        simulate_compress_data(buffer, file_size, &processed, &processed_size);
+        simulate_compress_data(buffer, file_size, &processed, &processed_size,compress_level);
     }
     else {
         // Read extension from metadata file
@@ -80,20 +82,22 @@ void process_file(const char* input_path, const char* output_path, int compress)
 }
 
 // Function to simulate compression by simply copying data
-void simulate_compress_data(const unsigned char* input_buffer, int input_size, unsigned char** output_buffer, int* output_size)
+void simulate_compress_data(const unsigned char* input_buffer, int input_size,
+    unsigned char* output_buffer, int* output_size,int compress_level)
 {
-    *output_buffer = (unsigned char*)malloc(input_size);
-    if (*output_buffer == NULL)
+    output_buffer = (unsigned char*)malloc((input_size*3+sizeof(int)));
+    *output_buffer = input_size;//save the size of the data
+    if (output_buffer == NULL)
     {
         perror("Memory allocation failed in simulate_compress_data");
         exit(1);
     }
-    memcpy(*output_buffer, input_buffer, input_size);
-    *output_size = input_size;
+   lz77_encode(input_buffer, input_size, output_buffer+sizeof(int), output_size, compress_level);
+   huffman_encode(output_buffer, output_buffer+sizeof(int), output_size, output_size);
 }
 
 // Function to simulate decompression by simply copying data
-void simulate_decompress_data(const unsigned char* input_buffer, int input_size, unsigned char** output_buffer, int* output_size)
+void simulate_decompress_data(const unsigned char* input_buffer, int input_size, unsigned char* output_buffer, int* output_size)
 {
     *output_buffer = (unsigned char*)malloc(input_size);
     if (*output_buffer == NULL)
@@ -101,6 +105,8 @@ void simulate_decompress_data(const unsigned char* input_buffer, int input_size,
         perror("Memory allocation failed in simulate_decompress_data");
         exit(1);
     }
-    memcpy(*output_buffer, input_buffer, input_size);
-    *output_size = input_size;
+ //   huffman_decode();
+  //  lz77_decode();
+    
+
 }

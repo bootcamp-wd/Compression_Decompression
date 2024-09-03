@@ -15,10 +15,12 @@ typedef struct encoded_sequence
 
 
 void lz77_encode(const U_08* const input_buffer, U_32 const input_size, U_08* output_buffer, U_32* output_size,
-	U_32 const dictionary_size, U_32 const buffer_search_size);
+	U_32 const compress_level);
 
-unsigned char* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
+U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
 	U_08* buffer_search_pointer_first, U_08* buffer_search_pointer_last);
+
+void size_of_window_according_level(U_32 compress_level, U_32* dictionary_size, U_32* buffer_search_size);
 
 void lz77_decode(U_08* input_data, U_32* input_size, U_08* output_data);
 

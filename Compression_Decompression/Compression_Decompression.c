@@ -26,6 +26,9 @@ int main()
 		// Handle memory allocation failure
 	}
 	const char out[28];
+
+
+
 	huffman_encode("april", &compressed_data,  size, &output_size);
 	huffman_decode(&compressed_data, &output_size, out);
 
@@ -38,6 +41,7 @@ int main()
 //	huffman_encode(st, res, 27, &res_size);
 //	//printf("%s", res);
 //	huffman_decode(res, &res_size, out);
+
 }
 
 
