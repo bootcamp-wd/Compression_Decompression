@@ -85,15 +85,17 @@ void process_file(const char* input_path, const char* output_path,int compress_l
 void simulate_compress_data(const unsigned char* input_buffer, int input_size,
     unsigned char* output_buffer, int* output_size,int compress_level)
 {
-    output_buffer = (unsigned char*)malloc((input_size*3+sizeof(int)));
+    output_buffer = (unsigned char*)malloc(input_size*3);
     *output_buffer = input_size;//save the size of the data
-    if (output_buffer == NULL)
+    if (*output_buffer == NULL)
     {
         perror("Memory allocation failed in simulate_compress_data");
         exit(1);
     }
-   lz77_encode(input_buffer, input_size, output_buffer+sizeof(int), output_size, compress_level);
-   huffman_encode(output_buffer, output_buffer+sizeof(int), output_size, output_size);
+  
+
+//    lz77_encode(input_buffer, input_size, output_buffer, output_size, compress_level);
+ //   huffman_encode(output_buffer, output_buffer, output_size, output_size);
 }
 
 // Function to simulate decompression by simply copying data
