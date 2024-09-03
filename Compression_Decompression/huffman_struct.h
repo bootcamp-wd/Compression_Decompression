@@ -3,7 +3,7 @@
 
 typedef struct Huffman_node {
     unsigned char by_ascii;
-    int frequency;
+    long frequency;//add assert we dont have overflow
     unsigned char* code; //(bits)
     int code_length;
     struct Huffman_node* left;
