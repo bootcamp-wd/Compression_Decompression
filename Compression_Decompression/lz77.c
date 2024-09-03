@@ -9,14 +9,13 @@
 *				  buffer_search_size - the largest size that the buffer_search can be
 * Returned		: none
 * *************************************************************************/
-
-void lz77_encode(U_8* const input_buffer, U_32 const input_size, U_8* output_buffer, U_32* output_size,
+void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_buffer, U_32* output_size,
 	U_32 const compress_level)
 {
-	U_8* dict_pointer_first;
-	U_8* dict_pointer_last;
-	U_8* buffer_search_pointer_first;
-	U_8* buffer_search_pointer_last;
+	U_08* dict_pointer_first;
+	U_08* dict_pointer_last;
+	U_08* buffer_search_pointer_first;
+	U_08* buffer_search_pointer_last;
 	U_32 const dictionary_size;
 	U_32 const buffer_search_size;
 
