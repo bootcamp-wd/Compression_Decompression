@@ -15,6 +15,11 @@ void lz77_testing()
 	lz77_test_identical_characters(input_buffer, &input_size, compressed_buffer, &compressed_size, compress_level, decompressed_buffer);
 	lz77_test_empty(input_buffer, &input_size, compressed_buffer, &compressed_size, compress_level, decompressed_buffer);
 	lz77_test_many_repeat(input_buffer, &input_size, compressed_buffer, &compressed_size, compress_level, decompressed_buffer);
+
+	if (compressed_buffer)
+		free(compressed_buffer);
+	if (decompressed_buffer)
+		free(decompressed_buffer);
 }
 
 void lz77_test_treatment(U_08* input_buffer, U_32 input_size, U_08* compressed_buffer, U_32 compressed_size, 
@@ -57,8 +62,6 @@ void lz77_test_regular_size(U_08* input_buffer, U_32* input_size, U_08* compress
 		●	In a React app, every piece of UI is a component.\
 		●	React components are regular JavaScript functions except :\
 	1.	Their names always begin with a capital letter.";
-
-	
 
 	lz77_test_treatment(input_buffer, *input_size, compressed_buffer, *compressed_size, compress_level, decompressed_buffer);
 
