@@ -104,6 +104,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,7 +134,6 @@
     <ClCompile Include="file_managment.c" />
     <ClCompile Include="huffman_code.c" />
     <ClCompile Include="lz77.c" />
-    <ClCompile Include="lz77_test.c" />
     <ClCompile Include="priority_queue.c" />
   </ItemGroup>
   <ItemGroup>
@@ -141,7 +142,6 @@
     <ClInclude Include="general_define.h" />
     <ClInclude Include="huffman_code.h" />
     <ClInclude Include="lz77.h" />
-    <ClInclude Include="lz77_test.h" />
     <ClInclude Include="priority_queue.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

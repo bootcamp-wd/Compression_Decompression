@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\Compression_Decompression</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,11 +128,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lz77_test.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="test_framework.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lz77_test.h" />
     <ClInclude Include="test_framework.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Compression_Decompression\Compression_Decompression.vcxproj">
+      <Project>{e43013f0-7584-4598-8fc3-fa6f496a3f24}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

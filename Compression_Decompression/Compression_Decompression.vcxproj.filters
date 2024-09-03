@@ -7,9 +7,6 @@
     <ClCompile Include="huffman_code.c" />
     <ClCompile Include="lz77.c" />
     <ClCompile Include="priority_queue.c" />
-    <ClCompile Include="lz77_test.c">
-      <Filter>testing</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="compressor_decompressor.h" />
@@ -18,13 +15,5 @@
     <ClInclude Include="huffman_code.h" />
     <ClInclude Include="lz77.h" />
     <ClInclude Include="priority_queue.h" />
-    <ClInclude Include="lz77_test.h">
-      <Filter>testing</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="testing">
-      <UniqueIdentifier>{acfa7b91-3a95-4031-8153-b9c7db4f8a9b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>
