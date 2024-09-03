@@ -97,11 +97,11 @@ void finalize_compressed_data(U_08* compressed_data, U_32 compressed_data_bit_in
     if (compressed_data_bit_index % 8 != 0) 
     {
         //?
-        compressed_data[(compressed_data_bit_index / 8)] |= (compressed_data_bit_index % 8) << 3;
+        compressed_data[compressed_data_bit_index / 8 + 1] = (compressed_data_bit_index % 8);
     }
 
     // Print the compressed data as bits
-    for (int i = 0; i < compressed_data_bit_index; i++) 
+    for (U_32 i = 0; i < compressed_data_bit_index; i++) 
     {
         printf("%d", (compressed_data[i / 8] & (1 << (7 - (i % 8)))) ? 1 : 0);
     }
@@ -333,14 +333,19 @@ void huffman_decode(U_08* input_buffer, int* input_size, U_08* output_buffer)
 	while (bits_index < ((*input_size)-2) * 8) 
     {
 
-		U_08 decompressed_byte = find_ascii_in_tree(input_pointer, root, &bits_index,tree_length);
+		U_08 decompressed_byte = find_ascii_in_tree(&input_pointer, root, &bits_index,tree_length);
 
 		//write to output buffer the decomprresed byte
 		*output_pointer = decompressed_byte;
 		output_pointer++;
 	}
-    find_ascii_last_byte(*input_pointer, *(++input_pointer), root, bits_index, output_pointer);
-    free(root);//free the tree
+    printf("\n");
+    for (int i = 0; i < 24; i++)
+    {
+        printf("%d", (input_pointer[i / 8] & (1 << (7 - (i % 8)))) ? 1 : 0);
+    }
+    printf("\n");
+    find_ascii_last_byte(input_pointer, root, bits_index, output_pointer,tree_length);
 }
 
 /***************************************************************************
@@ -351,7 +356,8 @@ void huffman_decode(U_08* input_buffer, int* input_size, U_08* output_buffer)
  * Returned     : metadata size
  *
  ***************************************************************************/
-Huffman_decode_node* rescu_metadata(U_08* input_buffer,int* tree_length){
+Huffman_decode_node* rescu_metadata(U_08* input_buffer,int* tree_length)
+{
     Huffman_metadata huffman_metadata;
     memcpy(&huffman_metadata,input_buffer,sizeof(Huffman_metadata));
     *tree_length = huffman_metadata.tree_length;
@@ -367,7 +373,7 @@ Huffman_decode_node* rescu_metadata(U_08* input_buffer,int* tree_length){
  * Returned     : the found character
  *
  ***************************************************************************/
-	U_08 find_ascii_in_tree(U_08* input_pointer, Huffman_decode_node* root,U_32* bits_index,int tree_length) 
+	U_08 find_ascii_in_tree(U_08** input_pointer, Huffman_decode_node* root,U_32* bits_index,U_32 tree_length) 
 	{
 		Huffman_decode_node* nodes;
 		nodes = root+(tree_length-1);
@@ -378,45 +384,55 @@ Huffman_decode_node* rescu_metadata(U_08* input_buffer,int* tree_length){
 		    //Moving the mask according to the index
 		    mask = 0b10000000 >> (*bits_index % 8);
 
-		    if ((*input_pointer & mask) == 0) {
+		    if (((**input_pointer) & mask) == 0) 
+            {
 			    nodes = &root[nodes->left];
 		    }
-		    else {
+		    else
+            {
 			    nodes = &root[nodes->right];
 		    }
 		    (*bits_index)++;
 		    //advance the pointer of the bytes
-		    if (*bits_index % 8 == 0) {
-			    input_pointer++;
+		    if (((*bits_index) % 8 )== 0)
+            {
+			    (*input_pointer)++;
 	 	    }
 	    }
     printf("the ascii:%c\n", (nodes->by_ascii));
 	return nodes->by_ascii;
 }
 
-    void find_ascii_last_byte(U_08 last_byte, U_08 sum_bites, Huffman_decode_node* root, U_32 bites_index, U_08* output_pointer)
+    void find_ascii_last_byte(U_08*input_pointer, Huffman_decode_node* root, U_32 bites_index, U_08* output_pointer,int tree_length)
     {
-        U_32 sum_bites_in_last_byte = sum_bites - '0';
+        U_08 last_byte = *input_pointer;
+        input_pointer++;
+        U_32 sum_bites_in_last_byte = (U_32)*input_pointer;
         Huffman_decode_node* nodes;
-        nodes = root;
+        nodes = root + (tree_length - 1);
         U_08 mask;
+        
         for (U_32 i = bites_index % 8; i < sum_bites_in_last_byte;) 
         {
             //move over the tree according to the received bits until finding leaves where the ascii code 
-            while (nodes->left == NULL && nodes->right == NULL)
+            while (nodes->left != 512 && nodes->right != 512)
             {
                 //Moving the mask according to the index
                 mask = 0b10000000 >> (bites_index % 8);
 
-                if ((last_byte & mask) == 0) {
-                    nodes = &root[nodes->right - '0'];
+                if (((last_byte) & mask) == 0)
+                {
+                    nodes = &root[nodes->left];
                 }
-                else {
-                    nodes = &root[nodes->left - '0'];
+                else
+                {
+                    nodes = &root[nodes->right];
                 }
                 i++;
+                bites_index++;
             }
-            output_pointer = nodes->by_ascii;
+            printf("the ascii:%c\n", (nodes->by_ascii));
+            *(output_pointer) = nodes->by_ascii;
             output_pointer++;
         }
     }
