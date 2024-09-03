@@ -9,13 +9,18 @@
 *				  buffer_search_size - the largest size that the buffer_search can be
 * Returned		: none
 * *************************************************************************/
-void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_buffer, U_32* output_size,
-	U_32 const dictionary_size, U_32 const buffer_search_size)
+
+void lz77_encode(U_8* const input_buffer, U_32 const input_size, U_8* output_buffer, U_32* output_size,
+	U_32 const compress_level)
 {
-	U_08* dict_pointer_first;
-	U_08* dict_pointer_last;
-	U_08* buffer_search_pointer_first;
-	U_08* buffer_search_pointer_last;
+	U_8* dict_pointer_first;
+	U_8* dict_pointer_last;
+	U_8* buffer_search_pointer_first;
+	U_8* buffer_search_pointer_last;
+	U_32 const dictionary_size;
+	U_32 const buffer_search_size;
+
+	size_of_window_according_level(compress_level, &dictionary_size, &buffer_search_size);
 
 	*output_size = 0;
 	if (input_size == 0)
@@ -30,7 +35,7 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 		exit(1);
 	}
 	//the cur_index_seq keeps the index of the current byte that stands on
-	int cur_index_seq = 0;
+	U_32 cur_index_seq = 0;
 
 	//initialize the first byte - that not exist sure 
 	cur_seq->distance = 0;
@@ -137,6 +142,56 @@ U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
 		}
 	}
 	return NULL;
+}
+
+/**************************************************************************
+*						            SIZE OF WINDOW ACCORDING LEVEL FUNCTION
+* Name			: size_of_window_according_level - calculates the size of the dictionary_size and the
+*				  buffer_search_size according to the level of compressing
+* Parameters	: compress_level - desired compression level
+*				  dictionary_size - a pointer to store the largest size that the dictionary can be
+*				  according to the compress_level param
+*				  buffer_search_size - the largest size that the buffer_search can be
+*				  according to the compress_level param
+* Returned		: none
+* *************************************************************************/
+void size_of_window_according_level(U_32 compress_level, U_32* dictionary_size, U_32* buffer_search_size)
+{
+	switch (compress_level)
+	{
+	case 0:
+		*dictionary_size = 512;
+		*buffer_search_size = 256;
+		break;
+	case 1:
+		*dictionary_size = 1024;
+		*buffer_search_size = 512;
+		break;
+	case 2:
+		*dictionary_size = 2048;
+		*buffer_search_size = 1024;
+		break;
+	case 3:
+		*dictionary_size = 4096;
+		*buffer_search_size = 2048;
+		break;
+	case 4:
+		*dictionary_size = 8192;
+		*buffer_search_size = 4096;
+		break;
+	case 5:
+		*dictionary_size = 16384;
+		*buffer_search_size = 8192;
+		break;
+	case 6:
+		*dictionary_size = 32768;
+		*buffer_search_size = 16384;
+		break;
+	default:
+		*dictionary_size = 4096;
+		*buffer_search_size = 2048;
+		break;
+	}
 }
 
 /***************************************************************************
