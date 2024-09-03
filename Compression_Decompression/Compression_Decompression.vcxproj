@@ -129,6 +129,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Testsing\lz77_test.c" />
+    <ClCompile Include="..\Testsing\test_framework.c" />
     <ClCompile Include="Compression_Decompression.c" />
     <ClCompile Include="compressor_decompressor.c" />
     <ClCompile Include="file_managment.c" />
@@ -137,6 +139,8 @@
     <ClCompile Include="priority_queue.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Testsing\lz77_test.h" />
+    <ClInclude Include="..\Testsing\test_framework.h" />
     <ClInclude Include="compressor_decompressor.h" />
     <ClInclude Include="file_managment.h" />
     <ClInclude Include="general_define.h" />
