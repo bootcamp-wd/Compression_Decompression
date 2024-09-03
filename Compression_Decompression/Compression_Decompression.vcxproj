@@ -141,6 +141,7 @@
     <ClInclude Include="general_define.h" />
     <ClInclude Include="huffman_code.h" />
     <ClInclude Include="lz77.h" />
+    <ClInclude Include="lz77_test.h" />
     <ClInclude Include="priority_queue.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
