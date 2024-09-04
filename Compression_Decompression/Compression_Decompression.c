@@ -23,10 +23,10 @@ int main()
 	}
 	//U_08* out = (U_08*)malloc(28 * sizeof(U_08));
 	U_08 out[28];
-	unsigned char* input_1 = "1234c fdsa";
+	unsigned char* input_1 = "april";
 	int size = strlen(input_1);
-	huffman_encode(input_1, &compressed_data,  size, &output_size);
-	huffman_decode(&compressed_data, &output_size, out);
+	huffman_encode(input_1, compressed_data, size, &output_size);
+	huffman_decode(compressed_data, &output_size, out);
 
 	return 0;
 
