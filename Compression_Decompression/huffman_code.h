@@ -15,8 +15,8 @@ typedef struct huffman_metadata {
 	Huffman_decode_node* nodes;
 }Huffman_metadata;
 
-int huffman_frequency_compare(const void* elem1, const void* elem2);
-int huffman_ascii_compare(const void* elem1, const void* elem2);
+S_32 huffman_frequency_compare(const void* elem1, const void* elem2);
+S_32 huffman_ascii_compare(const void* elem1, const void* elem2);
 
 void initialize_nodes(Huffman_node_t* nodes);
 void count_frequencies(const U_08* data_to_compress, U_32 input_size, Huffman_node_t* nodes);
