@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include "lz77.h"
-#include "file_managment.h"
-#include "compressor_decompressor.h"
+
 #include "huffman_code.h"
 
 
@@ -20,16 +16,16 @@ int main()
 //    printf("\nSimulating decompression...\n");
 //    process_file(compressed_file, decompressed_file, 0);
 
-	int size = 5, output_size = 0;
+	int output_size = 0;
 	unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;
 	if (compressed_data == NULL) {
 		// Handle memory allocation failure
 	}
-	const char out[28];
-
-
-
-	huffman_encode("april", &compressed_data,  size, &output_size);
+	//U_08* out = (U_08*)malloc(28 * sizeof(U_08));
+	U_08 out[28];
+	unsigned char* input_1 = "1234c fdsa";
+	int size = strlen(input_1);
+	huffman_encode(input_1, &compressed_data,  size, &output_size);
 	huffman_decode(&compressed_data, &output_size, out);
 
 	return 0;
@@ -41,6 +37,7 @@ int main()
 //	huffman_encode(st, res, 27, &res_size);
 //	//printf("%s", res);
 //	huffman_decode(res, &res_size, out);
+
 
 }
 

@@ -2,6 +2,11 @@
 #ifndef HUFFMAN_CODE_H
 #define HUFFMAN_CODE_H
 
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <assert.h>
+#include "priority_queue.h"
 #include "huffman_struct.h"
 #include "general_define.h"
 
