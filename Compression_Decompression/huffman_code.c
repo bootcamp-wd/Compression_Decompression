@@ -103,7 +103,11 @@ void finalize_compressed_data(U_08* compressed_data, U_32 compressed_data_bit_in
     // Print the compressed data as bits (for debugging)
     for (U_32 i = 0; i < (compressed_data_bit_index + 12); i++)
     {
+<<<<<<< HEAD
+        printf("%d", !!(compressed_data[i / 8] & (1 << (7 - (i % 8)))) );
+=======
         printf("%d", !!(compressed_data[i / 8] & (1 << (7 - (i % 8)))));
+>>>>>>> b505dfd715dce8a4402a2871848419b66d97e7dd
     }
 }
 
