@@ -82,7 +82,11 @@ void process_file(const U_08* input_path, const U_08* output_path,U_32 compress_
 }
 
 // Function to simulate compression by simply copying data
+<<<<<<< HEAD
 void compress_data(const U_08* input_buffer, U_32 input_size,
+=======
+void simulate_compress_data(const U_08* input_buffer, U_32 input_size,
+>>>>>>> ee47a397eb15fc3e386306ad085258635d3baac9
     U_08* output_buffer, U_32* output_size,U_32 compress_level)
 {
     output_buffer = (unsigned char*)malloc((input_size* get_size_of_encoded_sequence_struct() +sizeof(int)));//alocat the memory 
