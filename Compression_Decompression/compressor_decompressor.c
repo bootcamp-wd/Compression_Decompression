@@ -9,7 +9,7 @@
 #define BUFFER_SIZE 4096
 
 // Function to process the file (either compress or decompress)
-void process_file(const char* input_path, const char* output_path,int compress_level ,int compress)
+void process_file(const U_08* input_path, const U_08* output_path,U_32 compress_level ,U_32 compress)
 {
     unsigned char* buffer = NULL, * processed = NULL;
     int file_size = 0, processed_size = 0;
@@ -82,10 +82,10 @@ void process_file(const char* input_path, const char* output_path,int compress_l
 }
 
 // Function to simulate compression by simply copying data
-void simulate_compress_data(const unsigned char* input_buffer, int input_size,
-    unsigned char* output_buffer, int* output_size,int compress_level)
+void compress_data(const U_08* input_buffer, U_32 input_size,
+    U_08* output_buffer, U_32* output_size,U_32 compress_level)
 {
-    output_buffer = (unsigned char*)malloc((input_size*3+sizeof(int)));//alocat the memory 
+    output_buffer = (unsigned char*)malloc((input_size* get_size_of_encoded_sequence_struct() +sizeof(int)));//alocat the memory 
     *output_buffer = input_size;//save the size of the data
     if (output_buffer == NULL)
     {
@@ -99,7 +99,7 @@ void simulate_compress_data(const unsigned char* input_buffer, int input_size,
 }
 
 // Function to simulate decompression by simply copying data
-void simulate_decompress_data(const unsigned char* input_buffer, int input_size, unsigned char* output_buffer, int* output_size)
+void decompress_data(const U_08* input_buffer, U_32 input_size, unsigned char* output_buffer, U_32* output_size)
 {
     *output_size = input_buffer;
     input_buffer += sizeof(int);
@@ -111,6 +111,4 @@ void simulate_decompress_data(const unsigned char* input_buffer, int input_size,
     }
     huffman_decode(input_buffer,input_size,output_buffer,output_size);
     lz77_decode(output_buffer,output_size,output_buffer);
-    
-
 }
