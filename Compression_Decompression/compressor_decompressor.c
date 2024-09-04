@@ -45,7 +45,7 @@ void process_file(const U_08* input_path, const U_08* output_path,U_32 compress_
         fclose(metadata_file);
 
         // Simulate compression
-        simulate_compress_data(buffer, file_size, &processed, &processed_size,compress_level);
+        compress_data(buffer, file_size, &processed, &processed_size,compress_level);
     }
     else {
         // Read extension from metadata file
@@ -63,7 +63,7 @@ void process_file(const U_08* input_path, const U_08* output_path,U_32 compress_
         snprintf(metadata_path, sizeof(metadata_path), "%s.%s", output_path, extension);
 
         // Simulate decompression
-        simulate_decompress_data(buffer, file_size, &processed, &processed_size);
+        decompress_data(buffer, file_size, &processed, &processed_size);
 
         // Update the output path with the constructed file name
         output_path = metadata_path;
@@ -82,11 +82,7 @@ void process_file(const U_08* input_path, const U_08* output_path,U_32 compress_
 }
 
 // Function to simulate compression by simply copying data
-<<<<<<< HEAD
 void compress_data(const U_08* input_buffer, U_32 input_size,
-=======
-void simulate_compress_data(const U_08* input_buffer, U_32 input_size,
->>>>>>> ee47a397eb15fc3e386306ad085258635d3baac9
     U_08* output_buffer, U_32* output_size,U_32 compress_level)
 {
     output_buffer = (unsigned char*)malloc((input_size* get_size_of_encoded_sequence_struct() +sizeof(int)));//alocat the memory 
@@ -97,7 +93,7 @@ void simulate_compress_data(const U_08* input_buffer, U_32 input_size,
         exit(1);
     }
    lz77_encode(input_buffer, input_size, output_buffer+sizeof(int), output_size, compress_level,0);
-   huffman_encode(output_buffer+sizeof(int), output_buffer + sizeof(int), output_size, output_size);
+   huffman_encode(output_buffer+sizeof(int), output_buffer + sizeof(int), *output_size, output_size);
 
    realloc(output_buffer, (output_size + sizeof(int)));//decreas the memory size after finish the comression progress 
 }

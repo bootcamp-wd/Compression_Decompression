@@ -157,7 +157,7 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 inpu
     compression_metadata->tree_length = last_index - start_index + 1;
 
     store_metadata(nodes, start_index, last_index, compression_metadata);
-    qsort(nodes, ASCII_SIZE, sizeof(Huffman_node_t), huffman_ascii_compare);
+    //qsort(nodes, ASCII_SIZE, sizeof(Huffman_node_t), huffman_ascii_compare);
 
     //Calculate the start of compressed data
     U_08* compressed_data = (U_08*)(compression_metadata->nodes + compression_metadata->tree_length);
@@ -168,7 +168,7 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 inpu
 
     *output_size = (compressed_data_bit_index + 7) / 8 + 1;  // +1 for the remaining bits byte
     //failure here:
-    huffman_free_tree(nodes, last_index);
+    //huffman_free_tree(nodes, last_index);
 }
 
 /***************************************************************************
