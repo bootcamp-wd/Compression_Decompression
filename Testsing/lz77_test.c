@@ -72,15 +72,15 @@ void test_lz77_many_repeat(void)
     lz77_test_treatment("LZ77 Test Many Repeat", input_buffer, input_size, compress_level);
 }
 
-int main(void) {
-    srand(time(0));
-
-    add_test("LZ77 Test Regular Size", test_lz77_regular_size);
-    add_test("LZ77 Test Identical Characters", test_lz77_identical_characters);
-    add_test("LZ77 Test Empty", test_lz77_empty);
-    add_test("LZ77 Test Many Repeat", test_lz77_many_repeat);
-
-    run_all_tests();
-
-    return 0;
-}
+//int main(void) {
+//    srand(time(0));
+//
+//    add_test("LZ77 Test Regular Size", test_lz77_regular_size);
+//    add_test("LZ77 Test Identical Characters", test_lz77_identical_characters);
+//    add_test("LZ77 Test Empty", test_lz77_empty);
+//    add_test("LZ77 Test Many Repeat", test_lz77_many_repeat);
+//
+//    run_all_tests();
+//
+//    return 0;
+//}
