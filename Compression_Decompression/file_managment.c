@@ -1,13 +1,10 @@
 #include "file_managment.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-//unction to read a file into a buffer
-unsigned char* read_file(const char* file_path, int* file_size)
+//Function to read a file into a buffer
+unsigned S_08* read_file(const S_08* file_path, S_32* file_size)
 {
     FILE* file = NULL;
-    size_t bytes_read = 0;
+    U_32 bytes_read = 0;
 
     if (fopen_s(&file, file_path, "rb") != 0)
     {
@@ -19,7 +16,7 @@ unsigned char* read_file(const char* file_path, int* file_size)
     *file_size = ftell(file);
     rewind(file);
 
-    unsigned char* buffer = (unsigned char*)malloc(*file_size);
+    U_08* buffer = (U_08*)malloc(*file_size * sizeof(U_08));
     if (buffer == NULL)
     {
         perror("Memory allocation failed");
@@ -39,10 +36,10 @@ unsigned char* read_file(const char* file_path, int* file_size)
 }
 
 // Function to write a buffer to a file
-void write_file(const char* file_path, const unsigned char* buffer, int file_size)
+void write_file(const S_08* file_path, const U_08* buffer, S_32 file_size)
 {
     FILE* file = NULL;
-    size_t bytes_written = 0;
+    U_32 bytes_written = 0;
 
     if (fopen_s(&file, file_path, "wb") != 0)
     {
