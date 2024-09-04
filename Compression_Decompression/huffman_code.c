@@ -331,7 +331,7 @@ void huffman_decode(U_08* input_buffer, int* input_size, U_08* output_buffer)
         output_pointer++;
     }
     find_ascii_last_byte(*input_pointer, *(++input_pointer), root, bits_index, output_pointer);
-    free(root);//free the tree
+    /*free(root)*/;//free the tree
 }
 
 /***************************************************************************
