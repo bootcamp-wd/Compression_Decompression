@@ -11,14 +11,14 @@
 // Function to process the file (either compress or decompress)
 void process_file(const U_08* input_path, const U_08* output_path,U_32 compress_level ,U_32 compress)
 {
-    unsigned char* buffer = NULL, * processed = NULL;
-    int file_size = 0, processed_size = 0;
+    unsigned char* input_buffer_p = NULL, * compressed_data_buffer_p = NULL;
+    S_32 file_size = 0, compressed_size = 0;
     FILE* metadata_file = NULL;
     char metadata_path[BUFFER_SIZE];
     char extension[BUFFER_SIZE] = { 0 };
 
     // Read the input file
-    buffer = read_file(input_path, &file_size);
+    input_buffer_p = read_file(input_path, &file_size);
     if (file_size == 0)
     {
         return;
@@ -38,14 +38,13 @@ void process_file(const U_08* input_path, const U_08* output_path,U_32 compress_
         if (fopen_s(&metadata_file, metadata_path, "w") != 0)
         {
             perror("Error opening metadata file");
-            free(buffer);
+            free(input_buffer_p);
             return;
         }
         fprintf(metadata_file, "%s", extension);
         fclose(metadata_file);
 
-        // Simulate compression
-        compress_data(buffer, file_size, &processed, &processed_size,compress_level);
+        compress_data(input_buffer_p, file_size, &compressed_data_buffer_p, &compressed_size,compress_level);
     }
     else {
         // Read extension from metadata file
@@ -53,7 +52,7 @@ void process_file(const U_08* input_path, const U_08* output_path,U_32 compress_
         if (fopen_s(&metadata_file, metadata_path, "r") != 0)
         {
             perror("Error opening metadata file");
-            free(buffer);
+            free(input_buffer_p);
             return;
         }
         fscanf_s(metadata_file, "%s", extension, (unsigned)_countof(extension));
@@ -62,28 +61,25 @@ void process_file(const U_08* input_path, const U_08* output_path,U_32 compress_
         // Append extension to output path
         snprintf(metadata_path, sizeof(metadata_path), "%s.%s", output_path, extension);
 
-        // Simulate decompression
-        decompress_data(buffer, file_size, &processed, &processed_size);
+        decompress_data(input_buffer_p, file_size, &compressed_data_buffer_p, &compressed_size);
 
         // Update the output path with the constructed file name
         output_path = metadata_path;
     }
 
     // Free the input buffer
-    free(buffer);
+    free(input_buffer_p);
 
-    // Write the processed data to the output file
-    write_file(output_path, processed, processed_size);
+    // Write the compressed_data_buffer_p data to the output file
+    write_file(output_path, compressed_data_buffer_p, compressed_size);
 
-    // Free the processed buffer
-    free(processed);
+    // Free the compressed_data_buffer_p buffer
+    free(compressed_data_buffer_p);
 
-    printf("File processed successfully. Input size: %d bytes, Output size: %d bytes\n", file_size, processed_size);
+    printf("File compressed_data_buffer_p successfully. Input size: %d bytes, Output size: %d bytes\n", file_size, compressed_size);
 }
 
-// Function to simulate compression by simply copying data
-void compress_data(const U_08* input_buffer, U_32 input_size,
-    U_08* output_buffer, U_32* output_size,U_32 compress_level)
+void compress_data(const U_08* input_buffer, U_32 input_size,U_08* output_buffer, U_32* output_size,const U_32 compress_level)
 {
     output_buffer = (unsigned char*)malloc((input_size* get_size_of_encoded_sequence_struct() +sizeof(int)));//alocat the memory 
     *output_buffer = input_size;//save the size of the data
@@ -98,8 +94,7 @@ void compress_data(const U_08* input_buffer, U_32 input_size,
    realloc(output_buffer, (output_size + sizeof(int)));//decreas the memory size after finish the comression progress 
 }
 
-// Function to simulate decompression by simply copying data
-void decompress_data(const U_08* input_buffer, U_32 input_size, unsigned char* output_buffer, U_32* output_size)
+void decompress_data(const U_08* input_buffer, U_32 input_size, U_08* output_buffer, U_32* output_size)
 {
     *output_size = input_buffer;
     input_buffer += sizeof(int);
