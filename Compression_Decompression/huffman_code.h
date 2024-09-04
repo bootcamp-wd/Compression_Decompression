@@ -1,4 +1,3 @@
-
 #ifndef HUFFMAN_CODE_H
 #define HUFFMAN_CODE_H
 
@@ -17,7 +16,7 @@ typedef struct huffman_decode_node {
 }Huffman_decode_node;
 
 typedef struct huffman_metadata {
-	U_08 tree_length;
+	U_16 tree_length;
 	Huffman_decode_node* nodes;
 }Huffman_metadata;
 
@@ -31,10 +30,10 @@ void encode_data(const U_08* data_to_compress, U_32 input_size, Huffman_node_t* 
 void finalize_compressed_data(U_08* compressed_data, U_32 compressed_data_bit_index);
 
 void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 input_size, U_32* output_size);
-Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, int* start_index, int* last_index);
+Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_32* last_index);
 void huffman_generate_codes(Huffman_node_t* root);
-void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, int current_length);
-void huffman_free_tree(Huffman_node_t* nodes, int last_index);
+void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, U_32 current_length);
+void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index);
 
 Huffman_decode_node* rescu_metadata(U_08* input_buffer,U_32* tree_length);
 void huffman_decode(U_08* input_buffer, int* input_size, U_08* output_buffer);
