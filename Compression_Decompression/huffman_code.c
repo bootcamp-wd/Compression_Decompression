@@ -103,7 +103,11 @@ void finalize_compressed_data(U_08* compressed_data, U_32 compressed_data_bit_in
     // Print the compressed data as bits (for debugging)
     for (U_32 i = 0; i < (compressed_data_bit_index + 12); i++)
     {
+<<<<<<< HEAD
         printf("%d", !!(compressed_data[i / 8] & (1 << (7 - (i % 8)))) );
+=======
+        printf("%d", !!(compressed_data[i / 8] & (1 << (7 - (i % 8)))));
+>>>>>>> b505dfd715dce8a4402a2871848419b66d97e7dd
     }
 }
 
@@ -168,7 +172,7 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 inpu
 
     *output_size = (compressed_data_bit_index + 7) / 8 + 1;  // +1 for the remaining bits byte
     //failure here:
-    huffman_free_tree(nodes , last_index);
+    huffman_free_tree(nodes, last_index);
 }
 
 /***************************************************************************
@@ -279,7 +283,7 @@ void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index)
         {
             free(nodes[i].code);
         }
-        else 
+        else
         {
             free(nodes + i);
         }

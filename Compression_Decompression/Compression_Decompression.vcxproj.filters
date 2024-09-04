@@ -18,6 +18,9 @@
     <ClInclude Include="huffman_code.h" />
     <ClInclude Include="lz77.h" />
     <ClInclude Include="priority_queue.h" />
+    <ClInclude Include="lz77_test.h">
+      <Filter>testing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="testing">

@@ -9,7 +9,6 @@
 *				  buffer_search_size - the largest size that the buffer_search can be
 * Returned		: none
 * *************************************************************************/
-
 void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_buffer, U_32* output_size,
 	U_32 const compress_level)
 {
