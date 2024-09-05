@@ -42,7 +42,7 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 	cur_seq->mis_match_byte = *input_buffer;
 
 	memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence_t));
-	(*output_size) += sizeof(Encoded_sequence_t);
+	(*output_size) += get_size_of_encoded_sequence_struct();
 	cur_index_seq++;
 
 	dict_pointer_first = dict_pointer_last = input_buffer;
