@@ -29,8 +29,8 @@ int huffman_ascii_compare(const void* elem1, const void* elem2);
 void initialize_nodes(Huffman_node_t* nodes);
 void count_frequencies(const U_08* data_to_compress, U_32 input_size, Huffman_node_t* nodes);
 void store_metadata(Huffman_node_t* nodes, U_32 start_index, U_32 last_index, Huffman_metadata* metadata);
-void encode_data(const U_08* data_to_compress, U_32 input_size, Huffman_node_t* nodes, U_08* compressed_data, U_32* compressed_data_bit_index);
-void finalize_compressed_data(U_08* compressed_data, U_32 compressed_data_bit_index);
+void encode_data(const U_08* data_to_compress, U_32 input_size, Huffman_node_t* nodes, U_08* compressed_data, long* compressed_data_bit_index);
+void finalize_compressed_data(U_08* compressed_data, long compressed_data_bit_index);
 
 void huffman_encode(const U_08* data_to_compress, U_08* output_buffer_p, U_32 input_size, U_32* output_size);
 Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_32* last_index);
