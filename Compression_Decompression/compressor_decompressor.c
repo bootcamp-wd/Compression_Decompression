@@ -9,10 +9,10 @@
 #define BUFFER_SIZE 4096
 
 // Function to process the file (either compress or decompress)
-void process_file(const U_08* input_path, const U_08* output_path,const U_32 compress_level ,const U_32 compress)
+void process_file(const U_08* input_path, const U_08* output_path, U_32 compress_level , U_32 compress)
 {
     U_08* input_buffer_p = NULL, * compressed_data_buffer_p = NULL;
-    S_32 file_size = 0, compressed_buffer_size = 0;
+    U_32 file_size = 0, compressed_buffer_size = 0;
     FILE* metadata_file = NULL;
     char metadata_path[BUFFER_SIZE];
     char extension[BUFFER_SIZE] = { 0 };
@@ -79,7 +79,7 @@ void process_file(const U_08* input_path, const U_08* output_path,const U_32 com
     printf("File compressed_data_buffer_p successfully. Input size: %d bytes, Output size: %d bytes\n", file_size, compressed_buffer_size);
 }
 
-void compress_data(const U_08* input_buffer_p, U_32 input_size,U_08* output_buffer_p, U_32* output_size,const U_32 compress_level)
+void compress_data(const U_08* input_buffer_p, U_32 input_size,U_08* output_buffer_p, U_32* output_size, U_32 compress_level)
 {
     output_buffer_p = (unsigned char*)malloc((input_size* get_size_of_encoded_sequence_struct() +sizeof(int)));//alocat the memory 
     *output_buffer_p = input_size;//save the size of the data
