@@ -180,8 +180,8 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 inpu
  ***************************************************************************/
 Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_32* last_index)
 {
-    Huffman_node_t* min_leaf = nodes;//add the frequncy to the name
-    Huffman_node_t* min_parent = nodes + ASCII_SIZE;//add the frequncy to the name
+    Huffman_node_t* min_leaf = nodes;
+    Huffman_node_t* min_parent = nodes + ASCII_SIZE;
     U_32 current_parent_index = ASCII_SIZE;
 
     while (min_leaf->frequency == 0)
@@ -270,8 +270,6 @@ void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, U_32 curr
 
 void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index)
 {
-    //free(nodes[i].code);  // Free the code allocated in `generate_codes_recursive`
-    //    free(nodes+i);      // Free the parent node itself
     for (U_32 i = ASCII_SIZE; i <= last_index; i++)
     {
         if (nodes[i].code)
