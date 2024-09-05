@@ -470,8 +470,8 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes ,int* start_index , int
     int flag = 1;
     while ( min_parent - nodes < NODES_IN_TREE && flag)
     {
-        Huffman_node_t* min_node1 = extract_min(&min_leaf,&min_parent,&nodes[ASCII_SIZE]);
-        Huffman_node_t* min_node2 = extract_min(&min_leaf,&min_parent,&nodes[ASCII_SIZE]);
+        Huffman_node_t* min_node1 = extract_min(&min_leaf, &min_parent, &nodes[ASCII_SIZE]);
+        Huffman_node_t* min_node2 = extract_min(&min_leaf, &min_parent, &nodes[ASCII_SIZE]);
 
         if (!min_node2->frequency) 
         {
@@ -489,7 +489,7 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes ,int* start_index , int
             printf("After push, nodes[%d].frequency = %d\n", current_parent_index-1, nodes[current_parent_index-1].frequency);
         }
     }
-    *last_index = current_parent_index-1;
+    *last_index = current_parent_index - 1;
     return &nodes[current_parent_index - 1];
 }
 
@@ -528,7 +528,7 @@ void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, int curre
             }
         }
 
-        node->code_length = current_length;  
+        node->code_length = current_length;
         return;
     }
 
@@ -572,7 +572,7 @@ void huffman_free_tree(Huffman_node_t* nodes, int last_index)
  ***************************************************************************/
 void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08* output_buffer_p)
 {
-	Huffman_decode_node* root = NULL;
+    Huffman_decode_node* root = NULL;
 
 	U_32 tree_length;
 

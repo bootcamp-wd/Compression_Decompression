@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e43013f0-7584-4598-8fc3-fa6f496a3f24}</ProjectGuid>
-    <RootNamespace>CompressionDecompression</RootNamespace>
+    <ProjectGuid>{e0aa6e45-20a6-4290-88f3-cd3e98f64053}</ProjectGuid>
+    <RootNamespace>Testsing</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -104,12 +104,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Compression_Decompression</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>..\Compression_Decomrpession;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -129,24 +129,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Testsing\lz77_test.c" />
-    <ClCompile Include="..\Testsing\test_framework.c" />
-    <ClCompile Include="Compression_Decompression.c" />
-    <ClCompile Include="compressor_decompressor.c" />
-    <ClCompile Include="file_managment.c" />
-    <ClCompile Include="huffman_code.c" />
-    <ClCompile Include="lz77.c" />
-    <ClCompile Include="priority_queue.c" />
+    <ClCompile Include="lz77_test.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="test_framework.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Testsing\lz77_test.h" />
-    <ClInclude Include="..\Testsing\test_framework.h" />
-    <ClInclude Include="compressor_decompressor.h" />
-    <ClInclude Include="file_managment.h" />
-    <ClInclude Include="general_define.h" />
-    <ClInclude Include="huffman_code.h" />
-    <ClInclude Include="lz77.h" />
-    <ClInclude Include="priority_queue.h" />
+    <ClInclude Include="lz77_test.h" />
+    <ClInclude Include="test_framework.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Compression_Decompression\Compression_Decompression.vcxproj">
+      <Project>{e43013f0-7584-4598-8fc3-fa6f496a3f24}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
