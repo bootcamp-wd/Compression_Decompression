@@ -1,3 +1,4 @@
+
 #ifndef COMPRESSOR_DECOMPRESSOR_H
 #define COMPRESSOR_DECOMPRESSOR_H
 
@@ -11,4 +12,4 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
 
 void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, U_32* output_size);
 
-#endif //COMPRESSOR_DECOMPRESSOR_H
+

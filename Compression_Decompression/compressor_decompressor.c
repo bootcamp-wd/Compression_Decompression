@@ -1,10 +1,4 @@
-#include "compressor_decompressor.h"
-#include "file_managment.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "lz77.h"
-#include "huffman_code.h"
+
 
 #define BUFFER_SIZE 4096
 

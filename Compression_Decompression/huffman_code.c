@@ -1,10 +1,6 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <assert.h>
 
 #include "huffman_code.h"
-#include "priority_queue.h"
+
 
 #define ASCII_SIZE 256
 #define INVALID_INDEX 512
@@ -98,27 +94,21 @@ void finalize_compressed_data(U_08* compressed_data, long compressed_data_bit_in
     {
         compressed_data[compressed_data_bit_index / 8 + 1] = (compressed_data_bit_index % 8);
     }
-
-    // Print the compressed data as bits (for debugging)
-    for (U_32 i = 0; i < (compressed_data_bit_index + 12); i++)
-    {
-        printf("%d", !!(compressed_data[i / 8] & (1 << (7 - (i % 8)))));
-    }
 }
 
 /***************************************************************************
  *                            HUFFMAN ENCODE FUNCTION
  * Name         : huffman_encode - encode data using Huffman coding
  * Parameters   : data_to_compress - pointer of the input buffer to compress
- *                output_buffer - pointer of the compressed data buffer
+ *                output_buffer_p - pointer of the compressed data buffer
  *                input_size - size of the input buffer (data to compress)
  *                output_size - pointer to the final output buffer size
  * Returned     : none
  ***************************************************************************/
-void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 input_size, U_32* output_size)
+void huffman_encode(const U_08* data_to_compress, U_08* output_buffer_p, U_32 input_size, U_32* output_size)
 {
     assert(data_to_compress != NULL);
-    assert(output_buffer != NULL);
+    assert(output_buffer_p != NULL);
     assert(input_size >= 0);
 
     *output_size = 0;
@@ -147,10 +137,10 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 inpu
     assert(total_size <= output_size);//suppose to be *output_size
 
     // Point to the start of the buffer for the metadata
-    Huffman_metadata* compression_metadata = (Huffman_metadata*)output_buffer;
+    Huffman_metadata* compression_metadata = (Huffman_metadata*)output_buffer_p;
 
     // Point the nodes array to the location right after the metadata in the buffer
-    compression_metadata->nodes = (Huffman_decode_node*)(output_buffer + metadata_size);
+    compression_metadata->nodes = (Huffman_decode_node*)(output_buffer_p + metadata_size);
 
     // Set the tree_length
     compression_metadata->tree_length = last_index - start_index + 1;
@@ -158,7 +148,7 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 inpu
     store_metadata(nodes, start_index, last_index, compression_metadata);
     qsort(nodes, ASCII_SIZE, sizeof(Huffman_node_t), huffman_ascii_compare);
 
-    //Calculate the start of compressed data
+    // calculate the start of compressed data
     U_08* compressed_data = (U_08*)(compression_metadata->nodes + compression_metadata->tree_length);
     long compressed_data_bit_index = 0;
 
@@ -286,75 +276,56 @@ void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index)
 /***************************************************************************
  *                           HUFFMAN_DECODE FUNCTION
  * Name         : decode the data with huffman decompression algorithm
- * Parameters   : input_buffer - pointer to the input data and meta data buffer
+ * Parameters   : input_buffer_p - pointer to the input data and meta data buffer
  *                input_size - size of the input data and meta data.
- *                output_buffer - pointer to the output data buffer to fill it
+ *                output_buffer_p - pointer to the output data buffer to fill it
  * Returned     : none
  *
  ***************************************************************************/
-void huffman_decode(U_08* input_buffer, int* input_size, U_08* output_buffer)
+void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08* output_buffer_p)
 {
-    Huffman_decode_node* root = NULL;
+	Huffman_decode_node* root = NULL;
 
-    U_32 metadata_size;
-    root = rescu_metadata(input_buffer, root);
+	U_32 tree_length;
 
-    //check
-       // printf("root,%c", root->by_ascii);
+    root = rescue_metadata(input_buffer_p,&tree_length);
+    
+    input_buffer_p = (U_08*)(root + tree_length);// take head the input_pointer on the struct size 
+	
+	U_08* input_pointer;
+	U_08* output_pointer;
 
+	input_pointer = input_buffer_p;
+	output_pointer = output_buffer_p;
 
-    printf("%d input_size", *input_size);
-    //*input_size -= metadata_size;
-
-    U_08* input_pointer;
-    U_08* output_pointer;
-
-    input_pointer = input_buffer;
-    output_pointer = output_buffer;
-
-    int bits_index = 0;
-
-    while (bits_index < ((*input_size) - 2) * 8)
+	int bits_index=0;
+   
+	while (bits_index < ((*input_size)-2) * NUM_BITS)
     {
+		U_08 decompressed_byte = find_ascii_in_tree(&input_pointer, root, &bits_index,tree_length);
 
-        U_08 decompressed_byte = find_ascii_in_tree(input_pointer, root, &bits_index);
-
-        //write to output buffer the decomprresed byte
-        *output_pointer = decompressed_byte;
+		//write to output buffer the decomprresed byte
+	    *output_pointer = decompressed_byte;
         output_pointer++;
-    }
-    find_ascii_last_byte(*input_pointer, *(++input_pointer), root, bits_index, output_pointer);
-    /*free(root)*/;//free the tree
+	}
+   
+    find_ascii_last_byte(input_pointer, root, bits_index, output_pointer,tree_length);
 }
 
 /***************************************************************************
- *                           RESCU_METADATA FUNCTION
+ *                           RESCUE_METADATA FUNCTION
  * Name         : rescu the metadata from the input buffer and return the metadata size;
- * Parameters   : input_buffer - pointer to the input data buffer
- *                root - pointer to array to keep the huffman codes
+ * Parameters   : input_buffer_p - pointer to the input data buffer
+ *                root - pointer to array to keep the huffman codes 
  * Returned     : metadata size
  *
  ***************************************************************************/
-Huffman_decode_node* rescu_metadata(U_08* input_buffer, Huffman_decode_node* root)
+Huffman_decode_node* rescue_metadata(U_08* input_buffer_p,U_32* tree_length)
 {
-    U_32 decode_node_size = sizeof(Huffman_decode_node);
-    U_32 nodes_length = *input_buffer;
-    printf("%c", *input_buffer);
-    input_buffer += 1;
-    printf("%ui", *input_buffer);
-    //move the pointer to the end of the input_file
-    input_buffer += sizeof(U_32) + (nodes_length * decode_node_size);
-
-    root = (Huffman_decode_node*)malloc((nodes_length * decode_node_size));
-    for (U_32 i = nodes_length, j = 0; i > 0; i--, j += decode_node_size) {
-        memcpy(root + j, input_buffer - decode_node_size, decode_node_size);
-        input_buffer -= decode_node_size;
-        printf("root:%c", (root + j)->by_ascii);
-        printf("left:%c", (root + j)->left);
-        printf("right:%c\n", (root + j)->right);
-    }
-
-    return root;
+    Huffman_metadata huffman_metadata;
+    memcpy(&huffman_metadata,input_buffer_p,sizeof(Huffman_metadata));
+    *tree_length = huffman_metadata.tree_length;
+    return (huffman_metadata.nodes);
 }
 
 /***************************************************************************
@@ -366,56 +337,71 @@ Huffman_decode_node* rescu_metadata(U_08* input_buffer, Huffman_decode_node* roo
  * Returned     : the found character
  *
  ***************************************************************************/
-U_08 find_ascii_in_tree(U_08* input_pointer, Huffman_decode_node* root, U_32* bits_index)
-{
-    Huffman_decode_node* nodes;
-    nodes = root;
-    U_08 mask;
-    //move over the tree according to the received bits until finding leaves where the ascii code 
-    while (nodes->left == NULL && nodes->right == NULL)
-    {
-        //Moving the mask according to the index
-        mask = 0b10000000 >> (*bits_index % 8);
-
-        if ((*input_pointer & mask) == 0) {
-            nodes = &root[nodes->right - '0'];
-        }
-        else {
-            nodes = &root[nodes->left - '0'];
-        }
-        (*bits_index)++;
-        //advance the pointer of the bytes
-        if (*bits_index % 8 == 0) {
-            input_pointer++;
-        }
-    }
-    printf("the ascii:%c\n", (nodes->by_ascii));
-    return nodes->by_ascii;
-}
-
-void find_ascii_last_byte(U_08 last_byte, U_08 sum_bites, Huffman_decode_node* root, U_32 bites_index, U_08* output_pointer)
-{
-    U_32 sum_bites_in_last_byte = sum_bites - '0';
-    Huffman_decode_node* nodes;
-    nodes = root;
-    U_08 mask;
-    for (U_32 i = bites_index % 8; i < sum_bites_in_last_byte;)
-    {
-        //move over the tree according to the received bits until finding leaves where the ascii code 
-        while (nodes->left == NULL && nodes->right == NULL)
+	U_08 find_ascii_in_tree(U_08** input_pointer, Huffman_decode_node* root,U_32* bits_index,U_32 tree_length) 
+	{
+		Huffman_decode_node* nodes;
+		nodes = root+(tree_length-1);
+	    U_08 mask;
+	    //move over the tree according to the received bits until finding leaves where the ascii code 
+        while (nodes->left != 512 && nodes->right != 512)
         {
-            //Moving the mask according to the index
-            mask = 0b10000000 >> (bites_index % 8);
+		    //Moving the mask according to the index
+		    mask = 0b10000000 >> (*bits_index % NUM_BITS);
 
-            if ((last_byte & mask) == 0) {
-                nodes = &root[nodes->right - '0'];
-            }
-            else {
-                nodes = &root[nodes->left - '0'];
-            }
-            i++;
-        }
-        output_pointer = nodes->by_ascii;
-        output_pointer++;
-    }
+		    if (((**input_pointer) & mask) == 0) 
+            {
+			    nodes = &root[nodes->left];
+		    }
+		    else
+            {
+			    nodes = &root[nodes->right];
+		    }
+		    (*bits_index)++;
+		    //advance the pointer of the bytes
+		    if (((*bits_index) % NUM_BITS)== 0)
+            {
+			    (*input_pointer)++;
+	 	    }
+	    }
+        
+        return nodes->by_ascii;
+    
 }
+
+    void find_ascii_last_byte(U_08*input_pointer, Huffman_decode_node* root, U_32 bites_index, U_08* output_pointer,U_32 tree_length)
+    {
+        U_08 last_byte = *input_pointer;
+        input_pointer++;
+        U_32 sum_bites_in_last_byte = (U_32)*input_pointer;
+        Huffman_decode_node* nodes;
+        nodes = root + (tree_length - 1);
+        U_08 mask;
+        
+        for (U_32 i = (bites_index % NUM_BITS); i < sum_bites_in_last_byte;)
+        {
+            //move over the tree according to the received bits until finding leaves where the ascii code 
+            while (nodes->left != 512 && nodes->right != 512)
+            {
+                //Moving the mask according to the index
+                mask = 0b10000000 >> (i % NUM_BITS);
+
+                
+                if (((last_byte) & mask) == 0)
+                {
+                    nodes = &root[nodes->left];
+                }
+                else
+                {
+                    nodes = &root[nodes->right];
+                }
+                i++;
+               
+            }
+            *(output_pointer) = nodes->by_ascii;
+            output_pointer++;
+            nodes = root + (tree_length - 1);
+        }
+    }
+
+
+    
