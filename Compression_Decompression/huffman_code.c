@@ -17,7 +17,7 @@
  *                elem2 - pointer to the second element
  * Returned     : comparison result (compare by ascii if equal, 1 if elem1 < elem2, -1 otherwise)
  ***************************************************************************/
-S_32 huffman_frequency_compare(const void* elem1, const void* elem2)
+int huffman_frequency_compare(const void* elem1, const void* elem2)
 {
     assert(elem1 != NULL);
     assert(elem2 != NULL);
@@ -35,7 +35,7 @@ S_32 huffman_frequency_compare(const void* elem1, const void* elem2)
     return a->by_ascii - b->by_ascii;
 }
 
-S_32 huffman_ascii_compare(const void* elem1, const void* elem2)
+int huffman_ascii_compare(const void* elem1, const void* elem2)
 {
     Huffman_node_t* nodes_to_compare[2] = { (Huffman_node_t*)elem1, (Huffman_node_t*)elem2 };
     return nodes_to_compare[0]->by_ascii - nodes_to_compare[1]->by_ascii;
@@ -53,22 +53,22 @@ void count_frequencies(const U_08* data_to_compress, U_32 input_size, Huffman_no
 {
     for (U_32 index = 0; index < input_size; index++)
     {
-        U_32 ascii_byte = data_to_compress[index];
+        U_08 ascii_byte = data_to_compress[index];
         nodes[ascii_byte].frequency++;
     }
 }
 
 void store_metadata(Huffman_node_t* nodes, U_32 start_index, U_32 last_index, Huffman_metadata* metadata)
 {
-    for (U_32 i = start_index, j = 0; i <= last_index; i++, j++)
+    for (U_32 i = start_index, md_node_index = 0; i <= last_index; i++, md_node_index++)
     {
-        metadata->nodes[j].by_ascii = nodes[i].by_ascii;
-        metadata->nodes[j].left = nodes[i].left ? (U_16)((nodes[i].left - nodes) - start_index) : INVALID_INDEX;
-        metadata->nodes[j].right = nodes[i].right ? (U_16)((nodes[i].right - nodes) - start_index) : INVALID_INDEX;
+        metadata->nodes[md_node_index].by_ascii = nodes[i].by_ascii;
+        metadata->nodes[md_node_index].left = nodes[i].left ? (U_16)((nodes[i].left - nodes) - start_index) : INVALID_INDEX;
+        metadata->nodes[md_node_index].right = nodes[i].right ? (U_16)((nodes[i].right - nodes) - start_index) : INVALID_INDEX;
     }
 }
 
-void encode_data(const U_08* data_to_compress, U_32 input_size, Huffman_node_t* nodes, U_08* compressed_data, U_32* compressed_data_bit_index)
+void encode_data(const U_08* data_to_compress, U_32 input_size, Huffman_node_t* nodes, U_08* compressed_data, long* compressed_data_bit_index)
 {
     for (U_32 i = 0; i < input_size; i++)
     {
@@ -90,7 +90,7 @@ void encode_data(const U_08* data_to_compress, U_32 input_size, Huffman_node_t* 
     }
 }
 
-void finalize_compressed_data(U_08* compressed_data, U_32 compressed_data_bit_index)
+void finalize_compressed_data(U_08* compressed_data, long compressed_data_bit_index)
 {
     compressed_data[compressed_data_bit_index / 8 + 1] = 0;
     // Handle remaining bits in the last byte
@@ -98,7 +98,6 @@ void finalize_compressed_data(U_08* compressed_data, U_32 compressed_data_bit_in
     {
         compressed_data[compressed_data_bit_index / 8 + 1] = (compressed_data_bit_index % 8);
     }
-
 
     // Print the compressed data as bits (for debugging)
     for (U_32 i = 0; i < (compressed_data_bit_index + 12); i++)
@@ -161,13 +160,13 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer, U_32 inpu
 
     //Calculate the start of compressed data
     U_08* compressed_data = (U_08*)(compression_metadata->nodes + compression_metadata->tree_length);
-    U_32 compressed_data_bit_index = 0;
+    long compressed_data_bit_index = 0;
 
     encode_data(data_to_compress, input_size, nodes, compressed_data, &compressed_data_bit_index);
     finalize_compressed_data(compressed_data, compressed_data_bit_index);
 
     *output_size = (compressed_data_bit_index + 7) / 8 + 1;  // +1 for the remaining bits byte
-    //failure here:
+    //TODO: check the failure here:
     //huffman_free_tree(nodes, last_index);
 }
 
@@ -191,7 +190,7 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_3
         (*start_index)++;
     }
 
-    int flag = 1;
+    S_32 flag = 1;
     while (min_parent - nodes < NODES_IN_TREE && flag)
     {
         Huffman_node_t* min_node1 = extract_min(&min_leaf, &min_parent, &nodes[ASCII_SIZE]);
@@ -299,7 +298,7 @@ void huffman_decode(U_08* input_buffer, int* input_size, U_08* output_buffer)
 {
     Huffman_decode_node* root = NULL;
 
-    int metadata_size;
+    U_32 metadata_size;
     root = rescu_metadata(input_buffer, root);
 
     //check
