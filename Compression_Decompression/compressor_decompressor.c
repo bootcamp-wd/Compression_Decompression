@@ -9,13 +9,14 @@
 *                            and zero if it needs to be decompressed
 * Returned		: none
 * *************************************************************************/
-void process_file(const S_08* input_path, const S_08* output_path, S_32 compress_level, S_32 compress)
+void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level, S_32 compress)
 {
-    U_08* buffer = NULL, * processed = NULL;
-    S_32 file_size = 0, processed_size = 0;
+    U_08* buffer = NULL;
+    U_08 *processed = NULL;
+    U_32 file_size, processed_size;
     FILE* metadata_file = NULL;
-    S_08 metadata_path[BUFFER_SIZE];
-    S_08 extension[BUFFER_SIZE] = { 0 };
+    U_08 metadata_path[BUFFER_SIZE];
+    U_08 extension[BUFFER_SIZE] = { 0 };
 
     buffer = read_file(input_path, &file_size);
     if (file_size == 0)
@@ -44,10 +45,16 @@ void process_file(const S_08* input_path, const S_08* output_path, S_32 compress
         output_path = metadata_path;
         decompress_data(buffer, file_size, &processed, &processed_size);
     }
-
-    free(buffer);
+    if (buffer)
+    {
+        free(buffer);
+    }
     write_file(output_path, processed, processed_size);
-    free(processed);
+
+    if (processed)
+    {
+        free(processed);
+    }
     printf("File processed successfully. Input size: %d bytes, Output size: %d bytes\n", file_size, processed_size);
 }
 
@@ -61,7 +68,7 @@ void process_file(const S_08* input_path, const S_08* output_path, S_32 compress
 * Returned		: none
 * *************************************************************************/
 void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, 
-    U_32* output_size, U_32 compress_level)
+    U_32* output_size, S_32 compress_level)
 {
     *output_buffer = (U_08*)malloc((input_size * get_size_of_encoded_sequence_struct() + sizeof(S_32))); 
      if (*output_buffer == NULL)
@@ -72,9 +79,20 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
     //saving the size of the data in the output to use it in the decompress
     **output_buffer = input_size;
 
-   lz77_encode(input_buffer, input_size, *output_buffer + sizeof(U_32), output_size, compress_level);
-   huffman_encode(output_buffer + sizeof(U_32), *output_buffer + sizeof(U_32), *output_size, output_size);
+    ///////////////////////////////////////////////////////////////////////
+    U_08* lz_and_huffman_output = (U_08*)malloc(*output_size * sizeof(U_08));
+    if (lz_and_huffman_output == NULL) {
+        perror("Memory allocation failed for Huffman output");
+        exit(1);
+    }
 
+    lz_and_huffman_output = *output_buffer + sizeof(U_32);
+   lz77_encode(input_buffer, input_size, lz_and_huffman_output, output_size, compress_level);
+
+   lz_and_huffman_output += (*output_size);
+   huffman_encode(*output_buffer, *output_buffer, *output_size, output_size);
+   ///////////////////////////////////////////////////////////////////////
+   // 
    //decreas the memory size after finish the comression progress
    U_08* temp_buffer = (U_08*)realloc(*output_buffer, (*output_size + sizeof(S_32)));
    if (temp_buffer == NULL)
@@ -95,24 +113,25 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
 *                 output_size - a variable to save the size of output
 * Returned		: none
 * *************************************************************************/
-void decompress_data(const U_08* input_buffer, S_32 input_size, U_08** output_buffer, S_32* output_size)
+void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, U_32* output_size)
 {
-    *output_size = input_buffer;
-    input_buffer += sizeof(int);
-    *output_buffer = (U_08*)malloc(output_size);
+    *output_size = *input_buffer;
+    input_buffer += sizeof(S_32);
+    *output_buffer = (U_08*)malloc(*output_size * sizeof(U_08));
     if (*output_buffer == NULL)
     {
         perror("Memory allocation failed in decompress_data");
         exit(1);
     }
 
-    huffman_decode(input_buffer,input_size,output_buffer,output_size);
-    lz77_decode(output_buffer,output_size,output_buffer);
+    huffman_decode(input_buffer, &input_size, *output_buffer);
+    //void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08 * output_buffer_p)
+    lz77_decode(*output_buffer, output_size, *output_buffer);
 }
 
 //Function to treat the metadata of the file
-void metadata_treatment(const S_08* file_path, S_08* extension, const S_08* metadata_path, FILE* metadata_file,
-    U_08* buffer, const S_08* read_write_mode)
+void metadata_treatment(const U_08* file_path, U_08* extension, U_08* metadata_path, FILE* metadata_file,
+    U_08* buffer, const U_08* read_write_mode)
 {
     assert(read_write_mode != NULL && (strcmp(read_write_mode, "w") == 0 || strcmp(read_write_mode, "r") == 0));
     snprintf(metadata_path, sizeof(metadata_path), "%s.meta", file_path);

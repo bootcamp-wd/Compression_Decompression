@@ -1,7 +1,7 @@
 #include "file_managment.h"
 
 //Function to read a file into a buffer
-unsigned S_08* read_file(const S_08* file_path, S_32* file_size)
+unsigned S_08* read_file(const U_08* file_path, U_32* file_size)
 {
     FILE* file = NULL;
     U_32 bytes_read = 0;
@@ -36,10 +36,10 @@ unsigned S_08* read_file(const S_08* file_path, S_32* file_size)
 }
 
 // Function to write a buffer to a file
-void write_file(const S_08* file_path, const U_08* buffer, S_32 file_size)
+void write_file(const U_08* file_path, const U_08* buffer, U_32 file_size)
 {
     FILE* file = NULL;
-    U_32 bytes_written = 0;
+    S_32 bytes_written = 0;
 
     if (fopen_s(&file, file_path, "wb") != 0)
     {
