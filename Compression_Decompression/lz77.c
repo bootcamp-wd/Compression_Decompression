@@ -9,13 +9,13 @@
 *				  buffer_search_size - the largest size that the buffer_search can be
 * Returned		: none
 * *************************************************************************/
-void lz77_encode(U_8* const input_buffer, U_32 const input_size, U_8* output_buffer, U_32* output_size,
-	U_32 const compress_level)
+void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_buffer, U_32* output_size,
+	const S_32 compress_level)
 {
-	U_8* dict_pointer_first;
-	U_8* dict_pointer_last;
-	U_8* buffer_search_pointer_first;
-	U_8* buffer_search_pointer_last;
+	U_08* dict_pointer_first;
+	U_08* dict_pointer_last;
+	U_08* buffer_search_pointer_first;
+	U_08* buffer_search_pointer_last;
 	U_32 const dictionary_size;
 	U_32 const buffer_search_size;
 
@@ -42,7 +42,7 @@ void lz77_encode(U_8* const input_buffer, U_32 const input_size, U_8* output_buf
 	cur_seq->mis_match_byte = *input_buffer;
 
 	memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence_t));
-	(*output_size) += sizeof(Encoded_sequence_t);
+	(*output_size) += get_size_of_encoded_sequence_struct();
 	cur_index_seq++;
 
 	dict_pointer_first = dict_pointer_last = input_buffer;
@@ -68,7 +68,7 @@ void lz77_encode(U_8* const input_buffer, U_32 const input_size, U_8* output_buf
 		{
 			//the start_seq_pointer points to the begining of the sequence that equals to the 
 			//current buffer_search that includes in the dictionary, if there isn't it's NULL
-			U_8* start_seq_pointer = search_in_dictionary(dict_pointer_first, dict_pointer_last,
+			U_08* start_seq_pointer = search_in_dictionary(dict_pointer_first, dict_pointer_last,
 				buffer_search_pointer_first, buffer_search_pointer_last);
 			//if there is equal sequence in the dictionary
 			if (start_seq_pointer)
@@ -109,11 +109,11 @@ void lz77_encode(U_8* const input_buffer, U_32 const input_size, U_8* output_buf
 *				  buffer_search_pointer_last -  pointer to the end of the buffer search
 * Returned		: pointer to the begining of the similiar sequence, if not exist - NULL
 * *************************************************************************/
-U_8* search_in_dictionary(U_8* dict_pointer_first, U_8* dict_pointer_last,
-	U_8* buffer_search_pointer_first, U_8* buffer_search_pointer_last)
+U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
+	U_08* buffer_search_pointer_first, U_08* buffer_search_pointer_last)
 {
-	U_8* start_seq_pointer = NULL;
-	U_8 loc_buffer_search = 0;
+	U_08* start_seq_pointer = NULL;
+	U_08 loc_buffer_search = 0;
 	U_32 size_buffer_search = buffer_search_pointer_last - buffer_search_pointer_first;
 	//loop that moves all the dictionary
 	for (U_32 i = 0; (dict_pointer_first + i) <= dict_pointer_last; i++)
@@ -127,7 +127,7 @@ U_8* search_in_dictionary(U_8* dict_pointer_first, U_8* dict_pointer_last,
 			}
 
 			//the buffer_search is exist in the dictionary
-			if (loc_buffer_search == size_buffer_search / sizeof(U_8))
+			if (loc_buffer_search == size_buffer_search / sizeof(U_08))
 			{
 				return start_seq_pointer;
 			}
@@ -154,7 +154,7 @@ U_8* search_in_dictionary(U_8* dict_pointer_first, U_8* dict_pointer_last,
 *				  according to the compress_level param
 * Returned		: none
 * *************************************************************************/
-void size_of_window_according_level(U_32 compress_level, U_32* dictionary_size, U_32* buffer_search_size)
+void size_of_window_according_level(S_32 compress_level, U_32* dictionary_size, U_32* buffer_search_size)
 {
 	switch (compress_level)
 	{
@@ -202,11 +202,11 @@ void size_of_window_according_level(U_32 compress_level, U_32* dictionary_size, 
  * Returned     : none
  *
  ***************************************************************************/
-void lz77_decode(U_8* input_data, U_32* input_size, U_8* output_data)
+void lz77_decode(U_08* input_data, U_32* input_size, U_08* output_data)
 {
 	//pointers to the buffers of the input 
-	U_8* input_pointer;
-	U_8* output_pointer;
+	U_08* input_pointer;
+	U_08* output_pointer;
 
 	input_pointer = input_data;
 	output_pointer = output_data;
@@ -232,7 +232,7 @@ void lz77_decode(U_8* input_data, U_32* input_size, U_8* output_data)
  * Returned     : update struct
  *
  ***************************************************************************/
-Encoded_sequence_t convert_into_encoded_sequence(U_8* input_pointer)
+Encoded_sequence_t convert_into_encoded_sequence(U_08* input_pointer)
 {
 	Encoded_sequence_t sequence;
 	memcpy(&sequence, input_pointer, sizeof(Encoded_sequence_t));
@@ -247,10 +247,10 @@ Encoded_sequence_t convert_into_encoded_sequence(U_8* input_pointer)
  * Returned     : none
  *
  ***************************************************************************/
-void add_sequence_to_output(U_8* output_pointer, Encoded_sequence_t current_sequence)
+void add_sequence_to_output(U_08* output_pointer, Encoded_sequence_t current_sequence)
 {
-	U_8 byte_to_copy;
-	U_8* sequence_to_copy = output_pointer - current_sequence.distance;
+	U_08 byte_to_copy;
+	U_08* sequence_to_copy = output_pointer - current_sequence.distance;
 	if (current_sequence.length > 0)
 	{
 		for (U_32 i = 0; i < current_sequence.length; i++)
