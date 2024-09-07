@@ -5,14 +5,14 @@
 * Name			: process - process the file (either compress or decompress)
 * Parameters	: input_path, output_path - names of the input and output pathes
 *				  compress_level - gets the level of compressing, more compressed is less fast
-*                 compress - a variable that gets one if the file needs to be compressed, 
+*                 compress - a variable that gets one if the file needs to be compressed,
 *                            and zero if it needs to be decompressed
 * Returned		: none
 * *************************************************************************/
 void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level, S_32 compress)
 {
     U_08* buffer = NULL;
-    U_08 *processed = NULL;
+    U_08* processed = NULL;
     U_32 file_size, processed_size;
     FILE* metadata_file = NULL;
     U_08 metadata_path[BUFFER_SIZE];
@@ -67,15 +67,15 @@ void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level
 *                 compress_level - gets the level of compressing, more compressed is less fast
 * Returned		: none
 * *************************************************************************/
-void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, 
+void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer,
     U_32* output_size, S_32 compress_level)
 {
-    *output_buffer = (U_08*)malloc((input_size * get_size_of_encoded_sequence_struct() + sizeof(S_32))); 
-     if (*output_buffer == NULL)
-     {
+    *output_buffer = (U_08*)malloc((input_size * get_size_of_encoded_sequence_struct() + sizeof(S_32)));
+    if (*output_buffer == NULL)
+    {
         perror("Memory allocation failed in compress_data");
         exit(1);
-     }
+    }
     //saving the size of the data in the output to use it in the decompress
     **output_buffer = input_size;
 
@@ -87,21 +87,21 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
     }
 
     lz_and_huffman_output = *output_buffer + sizeof(U_32);
-   lz77_encode(input_buffer, input_size, lz_and_huffman_output, output_size, compress_level);
+    lz77_encode(input_buffer, input_size, lz_and_huffman_output, output_size, compress_level);
 
-   lz_and_huffman_output += (*output_size);
-   huffman_encode(*output_buffer, *output_buffer, *output_size, output_size);
-   ///////////////////////////////////////////////////////////////////////
-   // 
-   //decreas the memory size after finish the comression progress
-   U_08* temp_buffer = (U_08*)realloc(*output_buffer, (*output_size + sizeof(S_32)));
-   if (temp_buffer == NULL)
-   {
-       perror("Memory reallocation failed in compress_data");
-       free(*output_buffer);
-       exit(1);
-   }
-   *output_buffer = temp_buffer;
+    lz_and_huffman_output += (*output_size);
+    huffman_encode(*output_buffer, *output_buffer, *output_size, output_size);
+    ///////////////////////////////////////////////////////////////////////
+    // 
+    //decreas the memory size after finish the comression progress
+    U_08* temp_buffer = (U_08*)realloc(*output_buffer, (*output_size + sizeof(S_32)));
+    if (temp_buffer == NULL)
+    {
+        perror("Memory reallocation failed in compress_data");
+        free(*output_buffer);
+        exit(1);
+    }
+    *output_buffer = temp_buffer;
 }
 
 /**************************************************************************
@@ -138,7 +138,7 @@ void metadata_treatment(const U_08* file_path, U_08* extension, U_08* metadata_p
     if (fopen_s(&metadata_file, metadata_path, read_write_mode) != 0)
     {
         perror("Error opening metadata file");
-        if(buffer != NULL)
+        if (buffer != NULL)
             free(buffer);
         return;
     }

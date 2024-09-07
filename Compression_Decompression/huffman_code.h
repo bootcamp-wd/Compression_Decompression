@@ -35,7 +35,7 @@ void finalize_compressed_data(U_08* compressed_data, long compressed_data_bit_in
 void huffman_encode(const U_08* data_to_compress, U_08* output_buffer_p, U_32 input_size, U_32* output_size);
 Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_32* last_index);
 void huffman_generate_codes(Huffman_node_t* root);
-void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, U_32 current_length);
+void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, int current_length);
 void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index);
 
 Huffman_decode_node* rescue_metadata(U_08* input_buffer_p, U_32* tree_length);
