@@ -1,8 +1,26 @@
+
 #ifndef COMPRESSOR_DECOMPRESSOR_H
 #define COMPRESSOR_DECOMPRESSOR_H
 
-void process_file(const char* input_path, const char* output_path, int compress);
-void simulate_compress_data(const unsigned char* input_buffer, int input_size, unsigned char** output_buffer, int* output_size);
-void simulate_decompress_data(const unsigned char* input_buffer, int input_size, unsigned char** output_buffer, int* output_size);
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include "lz77.h"
+#include "huffman_code.h"
+#include "file_managment.h"
+#include "general_define.h"
+
+#define BUFFER_SIZE 4096
+
+void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level, S_32 compress);
+
+void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, 
+	U_32* output_size, S_32 compress_level);
+void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, U_32* output_size);
+
+void metadata_treatment(const U_08* file_path, U_08* extension, U_08* metadata_path, FILE* metadata_file,
+	U_08* buffer, const U_08* read_write_mode);
+
 
 #endif //COMPRESSOR_DECOMPRESSOR_H

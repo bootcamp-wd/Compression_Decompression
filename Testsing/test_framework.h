@@ -13,11 +13,9 @@ typedef struct {
 extern Test g_tests[MAX_TESTS];
 extern int g_test_count;
 
-// Function prototypes
 void add_test(const char* name, void (*test_function)(void));
 void run_all_tests(void);
 
-// Assertion macros
 #define ASSERT(condition, message) \
     do { \
         if (!(condition)) { \
