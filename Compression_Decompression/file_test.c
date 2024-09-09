@@ -10,21 +10,17 @@ void files_test()
 	read_test("test_file", buffer, buffer_size);
 }
 
-void read_test(const U_08* file_path, const U_08* buffer, U_32 buffer_size)
+void read_test(const U_08* file_path, const U_08* exepted_buffer, U_32 buffer_size)
 {
 	U_08* res_buffer = read_file(file_path, &buffer_size);
-	if (strcmp(res_buffer, buffer)) {
+	if (strcmp(res_buffer, exepted_buffer)) {
 		printf("The data is not written and read well from the file\n");
-	}
-	else {
-		printf("The data is read from the file\n ");
 	}
 }
 
 void write_test(const U_08* file_path, const U_08* buffer, U_32 buffer_size)
 {
 	write_file(file_path, buffer, buffer_size);
-	printf("The data is written to the file\n");
 }
 
 void add()

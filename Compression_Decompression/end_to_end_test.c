@@ -11,7 +11,7 @@ void end_to_end_treatment(U_08* buffer, U_32 buffer_size,U_08* test_name, void (
 	//compress
 	process_file("input_file.txt", "output_file", 2,1);
     //decompress
-	process_file("output_file", "outpu_file.txt", 2,0);
+	process_file("output_file", "output_file.txt", 2,0);
     U_08* res_buffer= fread(buffer, 1, buffer_size, output_file);
 	//check 
     if (!strcmp(buffer, res_buffer))
