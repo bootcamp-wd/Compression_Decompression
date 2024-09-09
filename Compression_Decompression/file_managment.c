@@ -32,6 +32,11 @@ unsigned S_08* read_file(const U_08* file_path, U_32* file_size)
         printf("Warning: Read %zu bytes, expected %d bytes\n", bytes_read, *file_size);
     }
 
+    printf("Huffman Encoded Result: ");
+    for (int i = 0; i < bytes_read; i++) {
+        printf("%02x ", buffer[i]);
+    }
+    printf("\n");
     return buffer;
 }
 

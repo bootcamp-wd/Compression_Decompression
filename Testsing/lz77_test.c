@@ -14,7 +14,7 @@ void lz77_test_treatment(const char* test_name, U_08* input_buffer, U_32 input_s
         ASSERT(input_buffer[i] == decompressed_buffer[i], "Decompressed data does not match original");
     }
 
-    printf("Test passed: %s\n", test_name);
+    printf("Test passed: %s\n", test_name);  
 
     free(compressed_buffer);
     free(decompressed_buffer);

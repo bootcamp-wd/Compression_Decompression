@@ -56,6 +56,16 @@ void count_frequencies(const U_08* data_to_compress, U_32 input_size, Huffman_no
 
 void store_metadata(Huffman_node_t* nodes, U_32 start_index, U_32 last_index, Huffman_metadata* metadata)
 {
+    /*U_08* metadata_2;
+    for (U_32 i = start_index, j = 0; i <= last_index; i++, j++)
+    {
+        *(metadata_2 + j) = (U_08)(nodes[i].by_ascii);
+        j++;
+        *(metadata_2 + j) = nodes[i].left ? (U_16)((nodes[i].left - nodes) - start_index) : INVALID_INDEX;
+        j += 2;
+        *(metadata_2 + j) = nodes[i].right ? (U_16)((nodes[i].right - nodes) - start_index) : INVALID_INDEX;
+    }*/
+
     for (U_32 i = start_index, md_node_index = 0; i <= last_index; i++, md_node_index++)
     {
         metadata->nodes[md_node_index].by_ascii = nodes[i].by_ascii;
@@ -284,6 +294,11 @@ void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index)
  ***************************************************************************/
 void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08* output_buffer_p)
 {
+    printf("Huffman Decode function: ");
+    for (int i = 0; i < *input_size ; i++) {
+        printf("%02x ", input_buffer_p[i]);
+    }
+    printf("\n");
     Huffman_decode_node* root = NULL;
 
     U_32 tree_length;
@@ -291,6 +306,8 @@ void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08* output_buffer_
     root = rescue_metadata(input_buffer_p, &tree_length);
 
     input_buffer_p = (U_08*)(root + tree_length);// take head the input_pointer on the struct size 
+    //input_buffer_p += sizeof(Huffman_metadata) + tree_length * sizeof(Huffman_decode_node);
+
 
     U_08* input_pointer;
     U_08* output_pointer;
@@ -322,9 +339,18 @@ void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08* output_buffer_
  ***************************************************************************/
 Huffman_decode_node* rescue_metadata(U_08* input_buffer_p, U_32* tree_length)
 {
+    printf("Rescue metadata function: ");
+    for (int i = 0; i < 6; i++) {
+        printf("%02x ", input_buffer_p[i]);
+    }
+    printf("\n");
     Huffman_metadata huffman_metadata;
     memcpy(&huffman_metadata, input_buffer_p, sizeof(Huffman_metadata));
     *tree_length = huffman_metadata.tree_length;
+    for (int i = 0; i <huffman_metadata.tree_length ; i++)
+    {
+        printf("root:%c, left:%hu, right:%hu\n", huffman_metadata.nodes->by_ascii, huffman_metadata.nodes->left, huffman_metadata.nodes->right);
+    }
     return (huffman_metadata.nodes);
 }
 
@@ -343,7 +369,7 @@ U_08 find_ascii_in_tree(U_08** input_pointer, Huffman_decode_node* root, U_32* b
     nodes = root + (tree_length - 1);
     U_08 mask;
     //move over the tree according to the received bits until finding leaves where the ascii code 
-    while (nodes->left != 512 && nodes->right != 512)
+    while (nodes && nodes->left != 512 && nodes->right != 512)
     {
         //Moving the mask according to the index
         mask = 0b10000000 >> (*bits_index % NUM_BITS);
