@@ -133,7 +133,9 @@
     <ClCompile Include="..\Testsing\test_framework.c" />
     <ClCompile Include="Compression_Decompression.c" />
     <ClCompile Include="compressor_decompressor.c" />
+    <ClCompile Include="end_to_end_test.c" />
     <ClCompile Include="file_managment.c" />
+    <ClCompile Include="file_test.c" />
     <ClCompile Include="huffman_code.c" />
     <ClCompile Include="lz77.c" />
     <ClCompile Include="priority_queue.c" />
@@ -142,7 +144,9 @@
     <ClInclude Include="..\Testsing\lz77_test.h" />
     <ClInclude Include="..\Testsing\test_framework.h" />
     <ClInclude Include="compressor_decompressor.h" />
+    <ClInclude Include="end_to_end_test.h" />
     <ClInclude Include="file_managment.h" />
+    <ClInclude Include="file_test.h" />
     <ClInclude Include="general_define.h" />
     <ClInclude Include="huffman_code.h" />
     <ClInclude Include="lz77.h" />

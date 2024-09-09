@@ -1,26 +1,31 @@
-#include "end_to_end_test.h"#include "end_to_end_test.h"
+#include "end_to_end_test.h"
+#include "end_to_end_test.h"
 
 void end_to_end_treatment(U_08* buffer, U_32 buffer_size,U_08* test_name, void (*test_function)(void))
 {
-	FILE* input_file;
-	FILE* output_file;
-	fopen("input_file.txt", "wb+");
+	FILE* input_file= NULL;
+	FILE* output_file= NULL;
+	fopen_s(&input_file,"input_file.txt", "wb+");
 	
 	fwrite(buffer, buffer_size, 1, input_file);
 	//compress
 	process_file("input_file.txt", "output_file", 2,1);
-   //decompress
+    //decompress
 	process_file("output_file", "outpu_file.txt", 2,0);
-  U_08* res_buffer= fread(buffer, 1, buffer_size, output_file);
-	//check
-  if (!strcmp(buffer, res_buffer)) {
+    U_08* res_buffer= fread(buffer, 1, buffer_size, output_file);
+	//check 
+    if (!strcmp(buffer, res_buffer))
+	{
 	  printf("the data had changed in the compression-decompression progress");
-  }
-//add to tests
-   add_test(test_name,test_function);
+    }
+    //add to tests
+    add_test(test_name,test_function);
+    //close the files
+    fclose(input_file);
+    fclose(output_file);
 }
 
-void regular_file_size() {
+void regular_file_test() {
 	U_08 buffer[] = "LZ77 algorithm\n\
 		Little background about the algorithm…\n\
 		LZ77 algorithm compresses memory cells according to repetitions of sequences.\n\
@@ -42,17 +47,16 @@ void regular_file_size() {
 		finally, the size is updated according to the size of the result.\n\
 		An Example of the LZ77 algorithm :\n\
 	";
-	end_to_end_treatment(buffer, sizeof(buffer), "regular size of file test", regular_file_size);
+	end_to_end_treatment(buffer, sizeof(buffer), "regular size of file test", regular_file_test);
 
 }
-void short_file_size() {
+void short_file_test() {
 	U_08 buffer[] = "data";
-	end_to_end_treatment(buffer, sizeof(buffer), "short size of file test", short_file_size);
+	end_to_end_treatment(buffer, sizeof(buffer), "short size of file test", short_file_test);
 }
-void long_file_size() {
+void long_file_test() {
 	U_08 buffer;
-
-U_08 txt[] = "LZ77 algorithm\n\
+    U_08 txt[] = "LZ77 algorithm\n\
 		Little background about the algorithm…\n\
 		LZ77 algorithm compresses memory cells according to repetitions of sequences.\n\
 		The algorithm represents each sequence that is identical to a previous sequence using the distance from the identical sequence, and its length.\n\
@@ -71,13 +75,33 @@ U_08 txt[] = "LZ77 algorithm\n\
 		The position and length are initialized to zero, in case a return is found they are updated if there is a byte that doesn't exist in dictionary it will be written to last_byte and they remain reset.\n\
 		In any case, the dictionary moves to include the current byte as well.\n\
 		finally, the size is updated according to the size of the result.\n\
-		An Example of the LZ77 algorithm :\n\
-	";
-U_32 txt_size = sizeof(txt);
-U_08 buffer = malloc((U_08)(10000 * txt_size));
-//increas the file content
-for (int i = 0; i < 100000; i++) {
-	strncat(buffer, txt, txt_size);
+		An Example of the LZ77 algorithm :";
+      U_32 txt_size = sizeof(txt);
+      buffer = malloc((U_08)(10000 * txt_size));
+      //increas the file content
+      for (U_32 i = 0; i < 100000; i++)
+	  {
+	     strncat_s(buffer,(i*txt_size),txt, txt_size);
+      }
+      end_to_end_treatment(buffer, sizeof(buffer), "long size of file test", long_file_test);
 }
-end_to_end_treatment(buffer, sizeof(buffer), "long size of file test", long_file_size);
+
+void Text_file_test()
+{
+}
+
+void Image_file_test()
+{
+}
+
+void Audio_file_test()
+{
+}
+
+void PDF_file_test()
+{
+}
+
+void Unknown_file_test()
+{
 }
