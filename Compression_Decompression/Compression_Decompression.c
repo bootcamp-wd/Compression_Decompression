@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
 #include "lz77.h"
@@ -20,7 +21,22 @@ int main()
 //    printf("\nSimulating decompression...\n");
 //    process_file(compressed_file, decompressed_file, 0);
 
-	int size = 5, output_size = 0;
+
+    char* input_data = "Hello! I";
+    char* output_data;
+    int window_size = 5;
+    int input_size = strlen(input_data) * sizeof(char), output_size;
+    lz77_encode(input_data, input_size, &output_data, &output_size, 12, 12);
+
+    for (int i = 0; i < output_size; i++)
+    {
+        printf("%hi", output_data[i]);
+        i += 2;
+        printf("%hi", output_data[i]);
+        i += 2;
+        printf("%c", output_data[i]);
+    }
+	int size = 5;
 	unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;
 	if (compressed_data == NULL) {
 		// Handle memory allocation failure
