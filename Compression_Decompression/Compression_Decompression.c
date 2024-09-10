@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <string.h>
 #include "lz77_test.c"
@@ -12,5 +11,6 @@
 
 int main()
 {
+
   return 0;
 }

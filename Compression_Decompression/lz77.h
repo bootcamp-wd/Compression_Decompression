@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "general_define.h"
+#include "log.h"
 
 typedef struct encoded_sequence
 {
