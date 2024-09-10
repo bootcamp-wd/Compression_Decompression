@@ -1,28 +1,26 @@
 #include "end_to_end_test.h"
-#include "end_to_end_test.h"
 
-void end_to_end_treatment(U_08* buffer, U_32 buffer_size,U_08* test_name, void (*test_function)(void))
+
+void end_to_end_treatment(U_08* input_file_path,U_08* input_buffer, size_t input_size)
 {
-	FILE* input_file= NULL;
 	FILE* output_file= NULL;
-	fopen_s(&input_file,"input_file.txt", "wb+");
-	
-	fwrite(buffer, buffer_size, 1, input_file);
+	FILE* final_output_file = NULL;
+	U_08* res_buffer;
+
 	//compress
-	process_file("input_file.txt", "output_file", 2,1);
+	process_file(input_file_path, output_file, DEFAULT_COMPRESSION_LEVEL, COMPRESS);
     //decompress
-	process_file("output_file", "output_file.txt", 2,0);
-    U_08* res_buffer= fread(buffer, 1, buffer_size, output_file);
+	process_file(output_file,final_output_file ,DEFAULT_COMPRESSION_LEVEL, UN_COMPRESS);
+	 fread(res_buffer, 1, input_size, final_output_file);
 	//check 
-    if (!strcmp(buffer, res_buffer))
+    if (!strcmp(input_buffer, res_buffer))
 	{
-	  printf("the data had changed in the compression-decompression progress");
+	  printf("the data had changed in the compression-decompression process");
     }
-    //add to tests
-    add_test(test_name,test_function);
     //close the files
-    fclose(input_file);
-    fclose(output_file);
+    fclose(input_file_path);
+	fclose(output_file);
+	fclose(final_output_file);
 }
 
 void regular_file_test() {
@@ -88,6 +86,7 @@ void long_file_test() {
 
 void Text_file_test()
 {
+
 }
 
 void Image_file_test()

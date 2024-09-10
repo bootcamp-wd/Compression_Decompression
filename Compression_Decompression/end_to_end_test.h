@@ -4,7 +4,9 @@
 #include "lz77_test.h"
 #include "general_define.h"
 
-
+#define COMPRESS 1
+#define UN_COMPRESS 1
+#define DEFAULT_COMPRESSION_LEVEL 1
 
 void end_to_end_treatment(U_08* buffer, U_32 buffer_size, U_08* test_name, void (*test_function)(void));
 //size
