@@ -1,6 +1,6 @@
 ﻿#include "lz77_test.h"
 
-void lz77_test_treatment(const U_08* test_name, U_08* input_buffer, U_32 input_size, U_32 compress_level)
+void test_lz77_treatment(const U_08* test_name, U_08* input_buffer, U_32 input_size, U_32 compress_level)
 {
     U_08* compressed_buffer = (U_08*)malloc(input_size * get_size_of_encoded_sequence_struct());
     U_08* decompressed_buffer = (U_08*)malloc(input_size);
@@ -45,7 +45,7 @@ void test_lz77_search_in_dictionary_treatment(const U_08* dictionary, const U_08
     ASSERT_EQUAL(flag, 1, "Search in dictionary doesn't return an expected result");
 }
 
-void lz77_test_size_of_windo_treatment(const U_32 level, const U_32 dictionary_expected, const U_32 buffer_search_expected)
+void test_lz77_size_of_window_treatment(const U_32 level, const U_32 dictionary_expected, const U_32 buffer_search_expected)
 {
     U_32 dictionary_size, buffer_search_size;
     size_of_window_according_level(level, &dictionary_size, &buffer_search_size);
@@ -68,7 +68,7 @@ void test_lz77_regular_size(void)
     generate_random_input(input_buffer, input_size);
     U_32 compress_level = rand() % 7;
 
-    lz77_test_treatment("LZ77 Test Regular Size", input_buffer, input_size, compress_level);
+    test_lz77_treatment("LZ77 Test Regular Size", input_buffer, input_size, compress_level);
 }
 
 void test_lz77_identical_characters(void)
@@ -82,7 +82,7 @@ void test_lz77_identical_characters(void)
     }
     U_32 compress_level = rand() % 7;
 
-    lz77_test_treatment("LZ77 Test Identical Characters", input_buffer, input_size, compress_level);
+    test_lz77_treatment("LZ77 Test Identical Characters", input_buffer, input_size, compress_level);
 }
 
 void test_lz77_empty(void)
@@ -91,7 +91,7 @@ void test_lz77_empty(void)
     U_32 input_size = strlen((char*)input_buffer);
     U_32 compress_level = rand() % 7;
 
-    lz77_test_treatment("LZ77 Test Empty", input_buffer, input_size, compress_level);
+    test_lz77_treatment("LZ77 Test Empty", input_buffer, input_size, compress_level);
 }
 
 void test_lz77_many_repeat(void)
@@ -100,7 +100,7 @@ void test_lz77_many_repeat(void)
     U_32 input_size = strlen((char*)input_buffer);
     U_32 compress_level = rand() % 7;
 
-    lz77_test_treatment("LZ77 Test Many Repeat", input_buffer, input_size, compress_level);
+    test_lz77_treatment("LZ77 Test Many Repeat", input_buffer, input_size, compress_level);
 }
 
 void test_lz77_search_dictionary_exist_in_middle(void)
@@ -147,7 +147,7 @@ void test_lz77_size_window_regular(void)
     dictionary_size_exp = 16384;
     buffer_search_size_exp = 8192;
     
-    lz77_test_size_of_windo_treatment(level, dictionary_size_exp, buffer_search_size_exp);
+    test_lz77_size_of_window_treatment(level, dictionary_size_exp, buffer_search_size_exp);
 }
 
 void test_lz77_size_window_not_in_range(void)
@@ -158,7 +158,7 @@ void test_lz77_size_window_not_in_range(void)
     dictionary_size_exp = 4096;
     buffer_search_size_exp = 2048;
 
-    lz77_test_size_of_windo_treatment(level, dictionary_size_exp, buffer_search_size_exp);
+    test_lz77_size_of_window_treatment(level, dictionary_size_exp, buffer_search_size_exp);
 }
 
 
