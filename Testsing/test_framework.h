@@ -23,6 +23,10 @@ void run_all_tests(void);
             printf("File: %s, Line: %d\n", __FILE__, __LINE__); \
             return; \
         } \
+        else \
+        { \
+            printf("TEST PASSED\n"); \
+        } \
     } while (0)
 
 #define ASSERT_EQUAL(expected, actual, message) \
@@ -32,6 +36,10 @@ void run_all_tests(void);
             printf("Expected: %d, Actual: %d\n", (int)(expected), (int)(actual)); \
             printf("File: %s, Line: %d\n", __FILE__, __LINE__); \
             return; \
+        } \
+         else \
+        { \
+            printf("TEST PASSED\n"); \
         } \
     } while (0)
 
