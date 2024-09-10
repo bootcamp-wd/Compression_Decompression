@@ -54,7 +54,7 @@ void count_frequencies(const U_08* data_to_compress, U_32 input_size, Huffman_no
     }
 }
 
-void store_metadata(Huffman_node_t* nodes, U_32 start_index, U_32 last_index, Huffman_metadata* metadata)
+void store_metadata(Huffman_node_t* nodes, U_32 start_index, U_32 last_index, Huffman_metadata* metadata) 
 {
     for (U_32 i = start_index, md_node_index = 0; i <= last_index; i++, md_node_index++)
     {
@@ -66,18 +66,18 @@ void store_metadata(Huffman_node_t* nodes, U_32 start_index, U_32 last_index, Hu
 
 void encode_data(const U_08* data_to_compress, U_32 input_size, Huffman_node_t* nodes, U_08* compressed_data, long* compressed_data_bit_index)
 {
-    for (U_32 i = 0; i < input_size; i++)
+    for (U_32 i = 0; i < input_size; i++) 
     {
         U_08* code = nodes[data_to_compress[i]].code;
         U_32 code_length = nodes[data_to_compress[i]].code_length;
 
         for (U_32 j = 0; j < code_length; j++)
         {
-            if (!(*compressed_data_bit_index % 8))
+            if (!(*compressed_data_bit_index % 8)) 
             {
                 compressed_data[*compressed_data_bit_index / 8] = 0;
             }
-            if (code[j / 8] & (1 << (7 - (j % 8))))
+            if (code[j / 8] & (1 << (7 - (j % 8)))) 
             {
                 compressed_data[*compressed_data_bit_index / 8] |= (1 << (7 - (*compressed_data_bit_index % 8)));
             }
@@ -112,12 +112,12 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer_p, U_32 in
     assert(input_size >= 0);
 
     *output_size = 0;
-    if (input_size == 0)
+    if (input_size == 0) 
     {
         return;
     }
 
-    Huffman_node_t nodes[NODES_IN_TREE] = { 0 };
+    Huffman_node_t nodes[NODES_IN_TREE] = {0};
     U_32 start_index = 0;
     U_32 last_index = 0;
 
@@ -125,7 +125,7 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer_p, U_32 in
     count_frequencies(data_to_compress, input_size, nodes);
     qsort(nodes, ASCII_SIZE, sizeof(Huffman_node_t), huffman_frequency_compare);
 
-    Huffman_node_t* root = huffman_build_tree(nodes, &start_index, &last_index);
+    Huffman_node_t* root = huffman_build_tree(nodes,&start_index,&last_index);
     huffman_generate_codes(root);
 
     // Calculate the total size needed for metadata and nodes
@@ -174,7 +174,7 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_3
     Huffman_node_t* min_parent = nodes + ASCII_SIZE;
     U_32 current_parent_index = ASCII_SIZE;
 
-    while (min_leaf->frequency == 0)
+    while (min_leaf->frequency == 0) 
     {
         min_leaf++;
         (*start_index)++;
@@ -186,11 +186,11 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_3
         Huffman_node_t* min_node1 = extract_min(&min_leaf, &min_parent, &nodes[ASCII_SIZE]);
         Huffman_node_t* min_node2 = extract_min(&min_leaf, &min_parent, &nodes[ASCII_SIZE]);
 
-        if (!min_node2->frequency)
+        if (!min_node2->frequency) 
         {
             flag = 0;
         }
-        else
+        else 
         {
             Huffman_node_t* parent = malloc(sizeof(Huffman_node_t));
             parent->left = min_node1;
@@ -199,7 +199,7 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_3
 
             printf("Pushing parent node with frequency: %d at index: %d\n", parent->frequency, current_parent_index);
             priority_queue_push(nodes, &current_parent_index, parent);
-            printf("After push, nodes[%d].frequency = %d\n", current_parent_index - 1, nodes[current_parent_index - 1].frequency);
+            printf("After push, nodes[%d].frequency = %d\n", current_parent_index-1, nodes[current_parent_index-1].frequency);
         }
     }
     *last_index = current_parent_index - 1;
@@ -212,7 +212,7 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_3
  * Parameters   : root - pointer to the root of the Huffman tree
  * Returned     : none
  ***************************************************************************/
-void huffman_generate_codes(Huffman_node_t* root)
+void huffman_generate_codes(Huffman_node_t* root) 
 {
     generate_codes_recursive(root, 0, 0);
 }
@@ -222,7 +222,7 @@ void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, U_32 curr
     assert(node != NULL);
 
     if (!node->left && !node->right) // Leaf node
-    {
+    {  
         // Calculate the number of bytes needed to store the bits
         U_32 num_bytes = (current_length + 7) / 8;
         node->code = malloc(num_bytes);
@@ -234,7 +234,7 @@ void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, U_32 curr
         // Store the bits of current_code into node->code
         for (U_32 i = 0; i < current_length; i++)
         {
-            if (current_code & (1 << (current_length - i - 1)))
+            if (current_code & (1 << (current_length - i - 1))) 
             {
                 //the sequnce of the relevant bits will start from left
                 node->code[i / 8] |= (1 << (7 - (i % 8)));
@@ -246,13 +246,13 @@ void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, U_32 curr
     }
 
     // Traverse left (append '0' bit)
-    if (node->left)
+    if (node->left) 
     {
         generate_codes_recursive(node->left, current_code << 1, current_length + 1);
     }
 
     // Traverse right (append '1' bit)
-    if (node->right)
+    if (node->right) 
     {
         generate_codes_recursive(node->right, (current_code << 1) | 1, current_length + 1);
     }
