@@ -131,27 +131,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Compression_Decompression\compressor_decompressor.c" />
-    <ClCompile Include="..\Compression_Decompression\end_to_end_test.c" />
     <ClCompile Include="..\Compression_Decompression\file_managment.c" />
-    <ClCompile Include="..\Compression_Decompression\file_test.c" />
     <ClCompile Include="..\Compression_Decompression\general_define.c" />
     <ClCompile Include="..\Compression_Decompression\huffman_code.c" />
     <ClCompile Include="..\Compression_Decompression\lz77.c" />
     <ClCompile Include="..\Compression_Decompression\priority_queue.c" />
+    <ClCompile Include="end_to_end_test.c" />
+    <ClCompile Include="file_test.c" />
     <ClCompile Include="lz77_test.c" />
     <ClCompile Include="Testing_Compression_Decompression.c" />
     <ClCompile Include="test_framework.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Compression_Decompression\compressor_decompressor.h" />
-    <ClInclude Include="..\Compression_Decompression\end_to_end_test.h" />
     <ClInclude Include="..\Compression_Decompression\file_managment.h" />
-    <ClInclude Include="..\Compression_Decompression\file_test.h" />
     <ClInclude Include="..\Compression_Decompression\general_define.h" />
     <ClInclude Include="..\Compression_Decompression\huffman_code.h" />
     <ClInclude Include="..\Compression_Decompression\huffman_struct.h" />
     <ClInclude Include="..\Compression_Decompression\lz77.h" />
     <ClInclude Include="..\Compression_Decompression\priority_queue.h" />
+    <ClInclude Include="end_to_end_test.h" />
+    <ClInclude Include="file_test.h" />
     <ClInclude Include="lz77_test.h" />
     <ClInclude Include="test_framework.h" />
   </ItemGroup>
