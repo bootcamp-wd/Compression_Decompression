@@ -1,0 +1,50 @@
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <time.h>
+#include "test_framework.h"
+#include "lz77_test.h"
+#include "file_test.h"
+#include "end_to_end_test.h"
+
+int main()
+{
+    srand(time(0));
+    //lz77
+    add_test("LZ77 TEST REGULAR SIZE", test_lz77_regular_size);
+    add_test("LZ77 TEST IDENTICAL CHARACTERS", test_lz77_identical_characters);
+    add_test("LZ77 TEST EMPTY", test_lz77_empty);
+    add_test("LZ77 TEST MANY REPEAT", test_lz77_many_repeat);
+    add_test("TEST LZ77 SEARCH DICTIONARY EXIST IN MIDDLE", test_lz77_search_dictionary_exist_in_middle);
+    add_test("TEST LZ77 SEARCH DICTIONARY DONT EXIST", test_lz77_search_dictionary_dont_exist);
+    add_test("TEST LZ77 SEARCH DICTIONARY IN BEGIN", test_lz77_search_dictionary_in_begin);
+    add_test("TEST LZ77 SEARCH DICTIONARY IN END", test_lz77_search_dictionary_in_end);
+    add_test("TEST LZ77 SIZE WINDOW REGULAR", test_lz77_size_window_regular);
+    add_test("TEST LZ77 SIZE WINDOW NOT IN RANGE", test_lz77_size_window_not_in_range);
+    //file
+    add_test("TEST READ & WRITE TO FILE", files_test);
+    //end to end
+    //size
+    add_test("TEST REGULAR SIZE FILE", regular_size_file_test);
+    add_test("TEST SHORT FILE", short_file_test);
+    add_test("TEST LONG FILE", long_file_test);
+    add_test("TEST EMPTY FILE", empty_file_test);
+    add_test("TEST SINGLE CHARACTER", single_character);
+    //suffix
+    add_test("TEST TEXT FILE", Text_file_test);
+    add_test("TEST IMAGE FILE", Image_file_test);
+    add_test("TEST AODIO FILE", Audio_file_test);
+    add_test("TEST PDF FILE", PDF_file_test);
+    add_test("TEST UNKNOWN FILE", Unknown_file_test);
+    //more
+    add_test("TEST RANDOM FILE", random_file_test);
+    add_test("TEST ALL ASCII CHARACTERS", all_ascii_file_test);
+    add_test("TEST REAPTING SINGLE CHARACTER", repeating_single_character_file_test);
+    //error handling
+    add_test("TEST NOT EXIST FILE", not_exist_file_test);
+    add_test("TEST IN CORRECT PATH", Incorrect_path);
+   
+   run_all_tests();
+
+    return 0;
+}
+

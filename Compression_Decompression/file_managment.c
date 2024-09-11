@@ -39,7 +39,7 @@ unsigned S_08* read_file(const U_08* file_path, U_32* file_size)
 void write_file(const U_08* file_path, const U_08* buffer, size_t file_size)
 {
     FILE* file = NULL;
-    S_32 bytes_written = 0;
+    U_32 bytes_written = 0;
 
     if (fopen_s(&file, file_path, "wb") != 0)
     {

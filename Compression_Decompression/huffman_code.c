@@ -197,9 +197,9 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_3
             parent->right = min_node2;
             parent->frequency = min_node1->frequency + min_node2->frequency;
 
-            printf("Pushing parent node with frequency: %d at index: %d\n", parent->frequency, current_parent_index);
+            
             priority_queue_push(nodes, &current_parent_index, parent);
-            printf("After push, nodes[%d].frequency = %d\n", current_parent_index-1, nodes[current_parent_index-1].frequency);
+           
         }
     }
     *last_index = current_parent_index - 1;
