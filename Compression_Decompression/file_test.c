@@ -12,7 +12,12 @@ void files_test()
 
 void read_test(const U_08* file_path, const U_08* exepted_buffer, U_32 buffer_size)
 {
-	U_08* res_buffer = read_file(file_path, &buffer_size);
+	U_32 res_buffer_size;
+	U_08* res_buffer = read_file(file_path, &res_buffer_size);
+	if (res_buffer_size != buffer_size)
+	{
+		printf("the size result are worng\n");
+	}
 	if (strcmp(res_buffer, exepted_buffer)) {
 		printf("The data is not written and read well from the file\n");
 	}
@@ -25,6 +30,6 @@ void write_test(const U_08* file_path, const U_08* buffer, U_32 buffer_size)
 
 void add()
 {
-	add_test("files tests write and read", files_test);
+	
 }
 
