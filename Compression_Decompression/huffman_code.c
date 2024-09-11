@@ -319,9 +319,11 @@ void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index)
  ***************************************************************************/
 void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08* output_buffer_p , U_32* output_size)
 {
+    U_08* input_pointer;
+    U_08* output_pointer;
 
     //input_size מייצג את כל הגודל של המידע שמתקבל כולל העץ
-    printf("Huffman Decode function: ");
+    printf("Huffman Decode function with the root: ");
     for (int i = 0; i < *input_size ; i++) {
         printf("%02x ", input_buffer_p[i]);
     }
@@ -332,29 +334,34 @@ void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08* output_buffer_
 
     root = rescue_metadata(input_buffer_p, &tree_length);
 
-    input_buffer_p = (U_08*)(root + tree_length);// take head the input_pointer on the struct size 
+    input_buffer_p += (sizeof(U_16) + (tree_length*sizeof(Huffman_decode_node)));// take head the input_pointer on the struct size 
     //input_buffer_p += sizeof(Huffman_metadata) + tree_length * sizeof(Huffman_decode_node);
-
-
-    U_08* input_pointer;
-    U_08* output_pointer;
 
     input_pointer = input_buffer_p;
     output_pointer = output_buffer_p;
 
     int bits_index = 0;
-    U_32 data_length = *input_size - (sizeof(U_16) + tree_length * sizeof(Huffman_decode_node));
-    while (bits_index < ((data_length) -1) * NUM_BITS)
+
+    U_32 data_length = (*input_size - (sizeof(U_16) + (tree_length * sizeof(Huffman_decode_node))));
+    
+    printf("Huffman Decode function without the root: ");
+    for (int i = 0; i < data_length; i++) {
+        printf("%02x ", input_buffer_p[i]);
+    }
+    printf("\n");
+
+    while (bits_index < ((data_length) -2) * NUM_BITS)
     {
         U_08 decompressed_byte = find_ascii_in_tree(&input_pointer, root, &bits_index, tree_length);
 
+        printf("decompressed_byte:%c ", decompressed_byte);
         //write to output buffer the decomprresed byte
         *output_pointer = decompressed_byte;
         output_pointer++;
         (*output_size)++;
     }
 
-    //find_ascii_last_byte(input_pointer, root, bits_index, output_pointer, tree_length, output_size);
+    find_ascii_last_byte(input_pointer, root, bits_index, output_pointer, tree_length, output_size);
 }
 
 /***************************************************************************
@@ -368,13 +375,10 @@ void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08* output_buffer_
 Huffman_decode_node* rescue_metadata(U_08* input_buffer_p, U_32* tree_length)
 {
     printf("Rescue metadata function: ");
-    for (int i = 0; i < 6; i++) {
-        printf("%02x ", input_buffer_p[i]);
-    }
-    printf("\n");
+    
     Huffman_metadata huffman_metadata;
-    memcpy(&huffman_metadata, input_buffer_p, sizeof(Huffman_metadata));
-    *tree_length = huffman_metadata.tree_length;
+    *tree_length = (U_32)(*input_buffer_p);
+    memcpy(&huffman_metadata, input_buffer_p, (sizeof(U_16) + (sizeof(Huffman_decode_node) * (*tree_length)))); 
     for (int i = 0; i <huffman_metadata.tree_length ; i++)
     {
         printf("root:%c, left:%hu, right:%hu\n", huffman_metadata.nodes[i].by_ascii, huffman_metadata.nodes[i].left, huffman_metadata.nodes[i].right);
@@ -423,6 +427,11 @@ U_08 find_ascii_in_tree(U_08** input_pointer, Huffman_decode_node* root, U_32* b
 
 void find_ascii_last_byte(U_08* input_pointer, Huffman_decode_node* root, U_32 bites_index, U_08* output_pointer, U_32 tree_length , U_32* output_size)
 {
+    printf("find_ascii_last_byte: ");
+    for (int i = 0; i < 2; i++) {
+        printf("%02x ", input_pointer[i]);
+    }
+    printf("\n");
     U_08 last_byte = *input_pointer;
     input_pointer++;
     U_32 sum_bites_in_last_byte = (U_32)*input_pointer;
@@ -432,6 +441,8 @@ void find_ascii_last_byte(U_08* input_pointer, Huffman_decode_node* root, U_32 b
 
     assert(nodes->left <= 512);
     assert(nodes->left <= 512);
+
+    sum_bites_in_last_byte = sum_bites_in_last_byte == 0 ? 8 : sum_bites_in_last_byte;
 
     for (U_32 i = (bites_index % NUM_BITS); i < sum_bites_in_last_byte;)
     {
@@ -453,6 +464,7 @@ void find_ascii_last_byte(U_08* input_pointer, Huffman_decode_node* root, U_32 b
             i++;
 
         }
+        printf("byascii:%c ", nodes->by_ascii);
         *(output_pointer) = nodes->by_ascii;
         output_pointer++;
         (*output_size)++;
