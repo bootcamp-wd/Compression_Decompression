@@ -59,9 +59,6 @@ void Incorrect_path();
 
 
 
-//exa file
-
-
 
 
 
