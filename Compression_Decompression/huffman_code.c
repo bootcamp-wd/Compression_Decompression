@@ -1,11 +1,6 @@
 
 #include "huffman_code.h"
 
-
-#define ASCII_SIZE 256
-#define INVALID_INDEX 512
-#define NODES_IN_TREE 511
-
 /***************************************************************************
  *                           FREQUENCY COMPARE FUNCTION
  * Name         : frequency_compare - compare the frequency of two Huffman nodes

@@ -5,6 +5,7 @@
 #include "lz77_test.h"
 #include "file_test.h"
 #include "end_to_end_test.h"
+#include "huffman_test.h"
 
 int main()
 {
@@ -42,7 +43,12 @@ int main()
     //error handling
     add_test("TEST NOT EXIST FILE", not_exist_file_test);
     add_test("TEST IN CORRECT PATH", Incorrect_path);
-   
+    //huffman
+    add_test("Huffman Frequency Compare", test_huffman_frequency_compare);
+    add_test("Initialize Nodes", test_initialize_nodes);
+    add_test("Count Frequencies", test_count_frequencies);
+    add_test("Huffman Encode", test_huffman_encode);
+    run_all_tests();
    run_all_tests();
 
     return 0;

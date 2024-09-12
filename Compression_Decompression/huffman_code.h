@@ -11,7 +11,9 @@
 #include "general_define.h"
 
 #define NUM_BITS 8
-
+#define ASCII_SIZE 256
+#define INVALID_INDEX 512
+#define NODES_IN_TREE 511
 
 typedef struct huffman_decode_node {
 	U_16 left;
