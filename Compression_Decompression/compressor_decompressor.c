@@ -9,16 +9,16 @@
 *                            and zero if it needs to be decompressed
 * Returned		: none
 * *************************************************************************/
-void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level, S_32 compress)
+void process_file(const U_08* input_path, const U_08* output_path, S_32 compress_level, S_32 compress)
 {
-    U_08* buffer = NULL;
-    U_08* processed = NULL;
-    U_32 file_size, processed_size;
+    U_08* input_buffer_p  = NULL;
+    U_08* compressed_data_buffer_p  = NULL;
+    U_32 file_size, compressed_buffer_size ;
     FILE* metadata_file = NULL;
     U_08 metadata_path[BUFFER_SIZE];
     U_08 extension[BUFFER_SIZE] = { 0 };
 
-    buffer = read_file(input_path, &file_size);
+    input_buffer_p  = read_file(input_path, &file_size);
     if (file_size == 0)
     {
         return;
@@ -36,13 +36,13 @@ void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level
         if (fopen_s(&metadata_file, metadata_path, "w") != 0)
         {
             perror("Error opening metadata file");
-            free(buffer);
+            free(input_buffer_p );
             return;
         }
         fprintf(metadata_file, "%s", extension);
         fclose(metadata_file);
 
-        compress_data(buffer, file_size, &processed, &processed_size, compress_level);
+        compress_data(input_buffer_p , file_size, &compressed_data_buffer_p , &compressed_buffer_size , compress_level);
     }
 
     //if the compress is zero - the file needs to be decompressed
@@ -53,7 +53,7 @@ void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level
         if (fopen_s(&metadata_file, metadata_path, "r") != 0)
         {
             perror("Error opening metadata file");
-            free(buffer);
+            free(input_buffer_p );
             return;
         }
         fscanf_s(metadata_file, "%s", extension, (unsigned)_countof(extension));
@@ -62,21 +62,21 @@ void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level
         // Append extension to output path
         snprintf(metadata_path, sizeof(metadata_path), "%s.%s", output_path, extension);
 
-        decompress_data(buffer, file_size, &processed, &processed_size);
+        decompress_data(input_buffer_p , file_size, &compressed_data_buffer_p , &compressed_buffer_size );
         // Update the output path with the constructed file name
         output_path = metadata_path;
     }
-    if (buffer)
+    if (input_buffer_p )
     {
-        free(buffer);
+        free(input_buffer_p );
     }
-    write_file(output_path, processed, processed_size);
+    write_file(output_path, compressed_data_buffer_p , compressed_buffer_size );
 
-    if (processed)
+    if (compressed_data_buffer_p )
     {
-        free(processed);
+        free(compressed_data_buffer_p );
     }
-    printf("File processed successfully. Input size: %d bytes, Output size: %d bytes\n", file_size, processed_size);
+    printf("File processed successfully. Input size: %d bytes, Output size: %d bytes\n", file_size, compressed_buffer_size );
 }
 
 /**************************************************************************
@@ -121,7 +121,7 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
         exit(1);
     }
     // Write the input size to the first 4 bytes of the output buffer
-    memcpy(*output_buffer, &input_size, sizeof(U_32)); 
+    **(U_32**)output_buffer = input_size;
 
     // Copy the Huffman output after the input size
     memcpy(*output_buffer + sizeof(U_32), huffman_output, huffman_output_size);
@@ -131,7 +131,7 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
         free(lz77_output);
 
     }
-   /* if (huffman_output)
+    /*if (huffman_output)
     {
         free(huffman_output);
     }*/
@@ -153,16 +153,19 @@ void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_bu
         printf("%02x ", input_buffer[i]);
     }
     printf("\n");*/
-    *output_size = (U_32)*input_buffer;
-    U_08* input_huffman = input_buffer + sizeof(U_32);
+    output output ;
+    output.orginal_size = (U_32)*input_buffer;
+
+    *output_size = output.orginal_size;
+    U_08* input_huffman = input_buffer + sizeof(output);
     
-    U_08* output_huffman = (U_08*)malloc(*output_size * sizeof(U_08) * 1000000);
+    U_08* output_huffman = (U_08*)malloc(*output_size * sizeof(U_08) * 1000);
     if (output_huffman == NULL)
     {
         perror("Memory allocation failed in decompress_data");
         exit(1);
     }
-    U_08* output_lz77 = (U_08*)malloc(*output_size * sizeof(U_08) * 100000);
+    U_08* output_lz77 = (U_08*)malloc(*output_size * sizeof(U_08) * 1000);
     if (output_lz77 == NULL)
     {
         perror("Memory allocation failed in decompress_data");
@@ -200,19 +203,4 @@ void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_bu
     free(output_lz77);
 }
 
-//Function to treat the metadata of the file
-void metadata_treatment(const U_08* file_path, U_08* extension, U_08* metadata_path, FILE* metadata_file,
-    U_08* buffer, const U_08* read_write_mode)
-{
-    assert(read_write_mode != NULL && (strcmp(read_write_mode, "w") == 0 || strcmp(read_write_mode, "r") == 0));
-    snprintf(metadata_path, sizeof(metadata_path), "%s.meta", file_path);
-    if (fopen_s(&metadata_file, metadata_path, read_write_mode) != 0)
-    {
-        perror("Error opening metadata file");
-        if (buffer != NULL)
-            free(buffer);
-        return;
-    }
-    fscanf_s(metadata_file, "%s", extension, (unsigned)_countof(extension));
-    fclose(metadata_file);
-}
+

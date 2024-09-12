@@ -17,7 +17,7 @@ typedef struct output {
 	U_32 orginal_size;
 }output;
 
-void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level, S_32 compress);
+void process_file(const U_08* input_path, const U_08* output_path, S_32 compress_level, S_32 compress);
 
 void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, 
 	U_32* output_size, S_32 compress_level);

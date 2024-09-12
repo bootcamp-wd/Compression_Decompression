@@ -46,4 +46,5 @@ void priority_queue_push(Huffman_node_t* pq, int* size, Huffman_node_t* node)
     assert(size != NULL);
     assert(node != NULL);
     pq[(*size)++] = *node;
+    /*free(node);*/
 }

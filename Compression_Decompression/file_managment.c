@@ -34,7 +34,7 @@ void write_file(const U_08* file_path, const U_08* buffer, U_32 file_size)
 {
     FILE* file = NULL;
     S_32 bytes_written = 0;
-    if (fopen_s(&file, file_path, "wb") != 0)
+    if (fopen_s(&file, file_path, "wb") != 0 || file == NULL)
     {
         perror("Error opening file");
         return;
