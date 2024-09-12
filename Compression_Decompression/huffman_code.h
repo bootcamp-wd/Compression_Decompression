@@ -11,6 +11,9 @@
 #include "general_define.h"
 
 #define NUM_BITS 8
+#define ASCII_SIZE 256
+#define INVALID_INDEX 512
+#define NODES_IN_TREE 511
 
 typedef struct huffman_decode_node {
 	U_16 left;
@@ -32,8 +35,10 @@ void store_metadata(Huffman_node_t* nodes, U_32 start_index, U_32 last_index, Hu
 void encode_data(const U_08* data_to_compress, U_32 input_size, Huffman_node_t* nodes, U_08* compressed_data, long* compressed_data_bit_index);
 void finalize_compressed_data(U_08* compressed_data, long compressed_data_bit_index);
 
+
 void huffman_encode(const U_08* data_to_compress, U_08* output_buffer_p, U_32 input_size, U_32* output_size);
 Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_32* last_index);
+
 void huffman_generate_codes(Huffman_node_t* root);
 void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, U_32 current_length);
 void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index);

@@ -1,3 +1,6 @@
+#include <string.h>
+#include "test_framework.h"
+#include "huffman_code.h"
 #include "huffman_test.h"
 
 //encode
@@ -50,7 +53,7 @@ void test_rescue_metadata()
     nodes = root;
     tmp_root= root + (tree_length - 1);//move the pointer to the root of the tree
     root = tmp_root;
-   
+
     //check size
     ASSERT_EQUAL(tree_length, 7, "The tree length wrong");
 
@@ -66,7 +69,7 @@ void test_rescue_metadata()
     ASSERT_EQUAL(root->left, 512, "The tree is not accurate");
     ASSERT_EQUAL(root->right,512, "The tree is not accurate");
     ASSERT_EQUAL(root->by_ascii, 'e', "The tree is not accurate");
- 
+
     root = tmp_root;
 
     root = &(nodes[root->left]);
