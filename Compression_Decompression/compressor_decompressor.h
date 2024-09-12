@@ -2,10 +2,13 @@
 #ifndef COMPRESSOR_DECOMPRESSOR_H
 #define COMPRESSOR_DECOMPRESSOR_H
 
+#define __STDC_WANT_LIB_EXT1__ 1
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <io.h>
 #include "lz77.h"
 #include "huffman_code.h"
 #include "file_managment.h"
@@ -17,14 +20,13 @@ typedef struct output {
 	U_32 orginal_size;
 }output;
 
-void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level, S_32 compress);
+void process_file(const U_08* input_path, U_08* output_path, U_32 compress_level, U_32 compress);
 
 void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, 
-	U_32* output_size, S_32 compress_level);
+	U_32* output_size, U_32 compress_level);
 void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, U_32* output_size);
 
-void metadata_treatment(const U_08* file_path, U_08* extension, U_08* metadata_path, FILE* metadata_file,
-	U_08* buffer, const U_08* read_write_mode);
-
+//void metadata_treatment(const U_08* file_path, U_08* extension, U_08* metadata_path, FILE* metadata_file,
+//	U_08* buffer, const U_08* read_write_mode);
 
 #endif //COMPRESSOR_DECOMPRESSOR_H
