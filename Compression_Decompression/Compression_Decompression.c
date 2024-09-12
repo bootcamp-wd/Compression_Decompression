@@ -103,6 +103,7 @@
 //	//unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;
 //}
 
+#include <stdio.h>
 #include "compressor_decompressor.h"
 #include "huffman_code.h"
 #include "general_define.h"
@@ -197,4 +198,5 @@ int main()
     //int size = 5, output_size = 0;
     //unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;
 
+    return 0;
 }
