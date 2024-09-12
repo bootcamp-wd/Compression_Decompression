@@ -131,3 +131,34 @@ void test_find_ascii_last_byte()
     ASSERT_EQUAL(*result, 'l', "The ascii is wrong");
     free(result);
 }
+//encode-decode
+void test_exactly_bits_in_bytes()
+{
+    U_08* input = "ELLOLE";
+    size_t input_size = 6;
+    U_08* output = (U_08*)malloc(input_size + sizeof(Huffman_metadata));
+    U_32 output_size;
+    U_32 size = 0;
+    U_08* result = (U_08*)malloc(input_size);
+    huffman_encode(input, output, input_size, &output_size);
+    huffman_decode(output, &output_size, result, &size);
+    ASSERT(strcmp(input, result), "The decode result is wrong");
+    ASSERT_EQUAL(input_size, size, "The output size is wrong");
+    free(output);
+    free(result);
+}
+void test_not_exactly_bits_in_bytes()
+{
+    U_08* input = "Today is Thursday one day before shabbat kodesh";
+    size_t input_size = 47;
+    U_08* output = (U_08*)malloc(input_size +sizeof(Huffman_metadata));
+    U_32 output_size;
+    U_32 size = 0;
+    U_08* result = (U_08*)malloc(input_size);
+    huffman_encode(input, output, input_size, &output_size);
+    huffman_decode(output, &output_size, result, &size);
+    ASSERT(strcmp(input, result), "The decode result is wrong");
+    ASSERT_EQUAL(input_size, size, "The output size is wrong");
+    free(output);
+    free(result);
+}

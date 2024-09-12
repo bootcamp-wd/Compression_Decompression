@@ -14,8 +14,10 @@ void test_huffman_encode();
 void test_rescue_metadata();
 void test_find_ascii_in_tree();
 void test_find_ascii_last_byte();
+//encod-decode
+void test_exactly_bits_in_bytes();
+void test_not_exactly_bits_in_bytes();
 
-//all
-//ELOOLE exactly bites in bytes
+
 
 #endif // !HUFFMAN_TEST_H
