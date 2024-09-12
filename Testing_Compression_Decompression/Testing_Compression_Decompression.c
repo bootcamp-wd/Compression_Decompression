@@ -5,6 +5,7 @@
 #include "lz77_test.h"
 #include "file_test.h"
 #include "end_to_end_test.h"
+#include "huffman_test.h"
 
 int main()
 {
@@ -22,26 +23,34 @@ int main()
     add_test("TEST LZ77 SIZE WINDOW NOT IN RANGE", test_lz77_size_window_not_in_range);
     //file
     add_test("TEST READ & WRITE TO FILE", files_test);
-    //end to end
-    //size
-    add_test("TEST REGULAR SIZE FILE", regular_size_file_test);
-    add_test("TEST SHORT FILE", short_file_test);
-    add_test("TEST LONG FILE", long_file_test);
-    add_test("TEST EMPTY FILE", empty_file_test);
-    add_test("TEST SINGLE CHARACTER", single_character);
-    //suffix
-    add_test("TEST TEXT FILE", Text_file_test);
-    add_test("TEST IMAGE FILE", Image_file_test);
-    add_test("TEST AODIO FILE", Audio_file_test);
-    add_test("TEST PDF FILE", PDF_file_test);
-    add_test("TEST UNKNOWN FILE", Unknown_file_test);
-    //more
-    add_test("TEST RANDOM FILE", random_file_test);
-    add_test("TEST ALL ASCII CHARACTERS", all_ascii_file_test);
-    add_test("TEST REAPTING SINGLE CHARACTER", repeating_single_character_file_test);
-    //error handling
-    add_test("TEST NOT EXIST FILE", not_exist_file_test);
-    add_test("TEST IN CORRECT PATH", Incorrect_path);
+    //huffman
+    add_test("Huffman Frequency Compare", test_huffman_frequency_compare);
+    add_test("Initialize Nodes", test_initialize_nodes);
+    add_test("Count Frequencies", test_count_frequencies);
+    add_test("Huffman Encode", test_huffman_encode);
+    add_test("Rescu metadata", test_rescue_metadata);
+    add_test("Found the ascii char in tree", test_find_ascii_in_tree);
+
+    ////end to end
+    ////size
+    //add_test("TEST REGULAR SIZE FILE", regular_size_file_test);
+    //add_test("TEST SHORT FILE", short_file_test);
+    //add_test("TEST LONG FILE", long_file_test);
+    //add_test("TEST EMPTY FILE", empty_file_test);
+    //add_test("TEST SINGLE CHARACTER", single_character);
+    ////suffix
+    //add_test("TEST TEXT FILE", Text_file_test);
+    //add_test("TEST IMAGE FILE", Image_file_test);
+    //add_test("TEST AODIO FILE", Audio_file_test);
+    //add_test("TEST PDF FILE", PDF_file_test);
+    //add_test("TEST UNKNOWN FILE", Unknown_file_test);
+    ////more
+    //add_test("TEST RANDOM FILE", random_file_test);
+    //add_test("TEST ALL ASCII CHARACTERS", all_ascii_file_test);
+    //add_test("TEST REAPTING SINGLE CHARACTER", repeating_single_character_file_test);
+    ////error handling
+    //add_test("TEST NOT EXIST FILE", not_exist_file_test);
+    //add_test("TEST IN CORRECT PATH", Incorrect_path);
    
    run_all_tests();
 

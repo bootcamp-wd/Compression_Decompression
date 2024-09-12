@@ -138,6 +138,7 @@
     <ClCompile Include="..\Compression_Decompression\priority_queue.c" />
     <ClCompile Include="end_to_end_test.c" />
     <ClCompile Include="file_test.c" />
+    <ClCompile Include="huffman_test.c" />
     <ClCompile Include="lz77_test.c" />
     <ClCompile Include="Testing_Compression_Decompression.c" />
     <ClCompile Include="test_framework.c" />
@@ -152,6 +153,7 @@
     <ClInclude Include="..\Compression_Decompression\priority_queue.h" />
     <ClInclude Include="end_to_end_test.h" />
     <ClInclude Include="file_test.h" />
+    <ClInclude Include="huffman_test.h" />
     <ClInclude Include="lz77_test.h" />
     <ClInclude Include="test_framework.h" />
   </ItemGroup>
