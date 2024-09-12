@@ -9,8 +9,8 @@
 *				  buffer_search_size - the largest size that the buffer_search can be
 * Returned		: none
 * *************************************************************************/
-void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_buffer, U_32* output_size,
-	const S_32 compress_level)
+void lz77_encode(const U_08* input_buffer, U_32 input_size, U_08* output_buffer, U_32* output_size,
+S_32 compress_level)
 {
 	U_08* dict_pointer_first;
 	U_08* dict_pointer_last;
@@ -202,14 +202,12 @@ void size_of_window_according_level(S_32 compress_level, U_32* dictionary_size, 
  * Returned     : none
  *
  ***************************************************************************/
-void lz77_decode(U_08* input_data, U_32* input_size, U_08* output_data)
+void lz77_decode(const U_08* input_data,const U_32* input_size, U_08* output_data)
 {
-	//pointers to the buffers of the input 
-	U_08* input_pointer;
-	U_08* output_pointer;
+	//pointers to the buffers of the inp
 
-	input_pointer = input_data;
-	output_pointer = output_data;
+	U_08* input_pointer = input_data;
+	U_08* output_pointer = output_data;
 
 	Encoded_sequence_t current_sequence;
 

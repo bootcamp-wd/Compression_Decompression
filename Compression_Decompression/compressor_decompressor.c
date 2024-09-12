@@ -157,7 +157,7 @@ void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_bu
     output.orginal_size = (U_32)*input_buffer;
 
     *output_size = output.orginal_size;
-    U_08* input_huffman = input_buffer + sizeof(output);
+    const U_08* input_huffman = input_buffer + sizeof(output);
     
     U_08* output_huffman = (U_08*)malloc(*output_size * sizeof(U_08) * 1000);
     if (output_huffman == NULL)
@@ -185,7 +185,7 @@ void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_bu
 
     //void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08 * output_buffer_p)
     lz77_decode(output_huffman, &huffman_output_size, output_lz77);
-    
+
     *output_buffer = (U_08*)malloc(*output_size);
     if (*output_buffer == NULL)
     {

@@ -193,7 +193,7 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer_p, U_32 in
 
     *output_size = (compressed_data_bit_index + 7) / 8 + 1 + metadata_size;  // +1 for the remaining bits byte
     //TODO: check the failure here:
-    //huffman_free_tree(nodes, last_index);
+    huffman_free_tree(nodes, last_index);
 }
 
 /***************************************************************************
@@ -228,20 +228,19 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_3
         }
         else
         {
-            Huffman_node_t* parent = malloc(sizeof(Huffman_node_t));
-            if (parent == NULL) 
+            //Huffman_node_t* parent = malloc(sizeof(Huffman_node_t));
+            Huffman_node_t parent ;
+            /*if (parent == NULL) 
             {
                 perror("Memory allocation failed in compress_data");
-            }
-            else
-            {
-                parent->left = min_node1;
-                parent->right = min_node2;
-                parent->frequency = min_node1->frequency + min_node2->frequency;
-                parent->code = NULL;
-            }
+            }*/
+                parent.left = min_node1;
+                parent.right = min_node2;
+                parent.frequency = min_node1->frequency + min_node2->frequency;
+                parent.code = NULL;
+            
 
-            printf("Pushing parent node with frequency: %d at index: %d\n", parent->frequency, current_parent_index);
+            printf("Pushing parent node with frequency: %d at index: %d\n", parent.frequency, current_parent_index);
             priority_queue_push(nodes, &current_parent_index, parent);
             printf("After push, nodes[%d].frequency = %d\n", current_parent_index - 1, nodes[current_parent_index - 1].frequency);
         }
@@ -314,15 +313,6 @@ void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index)
             nodes[i].code = NULL;
         }
     }
-
-    for (U_32 i = ASCII_SIZE; i <= last_index; i++)
-    {
-      
-       /* if(nodes[i])
-        {
-            free(nodes + i);
-        }*/
-    }
 }
 
 /***************************************************************************
@@ -334,7 +324,7 @@ void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index)
  * Returned     : none
  *
  ***************************************************************************/
-void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08* output_buffer_p , U_32* output_size)
+void huffman_decode(const U_08* input_buffer_p,const U_32* input_size, U_08* output_buffer_p , U_32* output_size)
 {
 
     //input_size ����� �� �� ����� �� ����� ������ ���� ���

@@ -39,7 +39,7 @@ void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, U_32 curr
 void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index);
 
 Huffman_decode_node* rescue_metadata(U_08* input_buffer_p, U_32* tree_length);
-void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08* output_buffer_p , U_32* output_size);
+void huffman_decode(const U_08* input_buffer_p,const U_32* input_size, U_08* output_buffer_p , U_32* output_size);
 U_08 find_ascii_in_tree(U_08** input_pointer, Huffman_decode_node* root, U_32* bits_index, U_32 tree_length);
 void find_ascii_last_byte(U_08* input_pointer, Huffman_decode_node* root, U_32 bites_index, U_08* output_pointer, U_32 tree_length, U_32* output_size);
 

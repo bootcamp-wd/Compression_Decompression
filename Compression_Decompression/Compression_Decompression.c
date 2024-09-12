@@ -188,7 +188,7 @@ int main()
 
 
     const U_08* original_file = "input.txt";
-    const U_08* compressed_file = "compressed12.bin";
+    const U_08* compressed_file = "compressed11.bin";
     const U_08* decompressed_file = "decompressed";
 
     printf("compression...\n");
