@@ -94,7 +94,6 @@ void test_rescue_metadata()
     ASSERT_EQUAL(root->right, 512, "The tree is not accurate");
     ASSERT_EQUAL(root->by_ascii, 'o', "The tree is not accurate");
 }
-
 void test_find_ascii_in_tree()
 {
     U_08* output_buffer = (U_08*)malloc(100);
@@ -107,8 +106,28 @@ void test_find_ascii_in_tree()
     huffman_encode("green", output_buffer, 5, output_buffer);
     root = rescue_metadata(output_buffer, &tree_length);
     output_buffer += (sizeof(metadata->tree_length) + sizeof(Huffman_decode_node) * tree_length);
-    ascii= find_ascii_in_tree(output_buffer,root,&num_bits,tree_length);
+    ascii= find_ascii_in_tree(&output_buffer,root,&num_bits,tree_length);
     ASSERT_EQUAL(ascii, 'g', "The found ascii is wrong");
-    ASSERT_EQUAL(num_bits, 2, "The num of bits is wrong");
+    ASSERT_EQUAL(num_bits, 1, "The num of bits is wrong");
+    //free output buffer
+    output_buffer -= (sizeof(metadata->tree_length) + sizeof(Huffman_decode_node) * tree_length);
     free(output_buffer);
+}
+void test_find_ascii_last_byte()
+{
+    U_08* output_buffer = (U_08*)malloc(100);
+    U_32 output_size;
+    U_32 tree_length;
+    Huffman_metadata* metadata;
+    Huffman_decode_node* root;
+    U_08 ascii;
+    U_32 num_bits = 0;
+    U_08* result=(U_08*)malloc(5);
+    huffman_encode("april", output_buffer, 5, &output_size);
+    root = rescue_metadata(output_buffer, &tree_length);
+    output_buffer += (sizeof(metadata->tree_length) + sizeof(Huffman_decode_node) * tree_length);
+    output_buffer++;
+    find_ascii_last_byte(output_buffer, root, 10, result, tree_length,&output_size);
+    ASSERT_EQUAL(*result, 'l', "The ascii is wrong");
+    free(result);
 }

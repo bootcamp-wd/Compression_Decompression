@@ -123,8 +123,8 @@ void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_bu
         perror("Memory allocation failed in decompress_data");
         exit(1);
     }
-
-    huffman_decode(input_buffer, &input_size, *output_buffer);
+    size_t size;
+    huffman_decode(input_buffer, &input_size, *output_buffer,&size);
     //void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08 * output_buffer_p)
     lz77_decode(*output_buffer, output_size, *output_buffer);
 }

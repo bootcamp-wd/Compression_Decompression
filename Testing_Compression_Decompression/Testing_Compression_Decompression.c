@@ -28,9 +28,9 @@ int main()
     add_test("Initialize Nodes", test_initialize_nodes);
     add_test("Count Frequencies", test_count_frequencies);
     add_test("Huffman Encode", test_huffman_encode);
-    add_test("Rescu metadata", test_rescue_metadata);
+    add_test("Rescue metadata", test_rescue_metadata);
     add_test("Found the ascii char in tree", test_find_ascii_in_tree);
-
+    add_test("Found the last ascii in byte", test_find_ascii_last_byte);
     ////end to end
     ////size
     //add_test("TEST REGULAR SIZE FILE", regular_size_file_test);

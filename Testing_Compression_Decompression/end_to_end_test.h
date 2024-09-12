@@ -1,4 +1,7 @@
 
+#ifndef END_TO_END_TEST_H
+#define END_TO_END_H
+
 #include "general_define.h"
 #include "compressor_decompressor.h"
 #include "lz77_test.h"
@@ -57,6 +60,7 @@ void repeating_single_character_file_test();
 void not_exist_file_test();
 void Incorrect_path();
 
+#endif // !END_TO_END_TEST_H
 
 
 
