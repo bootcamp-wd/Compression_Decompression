@@ -1,11 +1,6 @@
 
 #include "huffman_code.h"
 
-
-#define ASCII_SIZE 256
-#define INVALID_INDEX 512
-#define NODES_IN_TREE 511
-
 /***************************************************************************
  *                           FREQUENCY COMPARE FUNCTION
  * Name         : frequency_compare - compare the frequency of two Huffman nodes
@@ -227,7 +222,12 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_3
         }
         else
         {
-            Huffman_node_t* parent = malloc(sizeof(Huffman_node_t));
+            Huffman_node_t* parent = (Huffman_node_t*)malloc(sizeof(Huffman_node_t));
+            if (parent == NULL)
+            {
+                perror("Memory allocation failed\n");
+                exit(1);
+            }
             parent->left = min_node1;
             parent->right = min_node2;
             parent->frequency = min_node1->frequency + min_node2->frequency;
@@ -261,7 +261,11 @@ void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, U_32 curr
         // Calculate the number of bytes needed to store the bits
         U_32 num_bytes = (current_length + 7) / 8;
         node->code = malloc(num_bytes);
-        assert(node->code != NULL);
+        if (node->code == NULL)
+        {
+            perror("memory allocation failed in Huffman code - generate codes function");
+            exit(1);
+        }
 
         // Initialize code memory
         memset(node->code, 0, num_bytes);
