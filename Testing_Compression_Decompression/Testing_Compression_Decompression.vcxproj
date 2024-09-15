@@ -136,6 +136,7 @@
     <ClCompile Include="..\Compression_Decompression\huffman_code.c" />
     <ClCompile Include="..\Compression_Decompression\lz77.c" />
     <ClCompile Include="..\Compression_Decompression\priority_queue.c" />
+    <ClCompile Include="algorithms_test.c" />
     <ClCompile Include="end_to_end_test.c" />
     <ClCompile Include="file_test.c" />
     <ClCompile Include="huffman_test.c" />
@@ -151,6 +152,7 @@
     <ClInclude Include="..\Compression_Decompression\huffman_struct.h" />
     <ClInclude Include="..\Compression_Decompression\lz77.h" />
     <ClInclude Include="..\Compression_Decompression\priority_queue.h" />
+    <ClInclude Include="algorithms_test.h" />
     <ClInclude Include="end_to_end_test.h" />
     <ClInclude Include="file_test.h" />
     <ClInclude Include="huffman_test.h" />

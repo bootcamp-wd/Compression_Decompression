@@ -116,12 +116,12 @@ U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
 	U_08 loc_buffer_search = 0;
 	U_32 size_buffer_search = buffer_search_pointer_last - buffer_search_pointer_first;
 
-	log_debug("Starting search_in_dictionary function");
-	log_info("info");
-	log_error("error");
-	log_trace("trace");
-	log_fatal("fatal");
-	log_warn("WARN");
+	//log_debug("Starting search_in_dictionary function");
+	//log_info("info");
+	//log_error("error");
+	//log_trace("trace");
+	//log_fatal("fatal");
+	//log_warn("WARN");
 
 	//loop that moves all the dictionary
 	for (U_32 i = 0; (dict_pointer_first + i) <= dict_pointer_last; i++)
