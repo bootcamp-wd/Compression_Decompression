@@ -1,3 +1,4 @@
+#include "compressor_decompressor.h"
 
 
 #define BUFFER_SIZE 4096

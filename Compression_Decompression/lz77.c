@@ -12,6 +12,8 @@
 void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_buffer, U_32* output_size,
 	U_32 const compress_level)
 {
+	log_debug("Starting Lz77_encode function");
+
 	U_08* dict_pointer_first;
 	U_08* dict_pointer_last;
 	U_08* buffer_search_pointer_first;
@@ -20,17 +22,19 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 	U_32 const buffer_search_size;
 
 	size_of_window_according_level(compress_level, &dictionary_size, &buffer_search_size);
+	log_info("Window size set according to the compression level");
 
 	*output_size = 0;
 	if (input_size == 0)
 	{
+		log_warn("Input size is 0, nothing to encode");
 		return;
 	}
 
 	Encoded_sequence_t* cur_seq = (Encoded_sequence_t*)malloc(sizeof(Encoded_sequence_t));
 	if (cur_seq == NULL)
 	{
-		printf("memory allocation failed in lz77_encode\n");
+		log_fatal("Memory allocation failed in LZ77_encode");
 		exit(1);
 	}
 	//the cur_index_seq keeps the index of the current byte that stands on
@@ -51,10 +55,13 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 	//if there is more byte to input entering to the loop
 	while (cur_index_seq < input_size)
 	{
+		log_trace("Encoding byte");
 		//if its the last byte of the input or the size of the buffer_search entering the current byte to res
 		if (cur_index_seq == input_size - 1 || (buffer_search_pointer_last -
 			buffer_search_pointer_first + 1) == buffer_search_size)
 		{
+			log_info("Last byte or buffer search size reached");
+
 			cur_seq->mis_match_byte = *buffer_search_pointer_last;
 			memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence_t));
 			(*output_size) += sizeof(Encoded_sequence_t);
@@ -73,6 +80,8 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 			//if there is equal sequence in the dictionary
 			if (start_seq_pointer)
 			{
+				log_debug("Match found in dictionary");
+
 				cur_seq->distance = buffer_search_pointer_first - start_seq_pointer;
 				cur_seq->length = buffer_search_pointer_last - buffer_search_pointer_first + 1;
 				buffer_search_pointer_last++;
@@ -80,6 +89,7 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 			//if there isn't equal sequence in the dictionary
 			else
 			{
+				log_warn("No match found, adding mismatch byte");
 				cur_seq->mis_match_byte = *(buffer_search_pointer_last);
 				memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence_t));
 				(*output_size) += sizeof(Encoded_sequence_t);
@@ -97,6 +107,7 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 		dict_pointer_last++;
 		cur_index_seq++;
 	}
+	log_info("Encoding finished successfully");
 	free(cur_seq);
 }
 
@@ -112,16 +123,11 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
 	U_08* buffer_search_pointer_first, U_08* buffer_search_pointer_last)
 {
+	log_debug("Starting search_in_dictionary function");
+
 	U_08* start_seq_pointer = NULL;
 	U_08 loc_buffer_search = 0;
 	U_32 size_buffer_search = buffer_search_pointer_last - buffer_search_pointer_first;
-
-	log_debug("Starting search_in_dictionary function");
-	log_info("info");
-	log_error("error");
-	log_trace("trace");
-	log_fatal("fatal");
-	log_warn("WARN");
 
 	//loop that moves all the dictionary
 	for (U_32 i = 0; (dict_pointer_first + i) <= dict_pointer_last; i++)
@@ -137,6 +143,7 @@ U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
 			//the buffer_search is exist in the dictionary
 			if (loc_buffer_search == size_buffer_search / sizeof(U_08))
 			{
+
 				return start_seq_pointer;
 			}
 			loc_buffer_search++;
