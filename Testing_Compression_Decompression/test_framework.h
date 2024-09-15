@@ -12,6 +12,8 @@ typedef struct {
 
 extern Test g_tests[MAX_TESTS];
 extern int g_test_count;
+// Global variable to track test success
+extern int g_test_failed;
 
 void add_test(const char* name, void (*test_function)(void));
 void run_all_tests(void);
@@ -21,6 +23,7 @@ void run_all_tests(void);
         if (!(condition)) { \
             printf("ASSERTION FAILED: %s\n", message); \
             printf("File: %s, Line: %d\n", __FILE__, __LINE__); \
+            g_test_failed = 1; \
             return; \
         } \
         else \
@@ -35,6 +38,7 @@ void run_all_tests(void);
             printf("ASSERTION FAILED: %s\n", message); \
             printf("Expected: %d, Actual: %d\n", (int)(expected), (int)(actual)); \
             printf("File: %s, Line: %d\n", __FILE__, __LINE__); \
+            g_test_failed = 1; \
             return; \
         } \
          else \

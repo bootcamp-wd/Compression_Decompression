@@ -2,6 +2,7 @@
 
 Test g_tests[MAX_TESTS];
 int g_test_count = 0;
+int g_test_failed = 0;
 
 void add_test(const char* name, void (*test_function)(void))
 {
@@ -26,8 +27,14 @@ void run_all_tests(void)
     {
         printf("Running test: %s\n", g_tests[i].name);
         g_tests[i].test_function();
-        passed++;
+        if (g_test_failed)
+        {
+            failed++;
+        }
+        else
+        {
+            passed++;
+        }
     }
-
     printf("\nTest Results: %d passed, %d failed\n", passed, failed);
 }
