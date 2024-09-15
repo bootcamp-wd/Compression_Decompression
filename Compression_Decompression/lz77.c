@@ -206,7 +206,7 @@ void lz77_decode(const U_08* input_data,const U_32* input_size, U_08* output_dat
 {
 	//pointers to the buffers of the inp
 
-	U_08* input_pointer = input_data;
+	const U_08* input_pointer = input_data;
 	U_08* output_pointer = output_data;
 
 	Encoded_sequence_t current_sequence;
