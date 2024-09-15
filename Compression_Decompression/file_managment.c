@@ -1,7 +1,8 @@
 #include "file_managment.h"
 
 //Function to read a file into a buffer
-unsigned S_08* read_file(const U_08* file_path, U_32* file_size)
+unsigned U_08* read_file(const U_08* file_path, U_32* file_size)
+
 {
     FILE* file = NULL;
     U_32 bytes_read = 0;
@@ -31,12 +32,12 @@ unsigned S_08* read_file(const U_08* file_path, U_32* file_size)
     {
         printf("Warning: Read %zu bytes, expected %d bytes\n", bytes_read, *file_size);
     }
-
     return buffer;
 }
 
 // Function to write a buffer to a file
-void write_file(const U_08* file_path, const U_08* buffer, U_32 file_size)
+void write_file(const U_08* file_path, const U_08* buffer, size_t file_size)
+
 {
     FILE* file = NULL;
     U_32 bytes_written = 0;

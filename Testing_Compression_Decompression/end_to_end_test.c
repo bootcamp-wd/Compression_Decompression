@@ -3,19 +3,19 @@
 
 void end_to_end_treatment(const U_08* orginal_test_file, U_08* input_buffer)
 {
-	 U_08* compressed_test_file = "compressed_test.bin";
-	 U_08* decompressed_test_file = "decompressed_test";
+	U_08* compressed_test_file = "compressed_test.bin";
+	U_08* decompressed_test_file = "decompressed_test";
 
-	 U_08* res_buffer=NULL;
-	 size_t res_size;
+	U_08* res_buffer = NULL;
+	size_t res_size;
 
 	//compress
 	process_file(orginal_test_file, compressed_test_file, DEFAULT_COMPRESSION_LEVEL, COMPRESS);
-    //decompress
-	process_file(compressed_test_file,decompressed_test_file ,DEFAULT_COMPRESSION_LEVEL, UN_COMPRESS);
-	 
+	//decompress
+	process_file(compressed_test_file, decompressed_test_file, DEFAULT_COMPRESSION_LEVEL, UN_COMPRESS);
+
 	res_buffer = read_file(decompressed_test_file, &res_size);
-  
+
 	//compare the result 
 	ASSERT(strcmp(input_buffer, res_buffer), "The data changed in the compression-decompression process ");
 
@@ -45,19 +45,19 @@ void regular_size_file_test() {
 		An Example of the LZ77 algorithm :\n\
 	";
 	write_file(file_path, buffer, sizeof(buffer));
-	end_to_end_treatment(file_path,buffer);
+	end_to_end_treatment(file_path, buffer);
 }
 
 void short_file_test() {
 	const U_08* file_path = "input_test.txt";
 	U_08 buffer[] = "data";
 	write_file(file_path, buffer, sizeof(buffer));
-	end_to_end_treatment(file_path,buffer);
+	end_to_end_treatment(file_path, buffer);
 }
 
 void long_file_test() {
 	const U_08* file_path = "input_test.txt";
-	const char* txt =  "LZ77 algorithm\n\
+	const char* txt = "LZ77 algorithm\n\
 		Little background about the algorithm…\n\
 		LZ77 algorithm compresses memory cells according to repetitions of sequences.\n\
 		The algorithm represents each sequence that is identical to a previous sequence using the distance from the identical sequence, and its length.\n\
@@ -83,7 +83,7 @@ void long_file_test() {
 	size_t buffer_size = (txt_size * 100001); // Adjust buffer size calculation
 	U_08* buffer = (U_08*)malloc(buffer_size);
 
-	if (buffer != NULL) 
+	if (buffer != NULL)
 	{
 		if (strcpy_s(buffer, buffer_size, txt) == 0) // Copy txt to buffer securely 
 		{
@@ -128,7 +128,7 @@ void Image_file_test()
 {
 	size_t buffer_size;
 	const U_08* file_path = "input_test.png";
-	U_08* buffer =read_file(file_path,&buffer_size);
+	U_08* buffer = read_file(file_path, &buffer_size);
 	end_to_end_treatment(file_path, buffer);
 }
 
@@ -160,18 +160,18 @@ void random_file_test()
 {
 	size_t buffer_size = 100000;
 	const U_08* file_path = "input_test.txt";
-	U_08* buffer =(U_08*) malloc(buffer_size);
-	
-		for (U_32 i = 0; i < buffer_size; i++)
-		{
-			// Generate random printable ASCII characters (from space (32) to tilde (126))
-			buffer[i] = (U_08)rand() % 256;
-		}
-		buffer[buffer_size - 1] = '\0'; // Null-terminate the string
-		write_file(file_path, buffer, buffer_size);
-	    end_to_end_treatment(file_path, buffer);
+	U_08* buffer = (U_08*)malloc(buffer_size);
 
-		free(buffer);
+	for (U_32 i = 0; i < buffer_size; i++)
+	{
+		// Generate random printable ASCII characters (from space (32) to tilde (126))
+		buffer[i] = (U_08)rand() % 256;
+	}
+	buffer[buffer_size - 1] = '\0'; // Null-terminate the string
+	write_file(file_path, buffer, buffer_size);
+	end_to_end_treatment(file_path, buffer);
+
+	free(buffer);
 }
 
 void all_ascii_file_test()
@@ -193,13 +193,13 @@ void all_ascii_file_test()
 
 void repeating_single_character_file_test()
 {
-	U_32 buffer_size = rand()%10000;
+	U_32 buffer_size = rand() % 10000;
 	const U_08* file_path = "input_test.txt";
 	U_08* buffer = (U_08*)malloc(buffer_size);
 	U_08 character = (U_08)rand() % 256;
 	for (U_32 i = 0; i < buffer_size; i++)
 	{
-	
+
 		buffer[i] = character;
 	}
 	buffer[buffer_size - 1] = '\0'; // Null-terminate the string

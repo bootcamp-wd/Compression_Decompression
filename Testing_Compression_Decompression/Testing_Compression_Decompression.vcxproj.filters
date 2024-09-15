@@ -42,6 +42,15 @@
     <ClCompile Include="test_framework.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="end_to_end_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="huffman_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Compression_Decompression\compressor_decompressor.h">
@@ -69,6 +78,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="test_framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="end_to_end_test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file_test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="huffman_test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
