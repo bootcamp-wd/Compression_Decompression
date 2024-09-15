@@ -89,7 +89,6 @@ void test_lz77_decode_treatment(const U_08* input_buffer, U_32 input_size, const
     U_08 flag = 1;
     for (U_32 i = 0; i < output_size_expected; i++)
     {
-        printf("output_buffer_actual[i]: %c, output_expected[i]: %c\n", output_buffer_actual[i], output_expected[i]);
         if (output_buffer_actual && output_buffer_actual[i] != output_expected[i])
         {
             flag = 0;
