@@ -1,5 +1,4 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <time.h>
 #include "test_framework.h"
 #include "lz77_test.h"
@@ -18,7 +17,14 @@ int main()
     add_test("TEST LZ77 SEARCH DICTIONARY IN END", test_lz77_search_dictionary_in_end);
     add_test("TEST LZ77 SIZE WINDOW REGULAR", test_lz77_size_window_regular);
     add_test("TEST LZ77 SIZE WINDOW NOT IN RANGE", test_lz77_size_window_not_in_range);
-   
+    add_test("TEST LZ77 ENCODE NO REAPETS", test_lz77_encode_no_reapets);
+    add_test("TEST LZ77 ENCODE MANY REPEATS", test_lz77_encode_many_reapets);
+    add_test("TEST LZ77 ENCODE SAME CHARACTERS", test_lz77_encode_same_characters);
+    add_test("TEST LZ77 DECODE NO REAPETS", test_lz77_decode_no_reapets);
+    add_test("TEST LZ77 DECODE MANY REAPETS", test_lz77_decode_many_reapets);
+    add_test("TEST LZ77 DECODE SAME CHARACTERS", test_lz77_decode_same_characters);
+
+
    run_all_tests();
 
     return 0;

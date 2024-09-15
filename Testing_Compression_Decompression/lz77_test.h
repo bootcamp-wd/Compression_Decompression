@@ -13,8 +13,6 @@ void test_lz77_encode_treatment(const U_08* input_buffer, U_32 input_size, U_32 
 void test_lz77_decode_treatment(const U_08* input_expected, U_32 input_size, const U_08* input_actual, 
 	U_32 output_size_expected);
 
-void generate_encoded_sequence_from_string(U_08* input_buffer_string, U_32 input_size, 
-	Encoded_sequence_t** input_buffer_encoded);
 void generate_random_input(U_08* buffer, U_32 size);
 
 void test_lz77_regular_size(void);

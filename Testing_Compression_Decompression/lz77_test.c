@@ -61,23 +61,17 @@ void test_lz77_encode_treatment(const U_08* input_buffer, U_32 input_size, U_32 
     lz77_encode(input_buffer, input_size, output_buffer, &output_size, compress_level);
 
     U_08 flag = 1;
-    for (U_32 i = 0, j = 0; i < output_size / 2 && j < output_size; i++, j += 2)
+    if (output_buffer)
     {
-        if (output_buffer[j] + '0' != output_expected[i])
+        for (U_32 i = 0; i < output_size; i++)
         {
-            flag = 0;
-        }
-        j += 2; i++;
-        if (output_buffer[j] + '0' != output_expected[i])
-        {
-            flag = 0;
-        }
-        j += 2; i++;
-        if (output_buffer[j] != output_expected[i])
-        {
-            flag = 0;
+            if ((i + 1) % 6 && output_buffer[i] != output_expected[i])
+            {
+                flag = 0;
+            }
         }
     }
+    
     ASSERT_EQUAL(flag, 1, "LZ77 encode failed");
 }
 
@@ -95,30 +89,14 @@ void test_lz77_decode_treatment(const U_08* input_buffer, U_32 input_size, const
     U_08 flag = 1;
     for (U_32 i = 0; i < output_size_expected; i++)
     {
-        if (output_expected && output_buffer_actual[i] != output_expected[i])
+        printf("output_buffer_actual[i]: %c, output_expected[i]: %c\n", output_buffer_actual[i], output_expected[i]);
+        if (output_buffer_actual && output_buffer_actual[i] != output_expected[i])
         {
             flag = 0;
         }
     }
     ASSERT_EQUAL(flag, 1, "LZ77 decode failed");
 }
-
-void generate_encoded_sequence_from_string(U_08* input_buffer_string, U_32 input_size, Encoded_sequence_t** input_buffer_encoded)
-{
-    *input_buffer_encoded = (Encoded_sequence_t*)malloc(input_size * sizeof(Encoded_sequence_t));
-    if (*input_buffer_encoded == NULL)
-    {
-        perror("memory allocation failed in test lz77");
-        exit(1);
-    }
-    for (U_32 i = 0; i < input_size;)
-    {
-        input_buffer_encoded[i]->distance = input_buffer_string[i++] - '0';//not suitable to numbers from 10
-        input_buffer_encoded[i]->length = input_buffer_string[i++] - '0';//not suitable to numbers from 10
-        input_buffer_encoded[i]->mis_match_byte = input_buffer_string[i++];
-    }
-}
-
 
 void generate_random_input(U_08* buffer, U_32 size)
 {
@@ -235,7 +213,15 @@ void test_lz77_encode_no_reapets(void)
     U_08* input_buffer = "abcd";
     U_32 input_size = 4;
     U_32 compress_level = 5;
-    U_08* output_expected = "00a00b00c00d";
+    Encoded_sequence_t encoded_sequences[] = {
+       {0, 0, 'a'},
+       {0, 0, 'b'},
+       {0, 0, 'c'},
+       {0, 0, 'd'}
+    };
+
+    U_08 output_expected[sizeof(encoded_sequences)];
+    memcpy(output_expected, encoded_sequences, sizeof(encoded_sequences));
     test_lz77_encode_treatment(input_buffer, input_size, compress_level, output_expected);
 }
 
@@ -244,7 +230,19 @@ void test_lz77_encode_many_reapets(void)
     U_08* input_buffer = "aabbccddabcdab";
     U_32 input_size = 14;
     U_32 compress_level = 3;
-    U_08* output_expected = "00a11b11c11d11a71c51a00b";
+    Encoded_sequence_t encoded_sequences[] = {
+       {0, 0, 'a'},
+       {1, 1, 'b'},
+       {1, 1, 'c'},
+       {1, 1, 'd'},
+       {1, 1, 'a'},
+       {7, 1, 'c'},
+       {5, 1, 'a'},
+       {0, 0, 'b'}
+    };
+
+    U_08 output_expected[sizeof(encoded_sequences)];
+    memcpy(output_expected, encoded_sequences, sizeof(encoded_sequences));
     test_lz77_encode_treatment(input_buffer, input_size, compress_level, output_expected);
 }
 
@@ -253,7 +251,13 @@ void test_lz77_encode_same_characters(void)
     U_08* input_buffer = "aaaaaa";
     U_32 input_size = 6;
     U_32 compress_level = 5;
-    U_08* output_expected = "00a14a";
+    Encoded_sequence_t encoded_sequences[] = {
+       {0, 0, 'a'},
+       {1, 4, 'a'},
+    };
+
+    U_08 output_expected[sizeof(encoded_sequences)];
+    memcpy(output_expected, encoded_sequences, sizeof(encoded_sequences));
     test_lz77_encode_treatment(input_buffer, input_size, compress_level, output_expected);
 }
 
