@@ -2,6 +2,7 @@
 
 //Function to read a file into a buffer
 unsigned U_08* read_file(const U_08* file_path, U_32* file_size)
+
 {
     FILE* file = NULL;
     U_32 bytes_read = 0;
@@ -35,7 +36,8 @@ unsigned U_08* read_file(const U_08* file_path, U_32* file_size)
 }
 
 // Function to write a buffer to a file
-void write_file(const U_08* file_path, const U_08* buffer, U_32 file_size)
+void write_file(const U_08* file_path, const U_08* buffer, size_t file_size)
+
 {
     FILE* file = NULL;
     U_32 bytes_written = 0;

@@ -17,8 +17,8 @@ void read_test(const U_08* file_path, const U_08* exepted_buffer, U_32 buffer_si
 
 	ASSERT_EQUAL(res_buffer_size, buffer_size, "Worng file size");
 
-	ASSERT(strcmp(res_buffer, exepted_buffer),"The data is not written and read well from the file");
-	
+	ASSERT(strcmp(res_buffer, exepted_buffer), "The data is not written and read well from the file");
+
 }
 
 void write_test(const U_08* file_path, const U_08* buffer, U_32 buffer_size)

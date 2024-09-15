@@ -10,7 +10,7 @@
 * Returned		: none
 * *************************************************************************/
 void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_buffer, U_32* output_size,
-	U_32 const compress_level)
+	const S_32 compress_level)
 {
 	U_08* dict_pointer_first;
 	U_08* dict_pointer_last;
@@ -42,7 +42,7 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 	cur_seq->mis_match_byte = *input_buffer;
 
 	memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence_t));
-	(*output_size) += sizeof(Encoded_sequence_t);
+	(*output_size) += get_size_of_encoded_sequence_struct();
 	cur_index_seq++;
 
 	dict_pointer_first = dict_pointer_last = input_buffer;
@@ -162,7 +162,7 @@ U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
 *				  according to the compress_level param
 * Returned		: none
 * *************************************************************************/
-void size_of_window_according_level(U_32 compress_level, U_32* dictionary_size, U_32* buffer_search_size)
+void size_of_window_according_level(S_32 compress_level, U_32* dictionary_size, U_32* buffer_search_size)
 {
 	switch (compress_level)
 	{
