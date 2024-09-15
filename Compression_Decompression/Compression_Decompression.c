@@ -50,9 +50,9 @@
 //#define DEFAULT_COMPRESSION_LEVEL 1
 //int main()
 //{
-//	// "april a" -lz77 decode рефм б
-//	// йеъш о 5 аеъйеъ боймд азъ деа рефм
-//	// "hello world !!!! - огфйс шч аъ доймд дшащерд
+//	// "april a" -lz77 decode пїЅпїЅпїЅпїЅ пїЅ
+//	// пїЅпїЅпїЅпїЅ пїЅ 5 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+//	// "hello world !!!! - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 //
 //	const S_08* initial_string = "abcd efgh&ijklmn";
 //	U_32 length = strlen(initial_string) + 1;  // +1 for the null terminator
@@ -105,7 +105,8 @@
 
 
 
-#define CRT_SECURE_NO_WARNINGS
+
+
 #include "compressor_decompressor.h"
 #include "huffman_code.h"
 #include "general_define.h"
@@ -188,7 +189,7 @@ int main()
 
 
     const U_08* original_file = "input.txt";
-    const U_08* compressed_file = "compressed11.bin";
+    const U_08* compressed_file = "compressed.bin";
     const U_08* decompressed_file = "decompressed";
 
     printf("compression...\n");
@@ -200,5 +201,4 @@ int main()
     //int size = 5, output_size = 0;
     //unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;
 
-    return 0;
 }

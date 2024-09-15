@@ -33,8 +33,8 @@ unsigned S_08* read_file(const U_08* file_path, U_32* file_size)
 void write_file(const U_08* file_path, const U_08* buffer, U_32 file_size)
 {
     FILE* file = NULL;
-    S_32 bytes_written = 0;
-    if (fopen_s(&file, file_path, "wb") != 0 || file == NULL)
+    U_32 bytes_written = 0;
+    if (fopen_s(&file, file_path, "wb") != 0)
     {
         perror("Error opening file");
         return;
@@ -42,7 +42,7 @@ void write_file(const U_08* file_path, const U_08* buffer, U_32 file_size)
     bytes_written = fwrite(buffer, 1, file_size, file);
     if (bytes_written != file_size)
     {
-        printf("Warning: Wrote %zu bytes, expected to write %d bytes\n", bytes_written, file_size);
+        printf("Warning: Wrote %d bytes, expected to write %d bytes\n", bytes_written, file_size);
     }
     fclose(file);
 }

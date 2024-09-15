@@ -9,7 +9,7 @@
 *                            and zero if it needs to be decompressed
 * Returned		: none
 * *************************************************************************/
-void process_file(const U_08* input_path, const U_08* output_path, S_32 compress_level, S_32 compress)
+void process_file(const U_08* input_path,const U_08* output_path, U_32 compress_level, U_32 compress)
 {
     U_08* input_buffer_p  = NULL;
     U_08* compressed_data_buffer_p  = NULL;
@@ -89,7 +89,7 @@ void process_file(const U_08* input_path, const U_08* output_path, S_32 compress
 * Returned		: none
 * *************************************************************************/
 void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer,
-    U_32* output_size, S_32 compress_level)
+    U_32* output_size, U_32 compress_level)
 {
     U_08* lz77_output = (U_08*)malloc(input_size * get_size_of_encoded_sequence_struct() * sizeof(U_08));
     if (lz77_output == NULL)
@@ -103,25 +103,26 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
         perror("Memory allocation failed for Huffman output");
         exit(1);
     }
-    int lz77_output_size, huffman_output_size;
+    U_32 lz77_output_size = 0;
+    U_32 huffman_output_size = 0;
 
-    //huffman_output = *output_buffer + sizeof(U_32);
     lz77_encode(input_buffer, input_size, lz77_output, &lz77_output_size, compress_level);
 
-    //huffman_output += (*output_size);
     huffman_encode(lz77_output, huffman_output, lz77_output_size, &huffman_output_size);
 
-    *output_size = sizeof(S_32) + huffman_output_size;
-    *output_buffer = (U_08*)malloc(*output_size);
+    *output_size = sizeof(U_32) + huffman_output_size;
+    *output_buffer = (U_08*)malloc((*output_size) * sizeof(U_08));
     if (*output_buffer == NULL) // Check the dereferenced pointer
     {
         perror("Memory allocation failed in compress_data");
         free(lz77_output);
+        lz77_output = NULL;
         free(huffman_output);
+        huffman_output = NULL;
         exit(1);
     }
     // Write the input size to the first 4 bytes of the output buffer
-    **(U_32**)output_buffer = input_size;
+    **(U_32**)output_buffer = input_size;    
 
     // Copy the Huffman output after the input size
     memcpy(*output_buffer + sizeof(U_32), huffman_output, huffman_output_size);
@@ -129,11 +130,12 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
     if (lz77_output)
     {
         free(lz77_output);
-
+        lz77_output = NULL;
     }
-    /*if (huffman_output)
+   /* if (huffman_output)
     {
         free(huffman_output);
+        huffman_output = NULL;
     }*/
 }
 
@@ -154,53 +156,77 @@ void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_bu
     }
     printf("\n");*/
     output output ;
-    output.orginal_size = (U_32)*input_buffer;
+    output.original_size = (U_32)*input_buffer;
 
-    *output_size = output.orginal_size;
+    *output_size = output.original_size;
     const U_08* input_huffman = input_buffer + sizeof(output);
     
-    U_08* output_huffman = (U_08*)malloc(*output_size * sizeof(U_08) * 1000);
-    if (output_huffman == NULL)
+    //U_32 size = sizeof(Huffman_decode_node);
+    U_32 size_output_huffman = (input_size + INVALID_INDEX * sizeof(Huffman_decode_node) + sizeof(U_32)) * sizeof(U_08);
+    U_08* huffman_output = (U_08*)malloc(size_output_huffman);
+    if (huffman_output == NULL)
     {
         perror("Memory allocation failed in decompress_data");
         exit(1);
     }
-    U_08* output_lz77 = (U_08*)malloc(*output_size * sizeof(U_08) * 1000);
-    if (output_lz77 == NULL)
-    {
-        perror("Memory allocation failed in decompress_data");
-        exit(1);
-    }
-    
-    /*printf("Huffman Encoded Result: ");
-    for (int i = 0; i < input_size - *output_size; i++) {
-        printf("%02x ", input_huffman[i]);
-    }
-    printf("\n");*/
-    
 
-    U_32 input_size_huffman = input_size - sizeof(U_32);//-*output_size
-    U_32 huffman_output_size = 0;
-    huffman_decode(input_huffman, &input_size_huffman, output_huffman ,&huffman_output_size);
+    U_32 input_size_huffman = input_size - sizeof(U_32);
+    U_32 output_size_huffman = 0;
+    huffman_decode(input_huffman, &input_size_huffman, huffman_output,&output_size_huffman);
+
+    U_08* lz77_output = (U_08*)malloc((output_size_huffman * 16384) * sizeof(U_08));
+    if (lz77_output == NULL)
+    {
+        perror("Memory allocation failed in decompress_data");
+        exit(1);
+    }
 
     //void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08 * output_buffer_p)
-    lz77_decode(output_huffman, &huffman_output_size, output_lz77);
-
-    *output_buffer = (U_08*)malloc(*output_size);
+    lz77_decode(huffman_output, &output_size_huffman, lz77_output);
+    
+    *output_buffer = (U_08*)malloc(*output_size * sizeof(U_08));
     if (*output_buffer == NULL)
     {
         perror("Memory allocation failed for output_buffer");
-        free(output_huffman);
-        free(output_lz77);
+        free(huffman_output);
+        huffman_output = NULL;
+        free(lz77_output);
+        lz77_output = NULL;
         exit(1);
     }
 
     // Correct the memcpy call
-    memcpy(*output_buffer, output_lz77, *output_size);
+    memcpy(*output_buffer, lz77_output, *output_size);
 
     // Clean up
-    free(output_huffman);
-    free(output_lz77);
+    if (huffman_output)
+    {
+        free(huffman_output);
+        huffman_output = NULL;
+    }
+    if (lz77_output)
+    {
+        free(lz77_output);
+        lz77_output = NULL;
+    }
 }
 
-
+////Function to treat the metadata of the file
+//void metadata_treatment(const U_08* file_path, U_08* extension, U_08* metadata_path, FILE* metadata_file,
+//    U_08* buffer, const U_08* read_write_mode)
+//{
+//    assert(read_write_mode != NULL && (strcmp(read_write_mode, "w") == 0 || strcmp(read_write_mode, "r") == 0));
+//    snprintf(metadata_path, sizeof(metadata_path), "%s.meta", file_path);
+//    if (fopen_s(&metadata_file, metadata_path, read_write_mode) != 0)
+//    {
+//        perror("Error opening metadata file");
+//        if (buffer != NULL)
+//        {
+//            free(buffer);
+//            buffer = NULL;
+//        }
+//        return;
+//    }
+//    fscanf_s(metadata_file, "%s", extension, (unsigned)_countof(extension));
+//    fclose(metadata_file);
+//}
