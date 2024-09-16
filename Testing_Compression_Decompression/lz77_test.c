@@ -19,6 +19,7 @@ void test_lz77_treatment(const U_08* test_name, U_08* input_buffer, U_32 input_s
         }
     }
     ASSERT_EQUAL(flag, 1, "Decompressed data does not match original");
+    //ASSERT_EQUAL(input_size, strlen(decompressed_buffer), "size of lz77 decode is not equal to the original size");
 
     free(compressed_buffer);
     free(decompressed_buffer);
@@ -133,7 +134,7 @@ void test_lz77_identical_characters(void)
 void test_lz77_empty(void)
 {
     U_08 input_buffer[] = "";
-    U_32 input_size = strlen((char*)input_buffer);
+    U_32 input_size = strlen((U_08*)input_buffer);
     U_32 compress_level = rand() % 7;
 
     test_lz77_treatment("LZ77 Test Empty", input_buffer, input_size, compress_level);
