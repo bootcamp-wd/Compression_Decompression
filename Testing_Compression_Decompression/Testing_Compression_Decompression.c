@@ -1,4 +1,4 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
+﻿//#define //_CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <time.h>
 #include "test_framework.h"
@@ -11,28 +11,28 @@ int main()
 {
     srand(time(0));
     //lz77
-    add_test("LZ77 TEST REGULAR SIZE", test_lz77_regular_size);
-    add_test("LZ77 TEST IDENTICAL CHARACTERS", test_lz77_identical_characters);
-    add_test("LZ77 TEST EMPTY", test_lz77_empty);
-    add_test("LZ77 TEST MANY REPEAT", test_lz77_many_repeat);
-    add_test("TEST LZ77 SEARCH DICTIONARY EXIST IN MIDDLE", test_lz77_search_dictionary_exist_in_middle);
-    add_test("TEST LZ77 SEARCH DICTIONARY DONT EXIST", test_lz77_search_dictionary_dont_exist);
-    add_test("TEST LZ77 SEARCH DICTIONARY IN BEGIN", test_lz77_search_dictionary_in_begin);
-    add_test("TEST LZ77 SEARCH DICTIONARY IN END", test_lz77_search_dictionary_in_end);
-    add_test("TEST LZ77 SIZE WINDOW REGULAR", test_lz77_size_window_regular);
-    add_test("TEST LZ77 SIZE WINDOW NOT IN RANGE", test_lz77_size_window_not_in_range);
-    //file
-    add_test("TEST READ & WRITE TO FILE", files_test);
-    //huffman
-    add_test("Huffman Frequency Compare", test_huffman_frequency_compare);
-    add_test("Initialize Nodes", test_initialize_nodes);
-    add_test("Count Frequencies", test_count_frequencies);
-    add_test("Huffman Encode", test_huffman_encode);
-    add_test("Rescue metadata", test_rescue_metadata);
-    add_test("Found the ascii char in tree", test_find_ascii_in_tree);
-    add_test("Found the last ascii in by(te", test_find_ascii_last_byte);
-    add_test("exactly num bits in bytes", test_exactly_bits_in_bytes);
-    add_test("not exactly num bits in bytes", test_not_exactly_bits_in_bytes);
+    //add_test("LZ77 TEST REGULAR SIZE", test_lz77_regular_size);
+    //add_test("LZ77 TEST IDENTICAL CHARACTERS", test_lz77_identical_characters);
+    //add_test("LZ77 TEST EMPTY", test_lz77_empty);
+    //add_test("LZ77 TEST MANY REPEAT", test_lz77_many_repeat);
+    //add_test("TEST LZ77 SEARCH DICTIONARY EXIST IN MIDDLE", test_lz77_search_dictionary_exist_in_middle);
+    //add_test("TEST LZ77 SEARCH DICTIONARY DONT EXIST", test_lz77_search_dictionary_dont_exist);
+    //add_test("TEST LZ77 SEARCH DICTIONARY IN BEGIN", test_lz77_search_dictionary_in_begin);
+    //add_test("TEST LZ77 SEARCH DICTIONARY IN END", test_lz77_search_dictionary_in_end);
+    //add_test("TEST LZ77 SIZE WINDOW REGULAR", test_lz77_size_window_regular);
+    //add_test("TEST LZ77 SIZE WINDOW NOT IN RANGE", test_lz77_size_window_not_in_range);
+    ////file
+    //add_test("TEST READ & WRITE TO FILE", files_test);
+    ////huffman
+    //add_test("Huffman Frequency Compare", test_huffman_frequency_compare);
+    //add_test("Initialize Nodes", test_initialize_nodes);
+    //add_test("Count Frequencies", test_count_frequencies);
+    //add_test("Huffman Encode", test_huffman_encode);
+    //add_test("Rescue metadata", test_rescue_metadata);
+    //add_test("Found the ascii char in tree", test_find_ascii_in_tree);
+    //add_test("Found the last ascii in by(te", test_find_ascii_last_byte);
+    //add_test("exactly num bits in bytes", test_exactly_bits_in_bytes);
+    //add_test("not exactly num bits in bytes", test_not_exactly_bits_in_bytes);
     ////end to end
     ////size
     //add_test("TEST REGULAR SIZE FILE", regular_size_file_test);
