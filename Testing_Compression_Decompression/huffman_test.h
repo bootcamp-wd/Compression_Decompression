@@ -17,7 +17,7 @@ void test_find_ascii_last_byte();
 //encod-decode
 void test_exactly_bits_in_bytes();
 void test_not_exactly_bits_in_bytes();
-
+void test_huffman_exactly_bits_in_bytes_long_input();
 
 
 #endif // !HUFFMAN_TEST_H
