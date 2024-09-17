@@ -9,8 +9,8 @@
 *				  buffer_search_size - the largest size that the buffer_search can be
 * Returned		: none
 * *************************************************************************/
-void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_buffer, U_32* output_size,
-	const S_32 compress_level)
+void lz77_encode(const U_08* input_buffer, U_32 input_size, U_08* output_buffer, U_32* output_size,
+S_32 compress_level)
 {
 	U_08* dict_pointer_first;
 	U_08* dict_pointer_last;
@@ -116,12 +116,12 @@ U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
 	U_08 loc_buffer_search = 0;
 	U_32 size_buffer_search = buffer_search_pointer_last - buffer_search_pointer_first;
 
-	log_debug("Starting search_in_dictionary function");
-	log_info("info");
-	log_error("error");
-	log_trace("trace");
-	log_fatal("fatal");
-	log_warn("WARN");
+	//log_debug("Starting search_in_dictionary function");
+	//log_info("info");
+	//log_error("error");
+	//log_trace("trace");
+	//log_fatal("fatal");
+	//log_warn("WARN");
 
 	//loop that moves all the dictionary
 	for (U_32 i = 0; (dict_pointer_first + i) <= dict_pointer_last; i++)
@@ -210,14 +210,12 @@ void size_of_window_according_level(S_32 compress_level, U_32* dictionary_size, 
  * Returned     : none
  *
  ***************************************************************************/
-void lz77_decode(U_08* input_data, U_32* input_size, U_08* output_data)
+void lz77_decode(const U_08* input_data,const U_32* input_size, U_08* output_data)
 {
-	//pointers to the buffers of the input 
-	U_08* input_pointer;
-	U_08* output_pointer;
+	//pointers to the buffers of the inp
 
-	input_pointer = input_data;
-	output_pointer = output_data;
+	const U_08* input_pointer = input_data;
+	U_08* output_pointer = output_data;
 
 	Encoded_sequence_t current_sequence;
 

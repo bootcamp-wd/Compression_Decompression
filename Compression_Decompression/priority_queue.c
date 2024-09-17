@@ -40,10 +40,11 @@ Huffman_node_t* extract_min(Huffman_node_t** min_leaf, Huffman_node_t** min_pare
  * Returned     : none
  * Time : o(1)
  ***************************************************************************/
-void priority_queue_push(Huffman_node_t* pq, int* size, Huffman_node_t* node)
+void priority_queue_push(Huffman_node_t* pq, U_32* size, Huffman_node_t node)
 {
     assert(pq != NULL);
     assert(size != NULL);
-    assert(node != NULL);
-    pq[(*size)++] = *node;
+    //assert(node != NULL);
+    pq[(*size)++] = node;
+    /*free(node);*/
 }
