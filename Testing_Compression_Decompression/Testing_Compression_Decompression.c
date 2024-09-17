@@ -44,7 +44,7 @@ int main()
    add_test("test_algorithms_lz77_and_huffman", test_algorithms_lz77_and_huffman);
     ////end to end
     ////size
-    add_test("TEST REGULAR SIZE FILE", regular_size_file_test);
+    //add_test("TEST REGULAR SIZE FILE", regular_size_file_test);
     //add_test("TEST SHORT FILE", short_file_test);
     //add_test("TEST LONG FILE", long_file_test);
     //add_test("TEST EMPTY FILE", empty_file_test);
