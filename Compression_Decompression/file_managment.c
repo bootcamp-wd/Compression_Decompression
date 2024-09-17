@@ -25,7 +25,7 @@ unsigned S_08* read_file(const U_08* file_path, U_32* file_size)
     {
         printf("Warning: Read %zu bytes, expected %d bytes\n", bytes_read, *file_size);
     }
-   
+
     printf("\n");
     return buffer;
 }

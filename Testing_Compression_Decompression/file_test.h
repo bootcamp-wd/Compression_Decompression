@@ -1,20 +1,10 @@
-#ifndef TEST_FRAMEWORK_H
-#define TEST_FRAMEWORK_H
 
-#include <stdio.h>
+#ifndef TEST_FILE_H
+#define TEST_FILE_H
 
-#define MAX_TESTS 100
-
-typedef struct {
-    const char* name;
-    void (*test_function)(void);
-} Test;
-
-extern Test g_tests[MAX_TESTS];
-extern int g_test_count;
-
-void add_test(const char* name, void (*test_function)(void));
-void run_all_tests(void);
+#include "lz77_test.h"
+#include "../Compression_Decompression/general_define.h"
+#include "../Compression_Decompression/file_managment.h"
 
 #define ASSERT(condition, message) \
     do { \
@@ -22,6 +12,10 @@ void run_all_tests(void);
             printf("ASSERTION FAILED: %s\n", message); \
             printf("File: %s, Line: %d\n", __FILE__, __LINE__); \
             return; \
+        } \
+        else \
+        { \
+            printf("TEST PASSED\n"); \
         } \
     } while (0)
 
@@ -33,6 +27,17 @@ void run_all_tests(void);
             printf("File: %s, Line: %d\n", __FILE__, __LINE__); \
             return; \
         } \
+         else \
+        { \
+            printf("TEST PASSED\n"); \
+        } \
     } while (0)
 
-#endif // TEST_FRAMEWORK_H
+
+void files_test();
+void read_test(const U_08* file_path, const U_08* exepted_buffer, U_32 file_size);
+void write_test(const U_08* file_path, const U_08* buffer, U_32 file_size);
+
+
+
+#endif 
