@@ -40,7 +40,7 @@ void test_huffman_encode(void) {
     //ASSERT(output_size < input_size, "Compressed size should be less than input size");
 }
 //decode
-void test_rescue_metadata()
+void test_get_tree()
 {
     U_08 output_buffer[100];
     U_32 output_size;
@@ -49,7 +49,7 @@ void test_rescue_metadata()
 
     huffman_encode("hello", output_buffer, 5, &output_size);
 
-    root = rescue_metadata(output_buffer, &tree_length);
+    root = get_tree(output_buffer, &tree_length);
     nodes = root;
     tmp_root= root + (tree_length - 1);//move the pointer to the root of the tree
     root = tmp_root;
@@ -107,7 +107,7 @@ void test_find_ascii_in_tree()
     U_08 ascii;
     U_32 num_bits=0;
     huffman_encode("green", output_buffer, 5, &output_size);
-    root = rescue_metadata(output_buffer, &tree_length);
+    root = get_tree(output_buffer, &tree_length);
     output_buffer += (sizeof(metadata->tree_length) + sizeof(Huffman_decode_node) * tree_length);
     ascii= find_ascii_in_tree(&output_buffer,root,&num_bits,tree_length);
     ASSERT_EQUAL(ascii, 'g', "The found ascii is wrong");
@@ -127,7 +127,7 @@ void test_find_ascii_last_byte()
     U_32 num_bits = 0;
     U_08* result=(U_08*)malloc(5);
     huffman_encode("april", output_buffer, 5, &output_size);
-    root = rescue_metadata(output_buffer, &tree_length);
+    root = get_tree(output_buffer, &tree_length);
     output_buffer += (sizeof(metadata->tree_length) + sizeof(Huffman_decode_node) * tree_length);
     output_buffer++;
     find_ascii_last_byte(output_buffer, root, 10, result, tree_length,&output_size);
@@ -137,7 +137,7 @@ void test_find_ascii_last_byte()
 //encode-decode
 void test_exactly_bits_in_bytes()
 {
-    U_08* input = "ab";// "ELOOLE";
+    U_08* input = "abcd";
     size_t input_size = 2;
     U_08* output = (U_08*)malloc(input_size + sizeof(Huffman_metadata));
     U_32 output_size;
@@ -151,7 +151,7 @@ void test_exactly_bits_in_bytes()
     free(result);
 }
 
-void test_huffman_exactly_bits_in_bytes_long_input()
+void test_huffman_long_input()
 {
     U_08* input = "hi everybody hello world !!!! hi everybody hello world !!!! \n\
         hi everybody hello world !!!!hi everybody hello world !!!!hi everybody hello world \
@@ -205,8 +205,8 @@ DSS interfaces include simple windows, complex menu - driven interfaces and comm
 
 void test_not_exactly_bits_in_bytes()
 {
-    U_08* input = "Today is Thursday one day before shabbat kodesh";
-    size_t input_size = 47;
+    U_08* input = "april";
+    size_t input_size = strlen(input);
     U_08* output = (U_08*)malloc(input_size +sizeof(Huffman_metadata));
     U_32 output_size;
     U_32 size = 0;
