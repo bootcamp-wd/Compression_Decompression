@@ -137,8 +137,8 @@ void test_find_ascii_last_byte()
 //encode-decode
 void test_exactly_bits_in_bytes()
 {
-    U_08* input = "abcd";
-    size_t input_size = 2;
+    U_08* input = "abcd";// "ELOOLE";
+    size_t input_size = 4;
     U_08* output = (U_08*)malloc(input_size + sizeof(Huffman_metadata));
     U_32 output_size;
     U_32 size = 0;
