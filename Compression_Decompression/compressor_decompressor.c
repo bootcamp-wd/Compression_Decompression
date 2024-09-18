@@ -13,7 +13,7 @@ void process_file(const U_08* input_path, const U_08* output_path, U_32 compress
 {
     U_08* input_buffer_p = NULL;
     U_08* compressed_data_buffer_p = NULL;
-    U_32 file_size, compressed_buffer_size;
+    size_t file_size, compressed_buffer_size;
     FILE* metadata_file = NULL;
     U_08 metadata_path[BUFFER_SIZE];
     U_08 extension[BUFFER_SIZE] = { 0 };
@@ -88,8 +88,8 @@ void process_file(const U_08* input_path, const U_08* output_path, U_32 compress
 *                 compress_level - gets the level of compressing, more compressed is less fast
 * Returned		: none
 * *************************************************************************/
-void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer,
-    U_32* output_size, U_32 compress_level)
+void compress_data(const U_08* input_buffer, size_t input_size, U_08** output_buffer,
+    size_t* output_size, U_32 compress_level)
 {
     U_08* lz77_output = (U_08*)malloc(input_size * get_size_of_encoded_sequence_struct() * sizeof(U_08));
     if (lz77_output == NULL)
@@ -103,14 +103,14 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
         perror("Memory allocation failed for Huffman output");
         exit(1);
     }
-    U_32 lz77_output_size = 0;
-    U_32 huffman_output_size = 0;
+    size_t lz77_output_size = 0;
+    size_t huffman_output_size = 0;
 
     lz77_encode(input_buffer, input_size, lz77_output, &lz77_output_size, compress_level);
 
     huffman_encode(lz77_output, huffman_output, lz77_output_size, &huffman_output_size);
 
-    *output_size = sizeof(U_32) + huffman_output_size;
+    *output_size = sizeof(size_t) + huffman_output_size;
     *output_buffer = (U_08*)malloc((*output_size) * sizeof(U_08));
     if (*output_buffer == NULL) // Check the dereferenced pointer
     {
@@ -122,10 +122,10 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
         exit(1);
     }
     // Write the input size to the first 4 bytes of the output buffer
-    **(U_32**)output_buffer = input_size;
+    **(size_t**)output_buffer = input_size;
 
     // Copy the Huffman output after the input size
-    memcpy(*output_buffer + sizeof(U_32), huffman_output, huffman_output_size);
+    memcpy(*output_buffer + sizeof(size_t), huffman_output, huffman_output_size);
 
     if (lz77_output)
     {
@@ -148,7 +148,7 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
 *                 output_size - a variable to save the size of output
 * Returned		: none
 * *************************************************************************/
-void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, U_32* output_size)
+void decompress_data(const U_08* input_buffer, size_t input_size, U_08** output_buffer, size_t* output_size)
 {
     /*  printf("Decompress function ");
       for (int i = 0; i < input_size; i++) {
@@ -156,13 +156,13 @@ void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_bu
       }
       printf("\n");*/
     output output;
-    output.original_size = (U_32)*input_buffer;
+    output.original_size = *(size_t*)input_buffer;
 
     *output_size = output.original_size;
     const U_08* input_huffman = input_buffer + sizeof(output);
 
     //U_32 size = sizeof(Huffman_decode_node);
-    U_32 size_output_huffman = (input_size + INVALID_INDEX * sizeof(Huffman_decode_node) + sizeof(U_32)) * sizeof(U_08);
+    size_t size_output_huffman = (input_size + INVALID_INDEX * sizeof(Huffman_decode_node) + sizeof(size_t)) * sizeof(U_08);
     U_08* huffman_output = (U_08*)malloc(size_output_huffman);
     if (huffman_output == NULL)
     {
@@ -170,8 +170,8 @@ void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_bu
         exit(1);
     }
 
-    U_32 input_size_huffman = input_size - sizeof(U_32);
-    U_32 output_size_huffman = 0;
+    size_t input_size_huffman = input_size - sizeof(U_32);
+    size_t output_size_huffman = 0;
     huffman_decode(input_huffman, &input_size_huffman, huffman_output, &output_size_huffman);
 
     U_08* lz77_output = (U_08*)malloc((output_size_huffman * 16384) * sizeof(U_08));

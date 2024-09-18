@@ -11,7 +11,6 @@ void end_to_end_treatment(const U_08* orginal_test_file, U_08* input_buffer,U_08
 	strcpy_s(final_path, path_size + suffix_size + 1, decompressed_test_file);
 	strcat_s(final_path, path_size + suffix_size + 1, suffix);
 
-
 	U_08* res_buffer = NULL;
 	size_t res_size;
 
@@ -31,7 +30,7 @@ void end_to_end_treatment(const U_08* orginal_test_file, U_08* input_buffer,U_08
 void regular_size_file_test() {
 	const U_08* file_path = "input_test.txt";
 	U_08 buffer[] = "LZ77 algorithm\n\
-		Little background about the algorithm…\n\
+		Little background about the algorithm...\n\
 		LZ77 algorithm compresses memory cells according to repetitions of sequences.\n\
 		The algorithm represents each sequence that is identical to a previous sequence using the distance from the identical sequence, and its length.\n\
 		The algorithm uses a window, the window is placed at any current moment on a part of the input.\n\
@@ -52,7 +51,7 @@ void regular_size_file_test() {
 		An Example of the LZ77 algorithm :\n\
 	";
 	write_file(file_path, buffer, sizeof(buffer));
-	end_to_end_treatment(file_path, buffer,".txt");
+	end_to_end_treatment(file_path, buffer, ".txt");
 }
 
 void short_file_test() {
@@ -62,10 +61,67 @@ void short_file_test() {
 	end_to_end_treatment(file_path, buffer,".txt");
 }
 
+void medium_file_test() {
+	const U_08* file_path = "input_test.txt";
+	U_08 buffer[] = "projected revenue figures based on new product sales assumptions;and \n\
+the consequences of different decisions.\n\
+A decision support system is an informational application as opposed to an operational application.\n\
+Informational applications provide users with relevant information based on a variety of data sources to support better - informed decision - making.\n\
+Operational applications, by contrast, record the details of business transactions, including the data required for the decision - support needs of a business.\n\
+Decision support system components\n\
+A typical DSS consists of three different parts : knowledge database, softwareand user interface.\n\
+Knowledge base.A knowledge base is an integral part of a decision support system database, containing information from both internaland external sources.\n\
+Long Text In.accdb files, the Long Text field works the same as the Memo field of old.\n\
+That is, it can store up to about a gigabyte of text, even though controls on formsand reports can only display the first 64, 000 characters.\n\
+You can set Long Text fields to display Rich Text, which includes formatting like boldand underline.\n\
+Short Text In.accdb files, the Short Text field works the same as the Text field in earlier versions.\n\
+It stores up to 255 characters.\n\
+Learn more about data types for Access desktop databases.\n\
+Text fields in Access web apps\n\
+Short Text In Access web apps the Short Text field is set to store 255 characters by default, but you can adjust the Character Limit property all the way up to 4000 characters.\n\
+Its SQL Server equivalent is nvarchar, with length from 1 to 4000.\n\
+Learn more about data types for Access web apps.\n\
+Default controls for Long Textand Short Text fields\n\
+In most cases, Access uses Text Box controls to display Short Text or Long Text fields.\n\
+However, when you add a Long Text field to a view in an Access web app, Access creates a Multiline Textbox.\n\
+When using a Multiline Textbox in the browser, you can press Enter to move to a new line in the textbox.\n\
+If you're in a datasheet, you'll need to use the scrollbars to see anything below the first line.\n\
+In Desktop databases, if a Long Text field is configured to show Rich Text, and you add that field to a form or report, Access automatically applies the Rich Text setting to the text box.\n\
+Textedly lets you send texts with over 300 characters in an SMS text.\n\
+That's almost twice as much as in a standard text.\n\
+However, you can add a picture to send an MMS message with up to 1, 600 characters.\n\
+That's a serious amount of messaging power\n\
+It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.\n\
+The point of using Lorem Ipsum is that it has a more - or -less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English.\n\
+Many desktop publishing packagesand web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy.\n\
+Contrary to popular belief, Lorem Ipsum is not simply random text.\n\
+It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.\n\
+Richard McClintock, a Latin professor at Hampden - Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.\n\
+Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum(The Extremes of Good and Evil) by Cicero, written in 45 BC.\n\
+This book is a treatise on the theory of ethics, very popular during the Renaissance.\n\
+The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.\n\
+The standard Lorem Ipsum passage, used since the 1500s\n\
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\
+Section 1.10.32 of de Finibus Bonorum et Malorum, written by Cicero in 45 BC\n\
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.\n\
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.\n\
+Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.\n\
+Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur ? \n\
+Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur ? \n\
+1914 translation by H.\n\
+Rackham But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master - builder of human happiness.\n\
+";
+	write_file(file_path, buffer, sizeof(buffer));
+	end_to_end_treatment(file_path, buffer, ".txt");
+}
+
 void long_file_test() {
 	const U_08* file_path = "input_test.txt";
 	const char* txt = "LZ77 algorithm\n\
-		Little background about the algorithm…\n\
+		Little background about the algorithm...\n\
 		LZ77 algorithm compresses memory cells according to repetitions of sequences.\n\
 		The algorithm represents each sequence that is identical to a previous sequence using the distance from the identical sequence, and its length.\n\
 		The algorithm uses a window, the window is placed at any current moment on a part of the input.\n\
@@ -133,7 +189,7 @@ void Text_file_test()
 
 void Image_file_test()
 {
-	size_t buffer_size;
+	U_32 buffer_size;
 	const U_08* file_path = "input_test.png";
 	U_08* buffer = read_file(file_path, &buffer_size);
 	end_to_end_treatment(file_path, buffer, ".png");
@@ -144,7 +200,7 @@ void Audio_file_test()
 	size_t buffer_size;
 	const U_08* file_path = "input_test.m4a";
 	U_08* buffer = read_file(file_path, &buffer_size);
-	end_to_end_treatment(file_path, buffer,".m4a");
+	end_to_end_treatment(file_path, buffer, ".m4a");
 }
 
 void PDF_file_test()
