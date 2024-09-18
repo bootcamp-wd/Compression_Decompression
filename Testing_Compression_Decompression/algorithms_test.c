@@ -2,7 +2,7 @@
 
 void test_algorithms_lz77_and_huffman(void)
 {
-	const U_08* input_lz77 = "שלום וברכה";
+	const U_08* input_lz77 = "of the";
     U_32 input_size_lz77 = strlen(input_lz77);
     U_08* output_lz77 = (U_08*)malloc(input_size_lz77 * get_size_of_encoded_sequence_struct() * 100);
     U_32 output_size_lz77 = 0;
@@ -43,7 +43,6 @@ void test_algorithms_lz77_and_huffman(void)
 	//printf("0x%x -12\n", *(U_32*)output_huffman - 12);
 	//printf("0x%x -16\n", *(U_32*)output_huffman - 16);
 	free(output_lz77);
-
     free(output_huffman);
     free(output_huffman_decode);
     free(result_end);

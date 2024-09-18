@@ -1,10 +1,16 @@
 #include "end_to_end_test.h"
 
 
-void end_to_end_treatment(const U_08* orginal_test_file, U_08* input_buffer)
+void end_to_end_treatment(const U_08* orginal_test_file, U_08* input_buffer,U_08* suffix)
 {
 	U_08* compressed_test_file = "compressed_test.bin";
 	U_08* decompressed_test_file = "decompressed_test";
+	U_08 path_size = strlen(decompressed_test_file);
+	U_08 suffix_size = strlen(suffix);
+	U_08* final_path = (U_08*)malloc(path_size + suffix_size);
+	strcpy_s(final_path, path_size + suffix_size + 1, decompressed_test_file);
+	strcat_s(final_path, path_size + suffix_size + 1, suffix);
+
 
 	U_08* res_buffer = NULL;
 	size_t res_size;
@@ -14,7 +20,8 @@ void end_to_end_treatment(const U_08* orginal_test_file, U_08* input_buffer)
 	//decompress
 	process_file(compressed_test_file, decompressed_test_file, DEFAULT_COMPRESSION_LEVEL, UN_COMPRESS);
 
-	res_buffer = read_file(decompressed_test_file, &res_size);
+	
+	res_buffer = read_file(final_path, &res_size);
 
 	//compare the result 
 	ASSERT(strcmp(input_buffer, res_buffer), "The data changed in the compression-decompression process ");
@@ -45,14 +52,14 @@ void regular_size_file_test() {
 		An Example of the LZ77 algorithm :\n\
 	";
 	write_file(file_path, buffer, sizeof(buffer));
-	end_to_end_treatment(file_path, buffer);
+	end_to_end_treatment(file_path, buffer,".txt");
 }
 
 void short_file_test() {
 	const U_08* file_path = "input_test.txt";
 	U_08 buffer[] = "data";
 	write_file(file_path, buffer, sizeof(buffer));
-	end_to_end_treatment(file_path, buffer);
+	end_to_end_treatment(file_path, buffer,".txt");
 }
 
 void long_file_test() {
@@ -91,7 +98,7 @@ void long_file_test() {
 			{
 				strncat_s(buffer, buffer_size, txt, txt_size); // Concatenate txt to buffer securely
 			}
-			end_to_end_treatment(file_path, buffer, buffer_size);
+			end_to_end_treatment(file_path, buffer, ".txt");
 			// Clean up allocated memory
 			free(buffer);
 		}
@@ -102,14 +109,14 @@ void empty_file_test()
 {
 	const U_08* file_path = "input_test.txt";
 	write_file(file_path, "", 0);
-	end_to_end_treatment(file_path, "");
+	end_to_end_treatment(file_path, "", ".txt");
 }
 
 void single_character()
 {
 	const U_08* file_path = "input_test.txt";
 	write_file(file_path, "a", 1);
-	end_to_end_treatment(file_path, "a");
+	end_to_end_treatment(file_path, "a", ".txt");
 }
 
 void Text_file_test()
@@ -121,7 +128,7 @@ void Text_file_test()
 		finally, the size is updated according to the size of the result.\n\
 		An Example of the LZ77 algorithm";
 	write_file(file_path, buffer, sizeof(buffer));
-	end_to_end_treatment(file_path, buffer);
+	end_to_end_treatment(file_path, buffer, ".txt");
 }
 
 void Image_file_test()
@@ -129,7 +136,7 @@ void Image_file_test()
 	size_t buffer_size;
 	const U_08* file_path = "input_test.png";
 	U_08* buffer = read_file(file_path, &buffer_size);
-	end_to_end_treatment(file_path, buffer);
+	end_to_end_treatment(file_path, buffer, ".png");
 }
 
 void Audio_file_test()
@@ -137,7 +144,7 @@ void Audio_file_test()
 	size_t buffer_size;
 	const U_08* file_path = "input_test.m4a";
 	U_08* buffer = read_file(file_path, &buffer_size);
-	end_to_end_treatment(file_path, buffer);
+	end_to_end_treatment(file_path, buffer,".m4a");
 }
 
 void PDF_file_test()
@@ -145,7 +152,7 @@ void PDF_file_test()
 	size_t buffer_size;
 	const U_08* file_path = "input_test.pdf";
 	U_08* buffer = read_file(file_path, &buffer_size);
-	end_to_end_treatment(file_path, buffer);
+	end_to_end_treatment(file_path, buffer,".pdf");
 }
 
 void Unknown_file_test()
@@ -153,7 +160,7 @@ void Unknown_file_test()
 	size_t buffer_size;
 	const U_08* file_path = "input_test.asd";
 	U_08* buffer = read_file(file_path, &buffer_size);
-	end_to_end_treatment(file_path, buffer);
+	end_to_end_treatment(file_path, buffer,".asd");
 }
 
 void random_file_test()
@@ -169,7 +176,7 @@ void random_file_test()
 	}
 	buffer[buffer_size - 1] = '\0'; // Null-terminate the string
 	write_file(file_path, buffer, buffer_size);
-	end_to_end_treatment(file_path, buffer);
+	end_to_end_treatment(file_path, buffer, ".txt");
 
 	free(buffer);
 }
@@ -186,7 +193,7 @@ void all_ascii_file_test()
 	}
 	buffer[buffer_size - 1] = '\0'; // Null-terminate the string
 	write_file(file_path, buffer, buffer_size);
-	end_to_end_treatment(file_path, buffer);
+	end_to_end_treatment(file_path, buffer, ".txt");
 
 	free(buffer);
 }
@@ -204,7 +211,7 @@ void repeating_single_character_file_test()
 	}
 	buffer[buffer_size - 1] = '\0'; // Null-terminate the string
 	write_file(file_path, buffer, buffer_size);
-	end_to_end_treatment(file_path, buffer);
+	end_to_end_treatment(file_path, buffer, ".txt");
 
 	free(buffer);
 }

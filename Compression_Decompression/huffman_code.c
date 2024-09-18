@@ -330,7 +330,6 @@ void huffman_free_tree(Huffman_node_t* nodes, U_32 last_index)
  ***************************************************************************/
 void huffman_decode(const U_08* input_buffer_p, const U_32* input_size, U_08* output_buffer_p, U_32* output_size)
 {
-
     *output_size = 0;
     Huffman_decode_node* nodes = NULL;
     U_32 tree_length;
@@ -442,12 +441,11 @@ void find_ascii_last_byte(const U_08* input_pointer, Huffman_decode_node* nodes,
     for (U_32 i = index_bit_in_byte; i < sum_bits_in_last_byte;)
     {
         //move over the tree according to the received bits until finding leaves where the ascii code 
-        while (nodes->left != 512 && nodes->right != 512 && i < sum_bits_in_last_byte)
+        while (current_node->left != 512 && current_node->right != 512)
         {
             index_bit_in_byte = i;
             //Moving the mask according to the index
             mask = 0x80 >> index_bit_in_byte;
-
 
             if (((last_byte)&mask) == 0)
             {
