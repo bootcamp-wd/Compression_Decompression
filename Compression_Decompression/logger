@@ -1,0 +1,11 @@
+2024-09-18 14:23:55 DEBUG C:\Users\User\Documents\תכנות\kama tech\Compression_Decompression\Compression_Decompression\lz77.c:15: Starting Lz77_encode function[0m
+2024-09-18 14:23:55 INFO  C:\Users\User\Documents\תכנות\kama tech\Compression_Decompression\Compression_Decompression\lz77.c:25: Window size set according to the compression level[0m
+2024-09-18 14:23:55 TRACE C:\Users\User\Documents\תכנות\kama tech\Compression_Decompression\Compression_Decompression\lz77.c:58: Encoding byte[0m
+2024-09-18 14:23:55 DEBUG C:\Users\User\Documents\תכנות\kama tech\Compression_Decompression\Compression_Decompression\lz77.c:126: Starting search_in_dictionary function[0m
+2024-09-18 14:23:55 WARN  C:\Users\User\Documents\תכנות\kama tech\Compression_Decompression\Compression_Decompression\lz77.c:92: No match found, adding mismatch byte[0m
+2024-09-18 14:23:55 TRACE C:\Users\User\Documents\תכנות\kama tech\Compression_Decompression\Compression_Decompression\lz77.c:58: Encoding byte[0m
+2024-09-18 14:23:55 DEBUG C:\Users\User\Documents\תכנות\kama tech\Compression_Decompression\Compression_Decompression\lz77.c:126: Starting search_in_dictionary function[0m
+2024-09-18 14:23:55 DEBUG C:\Users\User\Documents\תכנות\kama tech\Compression_Decompression\Compression_Decompression\lz77.c:83: Match found in dictionary[0m
+2024-09-18 14:23:55 TRACE C:\Users\User\Documents\תכנות\kama tech\Compression_Decompression\Compression_Decompression\lz77.c:58: Encoding byte[0m
+2024-09-18 14:23:55 INFO  C:\Users\User\Documents\תכנות\kama tech\Compression_Decompression\Compression_Decompression\lz77.c:63: Last byte or buffer search size reached[0m
+2024-09-18 14:23:55 INFO  C:\Users\User\Documents\תכנות\kama tech\Compression_Decompression\Compression_Decompression\lz77.c:110: Encoding finished successfully[0m
