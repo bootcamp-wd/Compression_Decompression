@@ -2,10 +2,6 @@
 
 void test_algorithms_lz77_and_huffman(void)
 {
-<<<<<<< HEAD
-
-}
-=======
     const U_08* input_lz77 = "ELOOLE";
     U_32 input_size_lz77 = strlen(input_lz77);
     U_08* output_lz77 = (U_08*)malloc(input_size_lz77 * get_size_of_encoded_sequence_struct() * 100);
@@ -106,4 +102,3 @@ void test_algorithms_lz77_and_huffman(void)
 	//process_file(compressed_file, decompressed_file, DEFAULT_COMPRESSION_LEVEL, UN_COMPRESS);
 	////int size = 5, output_size = 0;
 	////unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;
->>>>>>> 81ee465e9f5421eb68864189fb3e883ffdead72e

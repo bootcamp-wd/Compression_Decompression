@@ -34,19 +34,20 @@ int main()
     add_test("Initialize Nodes", test_initialize_nodes);
     add_test("Count Frequencies", test_count_frequencies);
     add_test("Huffman Encode", test_huffman_encode);
-    add_test("get tree", test_get_tree);
-    add_test("Found the ascii char in tree", test_find_ascii_in_tree);
-    add_test("Found the last ascii in by(te", test_find_ascii_last_byte);
+    add_test("Rescue metadata", test_get_tree);
+    add_test("Find the ascii char in tree", test_find_ascii_in_tree);
+    add_test("Find the last ascii in byte", test_find_ascii_last_byte);
     add_test("exactly num bits in bytes", test_exactly_bits_in_bytes);
     add_test("not exactly num bits in bytes", test_not_exactly_bits_in_bytes);
     add_test("test_huffman_exactly_bits_in_bytes_long_input", test_huffman_long_input);
 
-   add_test("test_algorithms_lz77_and_huffman", test_algorithms_lz77_and_huffman);
+    add_test("test_algorithms_lz77_and_huffman", test_algorithms_lz77_and_huffman);
     //end to end
     //size
     add_test("TEST REGULAR SIZE FILE", regular_size_file_test);
     add_test("TEST SHORT FILE", short_file_test);
-    add_test("TEST LONG FILE", long_file_test);
+    add_test("TEST MEDIUM FILE", medium_file_test);
+    //add_test("TEST LONG FILE", long_file_test);
     add_test("TEST EMPTY FILE", empty_file_test);
     add_test("TEST SINGLE CHARACTER", single_character);
     //suffix

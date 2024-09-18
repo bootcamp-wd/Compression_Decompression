@@ -156,7 +156,7 @@ void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_bu
       }
       printf("\n");*/
     output output;
-    output.original_size = (U_32)*input_buffer;
+    output.original_size = *(U_32*)input_buffer;
 
     *output_size = output.original_size;
     const U_08* input_huffman = input_buffer + sizeof(output);
