@@ -129,21 +129,26 @@ U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
 	U_08 loc_buffer_search = 0;
 	U_32 size_buffer_search = buffer_search_pointer_last - buffer_search_pointer_first;
 
+	log_info("Size of buffer search is %u", size_buffer_search);
+
 	//loop that moves all the dictionary
 	for (U_32 i = 0; (dict_pointer_first + i) <= dict_pointer_last; i++)
 	{
+		log_trace("Checking dictionary byte at position %u", i);
+
 		//if the current byte in the buffer_search is equal to the current in the dictionary
 		if (buffer_search_pointer_first[loc_buffer_search] == *(dict_pointer_first + i))
 		{
 			if (loc_buffer_search == 0)
 			{
 				start_seq_pointer = dict_pointer_first + i;
+				log_info("Start sequence pointer set at index %u", i);
 			}
 
 			//the buffer_search is exist in the dictionary
 			if (loc_buffer_search == size_buffer_search / sizeof(U_08))
 			{
-
+				log_info("Buffer search found in dictionary starting at %p", start_seq_pointer);
 				return start_seq_pointer;
 			}
 			loc_buffer_search++;
@@ -154,7 +159,7 @@ U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
 			//the buffer begins from begining
 			loc_buffer_search = 0;
 		}
-	}
+	}    log_info("Search complete. No matching sequence found.");
 	return NULL;
 }
 
@@ -171,6 +176,8 @@ U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
 * *************************************************************************/
 void size_of_window_according_level(U_32 compress_level, U_32* dictionary_size, U_32* buffer_search_size)
 {
+	log_info("Calculating window size for compress level %u", compress_level);
+
 	switch (compress_level)
 	{
 	case 0:
@@ -198,7 +205,7 @@ void size_of_window_according_level(U_32 compress_level, U_32* dictionary_size, 
 		*buffer_search_size = 8192;
 		break;
 	case 6:
-		*dictionary_size = 32768;
+		*dictionary_size = 32767;
 		*buffer_search_size = 16384;
 		break;
 	default:
@@ -206,6 +213,8 @@ void size_of_window_according_level(U_32 compress_level, U_32* dictionary_size, 
 		*buffer_search_size = 2048;
 		break;
 	}
+
+	log_info("Dictionary size: %u, Buffer search size: %u", *dictionary_size, *buffer_search_size);
 }
 
 /***************************************************************************
@@ -219,6 +228,8 @@ void size_of_window_according_level(U_32 compress_level, U_32* dictionary_size, 
  ***************************************************************************/
 void lz77_decode(U_08* input_data, U_32* input_size, U_08* output_data)
 {
+	log_info("Starting LZ77_decode function.");
+
 	//pointers to the buffers of the input 
 	U_08* input_pointer;
 	U_08* output_pointer;
@@ -231,6 +242,8 @@ void lz77_decode(U_08* input_data, U_32* input_size, U_08* output_data)
 	for (U_32 i = 0; i < (*input_size / sizeof(Encoded_sequence_t)); i++)
 	{
 		current_sequence = convert_into_encoded_sequence(input_pointer);
+
+		log_debug("Decoded sequence at index %u: length=%u, distance=%u", i, current_sequence.length, current_sequence.distance);
 
 		input_pointer += sizeof(Encoded_sequence_t);
 
@@ -249,6 +262,8 @@ void lz77_decode(U_08* input_data, U_32* input_size, U_08* output_data)
  ***************************************************************************/
 Encoded_sequence_t convert_into_encoded_sequence(U_08* input_pointer)
 {
+	log_debug("Filling encoded sequence from input data.");
+
 	Encoded_sequence_t sequence;
 	memcpy(&sequence, input_pointer, sizeof(Encoded_sequence_t));
 
@@ -275,6 +290,7 @@ void add_sequence_to_output(U_08* output_pointer, Encoded_sequence_t current_seq
 			output_pointer++;
 		}
 	}
+	log_debug("Adding mismatch byte: %u", current_sequence.mis_match_byte);
 	(*output_pointer) = current_sequence.mis_match_byte;
 	output_pointer++;
 }
