@@ -1,17 +1,17 @@
 #include "lz77_test.h"
 
-void test_lz77_treatment(const U_08* test_name, U_08* input_buffer, U_32 input_size, U_32 compress_level)
+void test_lz77_treatment(const U_08* test_name, U_08* input_buffer, size_t input_size, U_32 compress_level)
 {
     U_08* compressed_buffer = (U_08*)malloc(input_size * get_size_of_encoded_sequence_struct());
     U_08* decompressed_buffer = (U_08*)malloc(input_size);
-    U_32 compressed_size = 0;
+    size_t compressed_size = 0;
 
     lz77_encode(input_buffer, input_size, compressed_buffer, &compressed_size, compress_level);
     lz77_decode(compressed_buffer, &compressed_size, decompressed_buffer);
 
     U_08 flag = 1;
 
-    for (U_32 i = 0; i < input_size; i++)
+    for (size_t i = 0; i < input_size; i++)
     {
         if (decompressed_buffer && input_buffer[i] != decompressed_buffer[i])
         {           
@@ -55,16 +55,16 @@ void test_lz77_size_of_window_treatment(const U_32 level, const U_32 dictionary_
     ASSERT(dictionary_expected == dictionary_size && buffer_search_expected == buffer_search_size, "SIZE OF WINDOW WORKS WRONG");
 }
 
-void test_lz77_encode_treatment(const U_08* input_buffer, U_32 input_size, U_32 compress_level, U_08* output_expected)
+void test_lz77_encode_treatment(const U_08* input_buffer, size_t input_size, U_32 compress_level, U_08* output_expected)
 {
     U_08* output_buffer = (U_08*)malloc(input_size * sizeof(Encoded_sequence_t));
-    U_32 output_size;
+    size_t output_size;
     lz77_encode(input_buffer, input_size, output_buffer, &output_size, compress_level);
 
     U_08 flag = 1;
     if (output_buffer)
     {
-        for (U_32 i = 0; i < output_size; i++)
+        for (size_t i = 0; i < output_size; i++)
         {
             if ((i + 1) % 6 && output_buffer[i] != output_expected[i])
             {
@@ -76,8 +76,8 @@ void test_lz77_encode_treatment(const U_08* input_buffer, U_32 input_size, U_32 
     ASSERT_EQUAL(flag, 1, "LZ77 encode failed");
 }
 
-void test_lz77_decode_treatment(const U_08* input_buffer, U_32 input_size, const U_08* output_expected, 
-    const U_32 output_size_expected)
+void test_lz77_decode_treatment(const U_08* input_buffer, size_t input_size, const U_08* output_expected,
+    const size_t output_size_expected)
 {
     U_08* output_buffer_actual = (U_08*)malloc(output_size_expected * sizeof(U_08));
     if (output_buffer_actual == NULL)
@@ -88,7 +88,7 @@ void test_lz77_decode_treatment(const U_08* input_buffer, U_32 input_size, const
     lz77_decode(input_buffer, &input_size, output_buffer_actual);
 
     U_08 flag = 1;
-    for (U_32 i = 0; i < output_size_expected; i++)
+    for (size_t i = 0; i < output_size_expected; i++)
     {
         if (output_buffer_actual && output_buffer_actual[i] != output_expected[i])
         {
@@ -98,9 +98,9 @@ void test_lz77_decode_treatment(const U_08* input_buffer, U_32 input_size, const
     ASSERT_EQUAL(flag, 1, "LZ77 decode failed");
 }
 
-void generate_random_input(U_08* buffer, U_32 size)
+void generate_random_input(U_08* buffer, size_t size)
 {
-    for (U_32 i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++)
     {
         buffer[i] = rand() % 256;
     }

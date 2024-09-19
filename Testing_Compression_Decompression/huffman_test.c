@@ -34,7 +34,7 @@ void test_huffman_encode(void) {
     const U_08 input[] = "AABBBCCCC";
     U_32 input_size = strlen((char*)input);
     U_08 output_buffer[1024];
-    U_32 output_size;
+    size_t output_size;
     huffman_encode(input, output_buffer, input_size, &output_size);
     ASSERT(output_size > 0, "Output size should be greater than 0");
     //ASSERT(output_size < input_size, "Compressed size should be less than input size");
@@ -43,7 +43,7 @@ void test_huffman_encode(void) {
 void test_get_tree()
 {
     U_08 output_buffer[100];
-    U_32 output_size;
+    size_t output_size;
     U_32 tree_length;
     Huffman_decode_node* root, * tmp_root, * nodes;
 
@@ -100,12 +100,12 @@ void test_get_tree()
 void test_find_ascii_in_tree()
 {
     U_08* output_buffer = (U_08*)malloc(100);
-    U_32 output_size;
+    size_t output_size;
     U_32 tree_length;
     Huffman_metadata* metadata;
     Huffman_decode_node* root;
     U_08 ascii;
-    U_32 num_bits = 0;
+    size_t num_bits = 0;
     huffman_encode("green", output_buffer, 5, &output_size);
     root = get_tree(output_buffer, &tree_length);
     output_buffer += (sizeof(metadata->tree_length) + sizeof(Huffman_decode_node) * tree_length);
@@ -119,12 +119,12 @@ void test_find_ascii_in_tree()
 void test_find_ascii_last_byte()
 {
     U_08* output_buffer = (U_08*)malloc(100);
-    U_32 output_size;
+    size_t output_size;
     U_32 tree_length;
     Huffman_metadata* metadata;
     Huffman_decode_node* root;
     U_08 ascii;
-    U_32 num_bits = 0;
+    size_t num_bits = 0;
     U_08* result = (U_08*)malloc(5);
     huffman_encode("april", output_buffer, 5, &output_size);
     root = get_tree(output_buffer, &tree_length);
@@ -140,8 +140,8 @@ void test_exactly_bits_in_bytes()
     U_08* input = "abcd";// "ELOOLE";
     size_t input_size = 4;
     U_08* output = (U_08*)malloc(input_size + sizeof(Huffman_metadata));
-    U_32 output_size;
-    U_32 size = 0;
+    size_t output_size;
+    size_t size = 0;
     U_08* result = (U_08*)malloc(input_size);
     huffman_encode(input, output, input_size, &output_size);
     huffman_decode(output, &output_size, result, &size);
@@ -191,8 +191,8 @@ Businesses can use the interface to evaluate the effectiveness of DSS transactio
 DSS interfaces include simple windows, complex menu - driven interfaces and command - line interfaces.\n";
     size_t input_size = strlen(input);
     U_08* output = (U_08*)malloc(input_size + sizeof(Huffman_metadata));
-    U_32 output_size;
-    U_32 size = 0;
+    size_t output_size;
+    size_t size = 0;
     U_08* result = (U_08*)malloc(input_size);
     huffman_encode(input, output, input_size, &output_size);
     huffman_decode(output, &output_size, result, &size);
@@ -208,8 +208,8 @@ void test_not_exactly_bits_in_bytes()
     U_08* input = "april";
     size_t input_size = strlen(input);
     U_08* output = (U_08*)malloc(input_size + sizeof(Huffman_metadata));
-    U_32 output_size;
-    U_32 size = 0;
+    size_t output_size;
+    size_t size = 0;
     U_08* result = (U_08*)malloc(input_size);
     huffman_encode(input, output, input_size, &output_size);
     huffman_decode(output, &output_size, result, &size);

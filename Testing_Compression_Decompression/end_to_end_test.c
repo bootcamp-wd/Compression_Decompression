@@ -10,7 +10,7 @@ void end_to_end_treatment(const U_08* orginal_test_file, U_08* input_buffer,U_08
 	U_08* final_path = (U_08*)malloc(path_size + suffix_size);
 	strcpy_s(final_path, path_size + suffix_size + 1, decompressed_test_file);
 	strcat_s(final_path, path_size + suffix_size + 1, suffix);
-
+	int flag = 1;
 	U_08* res_buffer = NULL;
 	size_t res_size;
 
@@ -23,7 +23,16 @@ void end_to_end_treatment(const U_08* orginal_test_file, U_08* input_buffer,U_08
 	res_buffer = read_file(final_path, &res_size);
 
 	//compare the result 
-	ASSERT(strcmp(input_buffer, res_buffer), "The data changed in the compression-decompression process ");
+	for (size_t i = 0; i < res_size; i++)
+	{
+		if (input_buffer[i] != res_buffer[i])
+		{
+			flag = 0;
+		}
+	}
+	ASSERT_EQUAL(flag, 1, "Decompressed data does not match original");
+
+	//ASSERT(strcmp(input_buffer, res_buffer), "The data changed in the compression-decompression process ");
 
 }
 
@@ -143,20 +152,19 @@ void long_file_test() {
 	";
 	size_t txt_size = strlen(txt);
 
-	size_t buffer_size = (txt_size * 100001); // Adjust buffer size calculation
+	size_t buffer_size = (txt_size * 103); // Adjust buffer size calculation
 	U_08* buffer = (U_08*)malloc(buffer_size);
 
 	if (buffer != NULL)
 	{
 		if (strcpy_s(buffer, buffer_size, txt) == 0) // Copy txt to buffer securely 
 		{
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 100; i++)
 			{
 				strncat_s(buffer, buffer_size, txt, txt_size); // Concatenate txt to buffer securely
 			}
+			write_file(file_path, buffer, buffer_size);
 			end_to_end_treatment(file_path, buffer, ".txt");
-			// Clean up allocated memory
-			free(buffer);
 		}
 	}
 }
@@ -189,7 +197,7 @@ void Text_file_test()
 
 void Image_file_test()
 {
-	U_32 buffer_size;
+	size_t buffer_size;
 	const U_08* file_path = "input_test.png";
 	U_08* buffer = read_file(file_path, &buffer_size);
 	end_to_end_treatment(file_path, buffer, ".png");
@@ -225,7 +233,7 @@ void random_file_test()
 	const U_08* file_path = "input_test.txt";
 	U_08* buffer = (U_08*)malloc(buffer_size);
 
-	for (U_32 i = 0; i < buffer_size; i++)
+	for (size_t i = 0; i < buffer_size; i++)
 	{
 		// Generate random printable ASCII characters (from space (32) to tilde (126))
 		buffer[i] = (U_08)rand() % 256;
