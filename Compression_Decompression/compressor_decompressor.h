@@ -19,16 +19,16 @@
 typedef struct file_metadata {
 	
 	//lz77 decode output
-	U_32 original_size;
+	size_t original_size;
 	//huffman decode output
-	U_32 size_output_huffman;
+	size_t size_output_huffman;
 }file_metadata;
 
 void process_file(const U_08* input_path,const U_08* output_path, U_32 compress_level, U_32 compress);
 
-void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, 
-	U_32* output_size, U_32 compress_level);
-void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, U_32* output_size);
+void compress_data(const U_08* input_buffer, size_t input_size, U_08** output_buffer, 
+	size_t* output_size, U_32 compress_level);
+void decompress_data(const U_08* input_buffer, size_t input_size, U_08** output_buffer, size_t* output_size);
 
 //void metadata_treatment(const U_08* file_path, U_08* extension, U_08* metadata_path, FILE* metadata_file,
 //	U_08* buffer, const U_08* read_write_mode);
