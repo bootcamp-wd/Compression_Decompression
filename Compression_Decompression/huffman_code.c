@@ -150,8 +150,8 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer_p, U_32 in
     count_frequencies(data_to_compress, input_size, nodes);
     qsort(nodes, ASCII_SIZE, sizeof(Huffman_node_t), huffman_frequency_compare);
 
-    Huffman_node_t* root = huffman_build_tree(nodes, &start_index, &last_index);
-    huffman_generate_codes(root);
+    Huffman_node_t root = huffman_build_tree(nodes, &start_index, &last_index);
+    huffman_generate_codes(&root);
 
     //// Calculate the total size needed for metadata and nodes
     //size_t metadata_size = sizeof(Huffman_metadata);
@@ -204,7 +204,7 @@ void huffman_encode(const U_08* data_to_compress, U_08* output_buffer_p, U_32 in
  *                last_index - pointer to index of the last value (contain values) in the nodes array
  * Returned     : pointer to the root of the Huffman tree
  ***************************************************************************/
-Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_32* last_index)
+Huffman_node_t huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_32* last_index)
 {
     Huffman_node_t* min_leaf = nodes;
     Huffman_node_t* min_parent = nodes + ASCII_SIZE;
@@ -220,9 +220,10 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_3
     while (min_parent - nodes < NODES_IN_TREE && flag)
     {
         Huffman_node_t* min_node1 = extract_min(&min_leaf, &min_parent, &nodes[ASCII_SIZE]);
+
         Huffman_node_t* min_node2 = extract_min(&min_leaf, &min_parent, &nodes[ASCII_SIZE]);
 
-        if (!min_node2->frequency)
+        if (!min_node2->frequency || min_node2->frequency<0)
         {
             flag = 0;
         }
@@ -246,7 +247,7 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_3
         }
     }
     *last_index = current_parent_index - 1;
-    return &nodes[*last_index];
+    return nodes[*last_index];
 }
 
 /***************************************************************************
@@ -348,6 +349,7 @@ void huffman_decode(const U_08* input_buffer_p, const U_32* input_size, U_08* ou
     U_32 bit_index = 0;
     U_32 last_bytes = 2;
     U_32 data_bits_length_without_lasts_bytes = (data_length - last_bytes) * NUM_BITS_IN_BYTE;
+    int k = 0;
 
     while (bit_index < data_bits_length_without_lasts_bytes)
     {
@@ -355,7 +357,7 @@ void huffman_decode(const U_08* input_buffer_p, const U_32* input_size, U_08* ou
 
         U_08 decompressed_byte = find_ascii_in_tree(&input_pointer, nodes, &bit_index, tree_length);
 
-        printf("decompressed_byte:%c ", decompressed_byte);
+        //printf("decompressed_byte:%c ", decompressed_byte);
         //write to output buffer the decomprresed byte
         *output_pointer = decompressed_byte;
         output_pointer++;
@@ -396,7 +398,6 @@ U_08 find_ascii_in_tree(const U_08** input_pointer, Huffman_decode_node* nodes, 
     current_node = nodes + (tree_length - 1);
     U_08 mask;
     U_08 index_bit_in_byte;
-
     //move over the tree according to the received bits until finding leaves where the ascii code 
     while (current_node && current_node->left != 512 && current_node->right != 512)
     {

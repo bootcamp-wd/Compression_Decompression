@@ -36,7 +36,7 @@
 
 #define COMPRESS 1
 #define UN_COMPRESS 0
-#define DEFAULT_COMPRESSION_LEVEL 1
+#define DEFAULT_COMPRESSION_LEVEL 6
 
 
 void end_to_end_treatment(const U_08* orginal_test_file, U_08* input_buffer,U_08* suffix);

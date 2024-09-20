@@ -16,9 +16,13 @@
 
 #define BUFFER_SIZE 4096
 
-typedef struct output {
+typedef struct file_metadata {
+	
+	//lz77 decode output
 	U_32 original_size;
-}output;
+	//huffman decode output
+	U_32 size_output_huffman;
+}file_metadata;
 
 void process_file(const U_08* input_path,const U_08* output_path, U_32 compress_level, U_32 compress);
 
