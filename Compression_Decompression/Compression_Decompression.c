@@ -222,7 +222,7 @@
 
 #define COMPRESS 1
 #define UN_COMPRESS 0
-#define DEFAULT_COMPRESSION_LEVEL 1
+#define DEFAULT_COMPRESSION_LEVEL 6
 
 int main()
 {
@@ -352,8 +352,8 @@ int main()
     //printf("\n");
 
 
-    const U_08* original_file = "input.png";
-    const U_08* compressed_file = "compressed11.bin";
+    const U_08* original_file = "tatauranga-umanga-maori-statistics-on-maori-businesses-2020-CSV-te-reo.csv";
+    const U_08* compressed_file = "compressed_level_6.bin";
     const U_08* decompressed_file = "decompressed11";
 
     printf("compression...\n");

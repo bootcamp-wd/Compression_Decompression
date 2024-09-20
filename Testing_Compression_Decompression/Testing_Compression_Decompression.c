@@ -1,4 +1,9 @@
-﻿#include <stdio.h>
+﻿#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+
+#include <stdio.h>
 #include <time.h>
 #include "test_framework.h"
 #include "lz77_test.h"
@@ -47,7 +52,7 @@ int main()
     add_test("TEST REGULAR SIZE FILE", regular_size_file_test);
     add_test("TEST SHORT FILE", short_file_test);
     add_test("TEST MEDIUM FILE", medium_file_test);
-    //add_test("TEST LONG FILE", long_file_test);
+    add_test("TEST LONG FILE", long_file_test);
     add_test("TEST EMPTY FILE", empty_file_test);
     add_test("TEST SINGLE CHARACTER", single_character);
     //suffix
@@ -66,6 +71,8 @@ int main()
 
    run_all_tests();
 
+   _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
+   _CrtDumpMemoryLeaks();
     return 0;
 }
 

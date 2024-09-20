@@ -4,7 +4,7 @@ project(Compression_Decompression)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(Compression_Decompression)
-include_directories(Testsing)
+include_directories(Testsing_Compression_Decompression)
 
 add_executable(Compression_Decompression
     Compression_Decompression/Compression_Decompression.c
@@ -33,8 +33,8 @@ add_executable(Compression_Decompression
     Compression_Decompression/priority_queue.h
     Compression_Decompression/resource.h
     Compression_Decompression/Source.cpp
-    Testsing/lz77_test.c
-    Testsing/lz77_test.h
-    Testsing/main.c
-    Testsing/test_framework.c
-    Testsing/test_framework.h)
+        Testsing_Compression_Decompression/lz77_test.c
+        Testsing_Compression_Decompression/lz77_test.h
+        Testsing_Compression_Decompression/main.c
+        Testsing_Compression_Decompression/test_framework.c
+        Testsing_Compression_Decompression/test_framework.h)
