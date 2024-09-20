@@ -35,8 +35,8 @@
 
 
 void files_test();
-void read_test(const U_08* file_path, const U_08* exepted_buffer, U_32 file_size);
-void write_test(const U_08* file_path, const U_08* buffer, U_32 file_size);
+void read_test(const U_08* file_path, const U_08* exepted_buffer, size_t file_size);
+void write_test(const U_08* file_path, const U_08* buffer, size_t file_size);
 
 
 

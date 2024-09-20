@@ -13,7 +13,7 @@ void process_file(const U_08* input_path, const U_08* output_path, U_32 compress
 {
     U_08* input_buffer_p = NULL;
     U_08* compressed_data_buffer_p = NULL;
-    U_32 file_size, compressed_buffer_size;
+    size_t file_size, compressed_buffer_size;
     FILE* metadata_file = NULL;
     U_08 metadata_path[BUFFER_SIZE];
     U_08 extension[BUFFER_SIZE] = { 0 };
@@ -88,8 +88,8 @@ void process_file(const U_08* input_path, const U_08* output_path, U_32 compress
 *                 compress_level - gets the level of compressing, more compressed is less fast
 * Returned		: none
 * *************************************************************************/
-void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer,
-    U_32* output_size, U_32 compress_level)
+void compress_data(const U_08* input_buffer, size_t input_size, U_08** output_buffer,
+    size_t* output_size, U_32 compress_level)
 {
     file_metadata sizes_for_decompression;
     sizes_for_decompression.original_size = input_size;
@@ -106,8 +106,8 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
         perror("Memory allocation failed for Huffman output");
         exit(1);
     }
-    U_32 lz77_output_size = 0;
-    U_32 huffman_output_size = 0;
+    size_t lz77_output_size = 0;
+    size_t huffman_output_size = 0;
 
     lz77_encode(input_buffer, input_size, lz77_output, &lz77_output_size, compress_level);
 
@@ -116,7 +116,7 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
     huffman_encode(lz77_output, huffman_output, lz77_output_size, &huffman_output_size);
 
     *output_size = sizeof(file_metadata) + huffman_output_size;
-    *output_buffer = (U_08*)malloc((*output_size) * sizeof(U_08));
+    *output_buffer = (U_08*)malloc((*output_size));
     if (*output_buffer == NULL) // Check the dereferenced pointer
     {
         perror("Memory allocation failed in compress_data");
@@ -139,11 +139,11 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
         free(lz77_output);
         lz77_output = NULL;
     }
-    /* if (huffman_output)
+     if (huffman_output)
      {
          free(huffman_output);
          huffman_output = NULL;
-     }*/
+     }
 }
 
 /**************************************************************************
@@ -155,44 +155,43 @@ void compress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buff
 *                 output_size - a variable to save the size of output
 * Returned		: none
 * *************************************************************************/
-void decompress_data(const U_08* input_buffer, U_32 input_size, U_08** output_buffer, U_32* output_size)
+void decompress_data(const U_08* input_buffer, size_t input_size, U_08** output_buffer, size_t* output_size)
 {
     /*  printf("Decompress function ");
       for (int i = 0; i < input_size; i++) {
           printf("%02x ", input_buffer[i]);
       }
       printf("\n");*/
-    file_metadata output;
-    output = *(file_metadata*)input_buffer;
+    file_metadata sizes;
+    sizes = *(file_metadata*)input_buffer;
 
-    *output_size = output.original_size;
+    *output_size = sizes.original_size;
 
     //U_32 size = sizeof(Huffman_decode_node);
-    U_08* huffman_output = (U_08*)malloc(output.size_output_huffman);
+    U_08* huffman_output = (U_08*)malloc(sizes.size_output_huffman);
     if (huffman_output == NULL)
     {
         perror("Memory allocation failed in decompress_data");
         exit(1);
     }
 
-    const U_08* input_huffman = input_buffer + sizeof(output);
-    U_32 input_size_huffman = input_size - sizeof(file_metadata);
-    U_32 output_size_huffman = 0;
+    const U_08* input_huffman = input_buffer + sizeof(sizes);
+    size_t input_size_huffman = input_size - sizeof(file_metadata);
+    size_t output_size_huffman = 0;
     huffman_decode(input_huffman, &input_size_huffman, huffman_output, &output_size_huffman);
     assert(output_size_huffman, output.size_output_huffman);
     
     //U_08* lz77_output = (U_08*)malloc((output_size_huffman * 16384) * sizeof(U_08));
-    U_08* lz77_output = (U_08*)malloc(output.original_size);
+    U_08* lz77_output = (U_08*)malloc(sizes.original_size);
     if (lz77_output == NULL)
     {
         perror("Memory allocation failed in decompress_data");
         exit(1);
     }
 
-    //void huffman_decode(U_08* input_buffer_p, U_32* input_size, U_08 * output_buffer_p)
     lz77_decode(huffman_output, &output_size_huffman, lz77_output);
 
-    *output_buffer = (U_08*)malloc(output.original_size * sizeof(U_08));
+    *output_buffer = (U_08*)malloc(sizes.original_size * sizeof(U_08));
     if (*output_buffer == NULL)
     {
         perror("Memory allocation failed for output_buffer");
