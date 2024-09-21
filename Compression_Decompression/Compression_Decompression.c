@@ -353,8 +353,8 @@ int main()
 
 
     const U_08* original_file = "tatauranga-umanga-maori-statistics-on-maori-businesses-2020-CSV-te-reo.csv";
-    const U_08* compressed_file = "compressed_level_6.bin";
-    const U_08* decompressed_file = "decompressed11";
+    const U_08* compressed_file = "decompressed_level_6_huffman_lz77.csv.bin";
+    const U_08* decompressed_file = "decompressed_level_6_huffman";
 
     printf("compression...\n");
     process_file(original_file, compressed_file, DEFAULT_COMPRESSION_LEVEL, COMPRESS);

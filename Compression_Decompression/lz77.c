@@ -90,7 +90,7 @@ S_32 compress_level)
 			}
 		}
 		//if this is the size of the dictionary the first goes forwards
-		if ((dict_pointer_last - dict_pointer_first + 1) == dictionary_size)\
+		if ((dict_pointer_last - dict_pointer_first + 1) == dictionary_size)
 		{
 			dict_pointer_first++;
 		}
