@@ -405,5 +405,6 @@ cmake_install.cmake
 *.csv
 *.bin
 *.jpg
-
+*.pdf
+*.m4a
 
