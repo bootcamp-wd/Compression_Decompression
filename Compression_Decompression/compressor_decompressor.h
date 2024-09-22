@@ -14,7 +14,6 @@
 #include "file_managment.h"
 #include "general_define.h"
 
-#define BUFFER_SIZE 4096
 
 typedef struct file_metadata {
 	

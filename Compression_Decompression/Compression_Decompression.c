@@ -1,366 +1,184 @@
-//#include "compressor_decompressor.h"
-//#include "huffman_code.h"
-//#include "general_define.h"
 //
-//#define COMPRESS 1
-//#define UN_COMPRESS 1
-//#define DEFAULT_COMPRESSION_LEVEL 1
 //
-//int main()
-//{
-//	const U_08 st[28] = "april";
-//	const U_08 res[100];
-//	const U_08 out[28];
-//	int res_size;
-//	huffman_encode(st, res, 27, &res_size);
-//	printf("%s", res);
-//	huffman_decode(res, &res_size, out);
-//	printf("%s", out);
 //
-//	const U_08* original_file = "input.txt";
-//	const U_08* compressed_file = "compressed.bin";
-//	const U_08* decompressed_file = "decompressed";
+//#define DEFAULT_COMPRESSION_LEVEL 6
 //
-//	// Simulate compression
-//	printf("Simulating compression...\n");
-//	process_file(original_file, compressed_file, 1, 1);
-//	//void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level, S_32 compress)
-//	printf("compression...\n");
-//	process_file(original_file, compressed_file, DEFAULT_COMPRESSION_LEVEL, COMPRESS);
 //
-//	// Simulate decompression
-//	printf("\nSimulating decompression...\n");
-//	process_file(compressed_file, decompressed_file, 1, 0);
-//	printf("\ndecompression...\n");
-//	process_file(compressed_file, decompressed_file, DEFAULT_COMPRESSION_LEVEL, UN_COMPRESS);
-//
-//	//int size = 5, output_size = 0;
-//	//unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;
-//
-//}
-
-//#include <stdio.h>
 //#include <stdlib.h>
-//#include <string.h>
-//#include "compressor_decompressor.h"
-//#include "huffman_code.h"
-//#include "general_define.h"
-//#define COMPRESS 1
-//#define UN_COMPRESS 1
-//#define DEFAULT_COMPRESSION_LEVEL 1
-//int main()
-//{
-//	// "april a" -lz77 decode ���� �
-//	// ���� � 5 ������ ����� ��� ��� ����
-//	// "hello world !!!! - ����� �� �� ����� �������
-//
-//	const S_08* initial_string = "abcd efgh&ijklmn";
-//	U_32 length = strlen(initial_string) + 1;  // +1 for the null terminator
-//	U_08* st = (U_08*)malloc(length * sizeof(U_08));
-//	memcpy(st, initial_string, length);
-//
-//	U_08* res = (U_08*)malloc(1000 * sizeof(U_08));
-//	U_08* out = (U_08*)malloc(1000 * sizeof(U_08));
-//	//const U_08 st[30] = "abcd efgh&ijklmn";
-//	//const U_08 res[100];
-//	//const U_08 out[100];
-//	int res_size;
-//	int out_size;
-//	lz77_encode(st, length, res, &res_size, DEFAULT_COMPRESSION_LEVEL);
-//	for (int i = 0; i < res_size; i++)
-//	{
-//		printf("%hi", res[i]);
-//		i += 2;
-//		printf("%hi", res[i]);
-//		i += 2;
-//		printf("%c", res[i]);
-//	}
-//	printf("\n");
-//
-//	printf("\n");
-//	huffman_encode(res, out, res_size, &out_size);
-//	printf("%s", res);
-//	huffman_decode(out, &out_size, res);
-//	printf("%s", res);
-//	int size1 = 66;
-//	lz77_decode(res, &size1, out);
-//	for (int i = 0; i < length; i++)
-//	{
-//		printf("%c", out[i]);
-//	}
-//	printf("\n");
-//	free(st);
-//	free(res);
-//	free(out);
-//	const U_08* original_file = "input.png";
-//	const U_08* compressed_file = "compressed.bin";
-//	const U_08* decompressed_file = "decompressed";
-//	printf("compression...\n");
-//	process_file(original_file, compressed_file, DEFAULT_COMPRESSION_LEVEL, COMPRESS);
-//	printf("\ndecompression...\n");
-//	process_file(compressed_file, decompressed_file, DEFAULT_COMPRESSION_LEVEL, UN_COMPRESS);
-//	//int size = 5, output_size = 0;
-//	//unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;
-//}
-
-
-
-
-
-//#include "compressor_decompressor.h"
-//#include "huffman_code.h"
-//#include "general_define.h"
-//
-//#define COMPRESS 1
-//#define UN_COMPRESS 1
-//#define DEFAULT_COMPRESSION_LEVEL 1
-//
-//int main()
-//{
-//	const U_08 st[28] = "april";
-//	const U_08 res[100];
-//	const U_08 out[28];
-//	int res_size;
-//	huffman_encode(st, res, 27, &res_size);
-//	printf("%s", res);
-//	huffman_decode(res, &res_size, out);
-//	printf("%s", out);
-//
-//	const U_08* original_file = "input.txt";
-//	const U_08* compressed_file = "compressed.bin";
-//	const U_08* decompressed_file = "decompressed";
-//
-//	// Simulate compression
-//	printf("Simulating compression...\n");
-//	process_file(original_file, compressed_file, 1, 1);
-//	//void process_file(const U_08* input_path, U_08* output_path, S_32 compress_level, S_32 compress)
-//	printf("compression...\n");
-//	process_file(original_file, compressed_file, DEFAULT_COMPRESSION_LEVEL, COMPRESS);
-//
-//	// Simulate decompression
-//	printf("\nSimulating decompression...\n");
-//	process_file(compressed_file, decompressed_file, 1, 0);
-//	printf("\ndecompression...\n");
-//	process_file(compressed_file, decompressed_file, DEFAULT_COMPRESSION_LEVEL, UN_COMPRESS);
-//
-//	//int size = 5, output_size = 0;
-//	//unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;
-//
-//}
-
 //#include <stdio.h>
-//#include <stdlib.h>
 //#include <string.h>
-//#include "compressor_decompressor.h"
-//#include "huffman_code.h"
-//#include "general_define.h"
-//#define COMPRESS 1
-//#define UN_COMPRESS 1
-//#define DEFAULT_COMPRESSION_LEVEL 1
-//int main()
-//{
-//	// "april a" -lz77 decode ���� �
-//	// ���� � 5 ������ ����� ��� ��� ����
-//	// "hello world !!!! - ����� �� �� ����� �������
-//
-//	const S_08* initial_string = "abcd efgh&ijklmn";
-//	U_32 length = strlen(initial_string) + 1;  // +1 for the null terminator
-//	U_08* st = (U_08*)malloc(length * sizeof(U_08));
-//	memcpy(st, initial_string, length);
-//
-//	U_08* res = (U_08*)malloc(1000 * sizeof(U_08));
-//	U_08* out = (U_08*)malloc(1000 * sizeof(U_08));
-//	//const U_08 st[30] = "abcd efgh&ijklmn";
-//	//const U_08 res[100];
-//	//const U_08 out[100];
-//	int res_size;
-//	int out_size;
-//	lz77_encode(st, length, res, &res_size, DEFAULT_COMPRESSION_LEVEL);
-//	for (int i = 0; i < res_size; i++)
-//	{
-//		printf("%hi", res[i]);
-//		i += 2;
-//		printf("%hi", res[i]);
-//		i += 2;
-//		printf("%c", res[i]);
-//	}
-//	printf("\n");
-//
-//	printf("\n");
-//	huffman_encode(res, out, res_size, &out_size);
-//	printf("%s", res);
-//	huffman_decode(out, &out_size, res);
-//	printf("%s", res);
-//	int size1 = 66;
-//	lz77_decode(res, &size1, out);
-//	for (int i = 0; i < length; i++)
-//	{
-//		printf("%c", out[i]);
-//	}
-//	printf("\n");
-//	free(st);
-//	free(res);
-//	free(out);
-//	const U_08* original_file = "input.png";
-//	const U_08* compressed_file = "compressed.bin";
-//	const U_08* decompressed_file = "decompressed";
-//	printf("compression...\n");
-//	process_file(original_file, compressed_file, DEFAULT_COMPRESSION_LEVEL, COMPRESS);
-//	printf("\ndecompression...\n");
-//	process_file(compressed_file, decompressed_file, DEFAULT_COMPRESSION_LEVEL, UN_COMPRESS);
-//	//int size = 5, output_size = 0;
-//	//unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;
-//}
-
-
-
-
-
+//#include "getopt.h"
+//#include "lz77.h"
 #include "compressor_decompressor.h"
 #include "huffman_code.h"
 #include "general_define.h"
-
-#define COMPRESS 1
-#define UN_COMPRESS 0
-#define DEFAULT_COMPRESSION_LEVEL 6
-
+//
+///***************************************************************************
+// *                                CONSTANTS
+// ***************************************************************************/
+//#define MIN_LA_SIZE 2       /* min lookahead size */
+//#define MAX_LA_SIZE 255     /* max lookahead size */
+//#define MIN_SB_SIZE 0       /* min search buffer size */
+//#define MAX_SB_SIZE 65535   /* max search buffer size */
+//
+// /***************************************************************************
+//  *                            TYPE DEFINITIONS
+//  ***************************************************************************/
+//typedef enum {
+//    ENCODE,
+//    DECODE
+//} MODES;
+//
+///***************************************************************************
+// *                            USER INTERFACE
+// * Syntax: ./lz77 <options>
+// * Options: -c: compression mode
+// *          -d: decompression mode
+// *          -i <filename>: input file
+// *          -o <filename>: output file
+// *          -l <value> : lookahead size (default 15)
+// *          -s <value> : search-buffer size (default 4095)
+// *          -h: help
+// ***************************************************************************/
+//int main(int argc, char* argv[])
+//{
+//    /* variables */
+//    int opt;
+//    FILE* file = NULL;
+//    struct bitFILE* bitF = NULL;
+//    MODES mode = -1;
+//    char* filenameIn = NULL, * filenameOut = NULL;
+//    int la_size = -1, sb_size = -1; /* default size */
+//
+//    while ((opt = getopt(argc, argv, "cdi:o:l:s:h")) != -1)
+//    {
+//        switch (opt)
+//        {
+//        case 'c':       /* compression mode */
+//            mode = ENCODE;
+//            break;
+//
+//        case 'd':       /* decompression mode */
+//            mode = DECODE;
+//            break;
+//
+//        case 'i':       /* input file name */
+//            if (filenameIn != NULL) {
+//                fprintf(stderr, "Multiple input files not allowed.\n");
+//                goto error;
+//            }
+//            filenameIn = malloc(strlen(optarg) + 1);
+//            strcpy(filenameIn, optarg);
+//
+//            break;
+//
+//        case 'o':       /* output file name */
+//            if (filenameOut != NULL) {
+//                fprintf(stderr, "Multiple output files not allowed.\n");
+//                goto error;
+//            }
+//            filenameOut = malloc(strlen(optarg) + 1);
+//            strcpy(filenameOut, optarg);
+//
+//            break;
+//
+//        case 'l':       /* lookahead size */
+//            la_size = atoi(optarg);
+//            if (la_size < MIN_LA_SIZE || la_size > MAX_LA_SIZE) {
+//                fprintf(stderr, "Bad lookahead size value.\n");
+//                goto error;
+//            }
+//            break;
+//
+//        case 's':       /* search-buffer size */
+//            sb_size = atoi(optarg);
+//            if (sb_size < MIN_SB_SIZE || sb_size > MAX_SB_SIZE) {
+//                fprintf(stderr, "Bad search-buffer size value.\n");
+//                goto error;
+//            }
+//            break;
+//
+//        case 'h':       /* help */
+//            printf("Usage: lz77 <options>\n");
+//            printf("  -c : Encode input file to output file.\n");
+//            printf("  -d : Decode input file to output file.\n");
+//            printf("  -i <filename> : Name of input file.\n");
+//            printf("  -o <filename> : Name of output file.\n");
+//            printf("  -l <value> : Lookahead size (default 15)\n");
+//            printf("  -s <value> : Search-buffer size (default 4095)\n");
+//            printf("  -h : Command line options.\n\n");
+//            break;
+//
+//        }
+//    }
+//
+//    /* validate command line */
+//    if (filenameIn == NULL) {
+//        fprintf(stderr, "Input file must be provided\n");
+//        goto error;
+//    }
+//    else if (filenameOut == NULL)
+//    {
+//        fprintf(stderr, "Output file must be provided\n");
+//        goto error;
+//    }
+//
+//    if (mode == ENCODE) {
+//        if ((file = fopen(filenameIn, "rb")) == NULL) {
+//            perror("Opening input file");
+//            goto error;
+//        }
+//        if ((bitF = bitIO_open(filenameOut, BIT_IO_W)) == NULL) {
+//            perror("Opening output file");
+//            goto error;
+//        }
+//        encode(file, bitF, la_size, sb_size);
+//
+//    }
+//    else if (mode == DECODE) {
+//        if ((bitF = bitIO_open(filenameIn, BIT_IO_R)) == NULL) {
+//            perror("Opening input file");
+//            goto error;
+//        }
+//        if ((file = fopen(filenameOut, "w")) == NULL) {
+//            perror("Opening output file");
+//            goto error;
+//        }
+//        decode(bitF, file);
+//
+//    }
+//    else {
+//        fprintf(stderr, "Select ENCODE or DECODE mode\n");
+//        goto error;
+//    }
+//
+//    fclose(file);
+//    bitIO_close(bitF);
+//    return 0;
+//
+//    /* handle error */
+//error:
+//    if (file != NULL) {
+//        fclose(file);
+//    }
+//    if (bitF != NULL) {
+//        bitIO_close(bitF);
+//    }
+//    exit(EXIT_FAILURE);
+//}
 int main()
 {
-    //const U_08 st[30] = "yael";
-    //U_08* res = (U_08*)malloc(strlen(st) * get_size_of_encoded_sequence_struct() * sizeof(U_08) + 1000);
-    //U_08* out = (U_08*)malloc(1000 * sizeof(U_08));
-    ////U_08 res[1000];  // Output buffer for lz77_encode
-    ////U_08 out[1000];  // Output buffer for huffman_encode
-    //int res_size;
-    //int out_size;
-    //// LZ77 Encoding
-    //lz77_encode(st, 4, res, &res_size, DEFAULT_COMPRESSION_LEVEL);
-    ///*prints of lz77_encode*/
+    
 
-    //printf("res_size after lz77_encode: %d\n", res_size);
-    //printf("res of LZ_77 encode:\n");
-    //for (int i = 0; i < res_size; i+=2)
-    //{
-    //    printf("%hi", res[i]);
-    //    i += 2;
-    //    printf("%hi", res[i]);
-    //    i += 2;
-    //    printf("%c", res[i]);
-    //}
-    //printf("\n");
-
-    //// Print LZ77 encoded result in hex format
-    //printf("LZ77 Encoded Result: ");
-    //for (int i = 0; i < res_size; i++) {
-    //    printf("%02x ", res[i]);
-    //}
-    //printf("\n");
-
-    //// Huffman Encoding
-    //huffman_encode(res, out, res_size, &out_size);
-    //printf("res_size after huffman_encode: %d\n", res_size);
-    //printf("out_size after huffman_encode: %d\n", out_size);
-
-    //// Print Huffman encoded result in hex format
-    //printf("Huffman Encoded Result: ");
-    //for (int i = 0; i < out_size; i++) {
-    //    printf("%02x ", out[i]);
-    //}
-    //printf("\n");
-
-
-
-    //// Huffman Decoding
-    //huffman_decode(out, &out_size, res);
-    //printf("out_size after huffman_decode: %d\n", out_size);
-
-    //// Print Huffman decoded result
-    //printf("Huffman Decoded Result: ");
-    //for (int i = 0; i < out_size; i++) {
-    //    printf("%c ", res[i]);
-    //}
-    //printf("\n");
-
-    //const U_08 st[30] = "yael";
-    //U_08* res = (U_08*)malloc(strlen(st) * get_size_of_encoded_sequence_struct() * sizeof(U_08) + 1000);
-    //U_08* out = (U_08*)malloc(1000 * sizeof(U_08));
-    ////U_08 res[1000];  // Output buffer for lz77_encode
-    ////U_08 out[1000];  // Output buffer for huffman_encode
-    //int res_size;
-    //int out_size;
-    //// LZ77 Encoding
-    //lz77_encode(st, 4, res, &res_size, DEFAULT_COMPRESSION_LEVEL);
-    ///*prints of lz77_encode*/
-
-    //printf("res_size after lz77_encode: %d\n", res_size);
-    //printf("res of LZ_77 encode:\n");
-    //for (int i = 0; i < res_size; i+=2)
-    //{
-    //    printf("%hi", res[i]);
-    //    i += 2;
-    //    printf("%hi", res[i]);
-    //    i += 2;
-    //    printf("%c", res[i]);
-    //}
-    //printf("\n");
-
-    //// Print LZ77 encoded result in hex format
-    //printf("LZ77 Encoded Result: ");
-    //for (int i = 0; i < res_size; i++) {
-    //    printf("%02x ", res[i]);
-    //}
-    //printf("\n");
-
-    //// Huffman Encoding
-    //huffman_encode(res, out, res_size, &out_size);
-    //printf("res_size after huffman_encode: %d\n", res_size);
-    //printf("out_size after huffman_encode: %d\n", out_size);
-
-    //// Print Huffman encoded result in hex format
-    //printf("Huffman Encoded Result: ");
-    //for (int i = 0; i < out_size; i++) {
-    //    printf("%02x ", out[i]);
-    //}
-    //printf("\n");
-
-
-
-    //// Huffman Decoding
-    //huffman_decode(out, &out_size, res);
-    //printf("out_size after huffman_decode: %d\n", out_size);
-
-    //// Print Huffman decoded result
-    //printf("Huffman Decoded Result: ");
-    //for (int i = 0; i < out_size; i++) {
-    //    printf("%c ", res[i]);
-    //}
-    //printf("\n");
-
-    //// LZ77 Decoding
-    //lz77_decode(res, &res_size, out);
-    //printf("res_size after lz77_decode: %d\n", res_size);
-    //for (int i = 0; i < 4; i++)
-    //{
-    //    printf("%c", out[i]);
-    //}
-    //printf("\n");
-    //// Print LZ77 decoded result
-    //printf("LZ77 Decoded Result: \n");
-    //for (int i = 0; i < res_size; i++) {
-    //    printf("%02x ", out[i]);
-    //}
-    //printf("\n");
-
-
-    const U_08* original_file = "abc.jpg";
-    const U_08* compressed_file = "decompressed_level_6_.bin";
-    const U_08* decompressed_file = "decompressed_level_6_";
+const U_08* original_file = "tatauranga-umanga-maori-statistics-on-maori-businesses-2020-CSV-te-reo.csv";
+    const U_08* compressed_file = "decompressed_compressed_.bin";
+    const U_08* decompressed_file = "decompressed_decompressed";
 
     printf("compression...\n");
-    process_file(original_file, compressed_file, DEFAULT_COMPRESSION_LEVEL, COMPRESS);
+    process_file(original_file, compressed_file, 6, 1);
 
     printf("\ndecompression...\n");
-    process_file(compressed_file, decompressed_file, DEFAULT_COMPRESSION_LEVEL, UN_COMPRESS);
+    process_file(compressed_file, decompressed_file, 6, 0);
 
     //int size = 5, output_size = 0;
     //unsigned char* compressed_data = (unsigned char*)malloc(output_size * sizeof(unsigned char));;

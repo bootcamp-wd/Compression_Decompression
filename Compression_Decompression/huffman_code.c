@@ -179,7 +179,7 @@ void huffman_encode(const U_08* data_to_compress_p, U_08* output_buffer_p, size_
  *                last_index - pointer to index of the last value (contain values) in the nodes array
  * Returned     : pointer to the root of the Huffman tree
  ***************************************************************************/
-Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_32* last_index)
+Huffman_node_t huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_32* last_index)
 {
     Huffman_node_t* min_leaf = nodes;
     Huffman_node_t* min_parent = nodes + ASCII_SIZE;
@@ -216,7 +216,7 @@ Huffman_node_t* huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_3
         }
     }
     *last_index = current_parent_index - 1;
-    return &nodes[*last_index];
+    return nodes[*last_index];
 }
 
 /***************************************************************************
