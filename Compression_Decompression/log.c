@@ -1,3 +1,4 @@
+
 #include "log.h"
 
 // ANSI color codes for log levels

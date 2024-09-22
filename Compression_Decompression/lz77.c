@@ -9,8 +9,8 @@
 *				  buffer_search_size - the largest size that the buffer_search can be
 * Returned		: none
 * *************************************************************************/
-void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_buffer, U_32* output_size,
-	const S_32 compress_level)
+void lz77_encode(const U_08* input_buffer, size_t input_size, U_08* output_buffer, size_t* output_size,
+S_32 compress_level)
 {
 	U_08* dict_pointer_first;
 	U_08* dict_pointer_last;
@@ -51,6 +51,8 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 	//if there is more byte to input entering to the loop
 	while (cur_index_seq < input_size)
 	{
+		print_progress(cur_index_seq, input_size);
+
 		//if its the last byte of the input or the size of the buffer_search entering the current byte to res
 		if (cur_index_seq == input_size - 1 || (buffer_search_pointer_last -
 			buffer_search_pointer_first + 1) == buffer_search_size)
@@ -58,6 +60,7 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 			cur_seq->mis_match_byte = *buffer_search_pointer_last;
 			memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence_t));
 			(*output_size) += sizeof(Encoded_sequence_t);
+
 			//initialize the vars from begin to the next sequence
 			cur_seq->distance = 0;
 			cur_seq->length = 0;
@@ -90,13 +93,17 @@ void lz77_encode(U_08* const input_buffer, U_32 const input_size, U_08* output_b
 			}
 		}
 		//if this is the size of the dictionary the first goes forwards
-		if ((dict_pointer_last - dict_pointer_first + 1) == dictionary_size)\
+		if ((dict_pointer_last - dict_pointer_first + 1) == dictionary_size)
 		{
 			dict_pointer_first++;
 		}
 		dict_pointer_last++;
 		cur_index_seq++;
 	}
+
+	print_progress(input_size, input_size);
+	printf("\n");
+
 	free(cur_seq);
 }
 
@@ -116,12 +123,12 @@ U_08* search_in_dictionary(U_08* dict_pointer_first, U_08* dict_pointer_last,
 	U_08 loc_buffer_search = 0;
 	U_32 size_buffer_search = buffer_search_pointer_last - buffer_search_pointer_first;
 
-	log_debug("Starting search_in_dictionary function");
-	log_info("info");
-	log_error("error");
-	log_trace("trace");
-	log_fatal("fatal");
-	log_warn("WARN");
+	//log_debug("Starting search_in_dictionary function");
+	//log_info("info");
+	//log_error("error");
+	//log_trace("trace");
+	//log_fatal("fatal");
+	//log_warn("WARN");
 
 	//loop that moves all the dictionary
 	for (U_32 i = 0; (dict_pointer_first + i) <= dict_pointer_last; i++)
@@ -210,18 +217,16 @@ void size_of_window_according_level(S_32 compress_level, U_32* dictionary_size, 
  * Returned     : none
  *
  ***************************************************************************/
-void lz77_decode(U_08* input_data, U_32* input_size, U_08* output_data)
+void lz77_decode(const U_08* input_data,const size_t* input_size, U_08* output_data)
 {
-	//pointers to the buffers of the input 
-	U_08* input_pointer;
-	U_08* output_pointer;
+	//pointers to the buffers of the inp
 
-	input_pointer = input_data;
-	output_pointer = output_data;
+	const U_08* input_pointer = input_data;
+	U_08* output_pointer = output_data;
 
 	Encoded_sequence_t current_sequence;
 
-	for (U_32 i = 0; i < (*input_size / sizeof(Encoded_sequence_t)); i++)
+	for (size_t i = 0; i < (*input_size / sizeof(Encoded_sequence_t)); i++)
 	{
 		current_sequence = convert_into_encoded_sequence(input_pointer);
 
@@ -275,4 +280,11 @@ void add_sequence_to_output(U_08* output_pointer, Encoded_sequence_t current_seq
 U_32 get_size_of_encoded_sequence_struct()
 {
 	return sizeof(Encoded_sequence_t);
+}
+
+void print_progress(size_t current, size_t total) 
+{
+	int percent = (current * 100) / total;
+	printf("\rLz77 : %d%%", percent);
+	fflush(stdout);  // Ensure immediate output
 }

@@ -7,6 +7,8 @@
     <ClCompile Include="huffman_code.c" />
     <ClCompile Include="lz77.c" />
     <ClCompile Include="priority_queue.c" />
+    <ClCompile Include="log.c" />
+    <ClCompile Include="getopt.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="compressor_decompressor.h" />
@@ -15,5 +17,7 @@
     <ClInclude Include="huffman_code.h" />
     <ClInclude Include="lz77.h" />
     <ClInclude Include="priority_queue.h" />
+    <ClInclude Include="log.h" />
+    <ClInclude Include="getopt.h" />
   </ItemGroup>
 </Project>

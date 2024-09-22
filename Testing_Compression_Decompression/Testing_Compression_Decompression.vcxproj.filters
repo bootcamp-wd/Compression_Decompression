@@ -51,6 +51,9 @@
     <ClCompile Include="huffman_test.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="algorithms_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Compression_Decompression\compressor_decompressor.h">
@@ -86,8 +89,11 @@
     <ClInclude Include="file_test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="huffman_test.h">
+    <ClInclude Include="algorithms_test.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="huffman_test.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

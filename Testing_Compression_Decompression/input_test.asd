@@ -1,1 +1,0 @@
-today is warm day. baruch hashem

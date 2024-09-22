@@ -35,14 +35,15 @@
 
 
 #define COMPRESS 1
-#define UN_COMPRESS 1
-#define DEFAULT_COMPRESSION_LEVEL 1
+#define UN_COMPRESS 0
+#define DEFAULT_COMPRESSION_LEVEL 6
 
 
-void end_to_end_treatment(const U_08* orginal_test_file, U_08* input_buffer);
+void end_to_end_treatment(const U_08* orginal_test_file, U_08* input_buffer,U_08* suffix);
 //size
 void regular_size_file_test();
 void short_file_test();
+void medium_file_test();
 void long_file_test();
 void empty_file_test();
 void single_character();

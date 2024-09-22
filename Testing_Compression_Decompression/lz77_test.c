@@ -1,22 +1,25 @@
 #include "lz77_test.h"
 
-void test_lz77_treatment(const U_08* test_name, U_08* input_buffer, U_32 input_size, U_32 compress_level)
+void test_lz77_treatment(const U_08* test_name, U_08* input_buffer, size_t input_size, U_32 compress_level)
 {
     U_08* compressed_buffer = (U_08*)malloc(input_size * get_size_of_encoded_sequence_struct());
     U_08* decompressed_buffer = (U_08*)malloc(input_size);
-    U_32 compressed_size = 0;
+    size_t compressed_size = 0;
 
     lz77_encode(input_buffer, input_size, compressed_buffer, &compressed_size, compress_level);
     lz77_decode(compressed_buffer, &compressed_size, decompressed_buffer);
 
     U_08 flag = 1;
 
-    for (U_32 i = 0; i < input_size; i++)
+    for (size_t i = 0; i < input_size; i++)
     {
-        if (input_buffer[i] != decompressed_buffer[i])
+        if (decompressed_buffer && input_buffer[i] != decompressed_buffer[i])
+        {           
             flag = 0;
+        }
     }
     ASSERT_EQUAL(flag, 1, "Decompressed data does not match original");
+    //ASSERT_EQUAL(input_size, strlen(decompressed_buffer), "size of lz77 decode is not equal to the original size");
 
     free(compressed_buffer);
     free(decompressed_buffer);
@@ -52,9 +55,52 @@ void test_lz77_size_of_window_treatment(const U_32 level, const U_32 dictionary_
     ASSERT(dictionary_expected == dictionary_size && buffer_search_expected == buffer_search_size, "SIZE OF WINDOW WORKS WRONG");
 }
 
-void generate_random_input(U_08* buffer, U_32 size)
+void test_lz77_encode_treatment(const U_08* input_buffer, size_t input_size, U_32 compress_level, U_08* output_expected)
 {
-    for (U_32 i = 0; i < size; i++)
+    U_08* output_buffer = (U_08*)malloc(input_size * sizeof(Encoded_sequence_t));
+    size_t output_size;
+    lz77_encode(input_buffer, input_size, output_buffer, &output_size, compress_level);
+
+    U_08 flag = 1;
+    if (output_buffer)
+    {
+        for (size_t i = 0; i < output_size; i++)
+        {
+            if ((i + 1) % 6 && output_buffer[i] != output_expected[i])
+            {
+                flag = 0;
+            }
+        }
+    }
+    
+    ASSERT_EQUAL(flag, 1, "LZ77 encode failed");
+}
+
+void test_lz77_decode_treatment(const U_08* input_buffer, size_t input_size, const U_08* output_expected,
+    const size_t output_size_expected)
+{
+    U_08* output_buffer_actual = (U_08*)malloc(output_size_expected * sizeof(U_08));
+    if (output_buffer_actual == NULL)
+    {
+        perror("memory allocation failed in test lz77 decode");
+        exit(1);
+    }
+    lz77_decode(input_buffer, &input_size, output_buffer_actual);
+
+    U_08 flag = 1;
+    for (size_t i = 0; i < output_size_expected; i++)
+    {
+        if (output_buffer_actual && output_buffer_actual[i] != output_expected[i])
+        {
+            flag = 0;
+        }
+    }
+    ASSERT_EQUAL(flag, 1, "LZ77 decode failed");
+}
+
+void generate_random_input(U_08* buffer, size_t size)
+{
+    for (size_t i = 0; i < size; i++)
     {
         buffer[i] = rand() % 256;
     }
@@ -88,7 +134,7 @@ void test_lz77_identical_characters(void)
 void test_lz77_empty(void)
 {
     U_08 input_buffer[] = "";
-    U_32 input_size = strlen((char*)input_buffer);
+    U_32 input_size = strlen((U_08*)input_buffer);
     U_32 compress_level = rand() % 7;
 
     test_lz77_treatment("LZ77 Test Empty", input_buffer, input_size, compress_level);
@@ -160,3 +206,106 @@ void test_lz77_size_window_not_in_range(void)
 
     test_lz77_size_of_window_treatment(level, dictionary_size_exp, buffer_search_size_exp);
 }
+
+
+void test_lz77_encode_no_reapets(void)
+{
+    U_08* input_buffer = "abcd";
+    U_32 input_size = 4;
+    U_32 compress_level = 5;
+    Encoded_sequence_t encoded_sequences[] = {
+       {0, 0, 'a'},
+       {0, 0, 'b'},
+       {0, 0, 'c'},
+       {0, 0, 'd'}
+    };
+
+    U_08 output_expected[sizeof(encoded_sequences)];
+    memcpy(output_expected, encoded_sequences, sizeof(encoded_sequences));
+    test_lz77_encode_treatment(input_buffer, input_size, compress_level, output_expected);
+}
+
+void test_lz77_encode_many_reapets(void)
+{
+    U_08* input_buffer = "aabbccddabcdab";
+    U_32 input_size = 14;
+    U_32 compress_level = 3;
+    Encoded_sequence_t encoded_sequences[] = {
+       {0, 0, 'a'},
+       {1, 1, 'b'},
+       {1, 1, 'c'},
+       {1, 1, 'd'},
+       {1, 1, 'a'},
+       {7, 1, 'c'},
+       {5, 1, 'a'},
+       {0, 0, 'b'}
+    };
+
+    U_08 output_expected[sizeof(encoded_sequences)];
+    memcpy(output_expected, encoded_sequences, sizeof(encoded_sequences));
+    test_lz77_encode_treatment(input_buffer, input_size, compress_level, output_expected);
+}
+
+void test_lz77_encode_same_characters(void)
+{
+    U_08* input_buffer = "aaaaaa";
+    U_32 input_size = 6;
+    U_32 compress_level = 5;
+    Encoded_sequence_t encoded_sequences[] = {
+       {0, 0, 'a'},
+       {1, 4, 'a'},
+    };
+
+    U_08 output_expected[sizeof(encoded_sequences)];
+    memcpy(output_expected, encoded_sequences, sizeof(encoded_sequences));
+    test_lz77_encode_treatment(input_buffer, input_size, compress_level, output_expected);
+}
+
+void test_lz77_decode_no_reapets(void)
+{
+    Encoded_sequence_t encoded_sequences[] = {
+       {0, 0, 'a'},
+       {0, 0, 'b'},
+       {0, 0, 'c'},
+       {0, 0, 'd'}
+    };
+
+    U_08 input_data[sizeof(encoded_sequences)];
+    memcpy(input_data, encoded_sequences, sizeof(encoded_sequences));
+    U_32 input_size = sizeof(input_data);
+    U_08* output_expected = "abcd";
+    U_32 output_size_expected = strlen(output_expected);
+    test_lz77_decode_treatment(input_data, input_size, output_expected, output_size_expected);
+}
+void test_lz77_decode_many_reapets(void)
+{ 
+    Encoded_sequence_t encoded_sequences[] = {
+        {0, 0, 'a'},
+        {1, 1, 'b'},
+        {1, 1, 'c'},
+        {0, 0, 'd'},
+        {6, 2, 'b'}
+    };
+
+    U_08 input_data[sizeof(encoded_sequences)];
+    memcpy(input_data, encoded_sequences, sizeof(encoded_sequences));
+    U_32 input_size = sizeof(input_data);
+    U_08* output_expected = "aabbcdaab";
+    U_32 output_size_expected = strlen(output_expected);
+    test_lz77_decode_treatment(input_data, input_size, output_expected, output_size_expected);  
+}
+void test_lz77_decode_same_characters(void)
+{
+    Encoded_sequence_t encoded_sequences[] = {
+       {0, 0, 'a'},
+       {1, 4, 'a'}
+    };
+
+    U_08 input_data[sizeof(encoded_sequences)];
+    memcpy(input_data, encoded_sequences, sizeof(encoded_sequences));
+    U_32 input_size = sizeof(input_data);
+    U_08* output_expected = "aaaaaa";
+    U_32 output_size_expected = strlen(output_expected);
+    test_lz77_decode_treatment(input_data, input_size, output_expected, output_size_expected);
+}
+
