@@ -31,4 +31,6 @@ void add_sequence_to_output(U_08* output_pointer, Encoded_sequence_t current_seq
 
 U_32 get_size_of_encoded_sequence_struct();
 
+void print_progress(size_t current, size_t total);
+
 #endif // !LZ77_H

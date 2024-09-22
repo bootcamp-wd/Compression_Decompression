@@ -407,4 +407,5 @@ cmake_install.cmake
 *.jpg
 *.pdf
 *.m4a
+*.jar
 

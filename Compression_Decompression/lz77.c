@@ -51,6 +51,8 @@ S_32 compress_level)
 	//if there is more byte to input entering to the loop
 	while (cur_index_seq < input_size)
 	{
+		print_progress(cur_index_seq, input_size);
+
 		//if its the last byte of the input or the size of the buffer_search entering the current byte to res
 		if (cur_index_seq == input_size - 1 || (buffer_search_pointer_last -
 			buffer_search_pointer_first + 1) == buffer_search_size)
@@ -58,6 +60,7 @@ S_32 compress_level)
 			cur_seq->mis_match_byte = *buffer_search_pointer_last;
 			memcpy(output_buffer + (*output_size), cur_seq, sizeof(Encoded_sequence_t));
 			(*output_size) += sizeof(Encoded_sequence_t);
+
 			//initialize the vars from begin to the next sequence
 			cur_seq->distance = 0;
 			cur_seq->length = 0;
@@ -97,6 +100,10 @@ S_32 compress_level)
 		dict_pointer_last++;
 		cur_index_seq++;
 	}
+
+	print_progress(input_size, input_size);
+	printf("\n");
+
 	free(cur_seq);
 }
 
@@ -273,4 +280,11 @@ void add_sequence_to_output(U_08* output_pointer, Encoded_sequence_t current_seq
 U_32 get_size_of_encoded_sequence_struct()
 {
 	return sizeof(Encoded_sequence_t);
+}
+
+void print_progress(size_t current, size_t total) 
+{
+	int percent = (current * 100) / total;
+	printf("\rLz77 : %d%%", percent);
+	fflush(stdout);  // Ensure immediate output
 }

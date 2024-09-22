@@ -23,7 +23,6 @@ typedef struct file_metadata {
 	size_t size_output_huffman;
 }file_metadata;
 
-void process_file(const U_08* input_path,const U_08* output_path, U_32 compress_level, U_32 compress);
 
 void compress_data(const U_08* input_buffer, size_t input_size, U_08** output_buffer, 
 	size_t* output_size, U_32 compress_level);
