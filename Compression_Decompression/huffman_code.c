@@ -255,10 +255,10 @@ void generate_codes_recursive(Huffman_node_t* node, U_32 current_code, U_32 curr
             U_32 byte_index_in_code = bit_position / BITS_IN_BYTE;
             U_32 bit_index_in_byte = bit_position % BITS_IN_BYTE;
 
-            if (current_code & (1 << bit_offset_in_code))
+            if (current_code & (1 << (bit_offset_in_code)))
             {
                 //the sequnce of the relevant bits will start from left
-                node->code[byte_index_in_code] |= (1 << bit_index_in_byte);
+                node->code[byte_index_in_code] |= (1 << (7 - bit_index_in_byte));
             }
         }
 

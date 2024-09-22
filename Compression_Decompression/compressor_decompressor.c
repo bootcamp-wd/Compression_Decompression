@@ -45,7 +45,6 @@ void process_file(const U_08* input_path, const U_08* output_path, U_32 compress
         compress_data(input_buffer_p, file_size, &compressed_data_buffer_p, &compressed_buffer_size, compress_level);
     }
 
-    //if the compress is zero - the file needs to be decompressed
     else
     {
         // Read extension from metadata file
@@ -94,13 +93,13 @@ void compress_data(const U_08* input_buffer, size_t input_size, U_08** output_bu
     file_metadata sizes_for_decompression;
     sizes_for_decompression.original_size = input_size;
 
-    U_08* lz77_output = (U_08*)malloc(input_size * get_size_of_encoded_sequence_struct() * sizeof(U_08));
+    U_08* lz77_output = (U_08*)malloc(input_size * get_size_of_encoded_sequence_struct());
     if (lz77_output == NULL)
     {
         perror("Memory allocation failed for LZ77 output");
         exit(1);
     }
-    U_08* huffman_output = (U_08*)malloc(input_size * get_size_of_encoded_sequence_struct() * sizeof(U_08));
+    U_08* huffman_output = (U_08*)malloc(input_size * get_size_of_encoded_sequence_struct());
     if (huffman_output == NULL)
     {
         perror("Memory allocation failed for Huffman output");
@@ -179,7 +178,7 @@ void decompress_data(const U_08* input_buffer, size_t input_size, U_08** output_
     size_t input_size_huffman = input_size - sizeof(file_metadata);
     size_t output_size_huffman = 0;
     huffman_decode(input_huffman, &input_size_huffman, huffman_output, &output_size_huffman);
-    assert(output_size_huffman, output.size_output_huffman);
+    assert(output_size_huffman == sizes.size_output_huffman);
     
     //U_08* lz77_output = (U_08*)malloc((output_size_huffman * 16384) * sizeof(U_08));
     U_08* lz77_output = (U_08*)malloc(sizes.original_size);
