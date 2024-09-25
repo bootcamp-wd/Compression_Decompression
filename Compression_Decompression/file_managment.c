@@ -1,5 +1,5 @@
 #include "file_managment.h"
-//Function to read a file into a buffer
+
 unsigned S_08* read_file(const U_08* file_path, size_t* file_size)
 {
     FILE* file = NULL;
@@ -29,7 +29,7 @@ unsigned S_08* read_file(const U_08* file_path, size_t* file_size)
     printf("\n");
     return buffer;
 }
-// Function to write a buffer to a file
+
 void write_file(const U_08* file_path, const U_08* buffer, size_t file_size)
 {
     FILE* file = NULL;

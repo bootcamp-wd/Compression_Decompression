@@ -1,7 +1,5 @@
 #include "compressor_decompressor.h"
 
-
-
 /**************************************************************************
 *						            COMPRESS DATA FUNCTION
 * Name			: compress_data - the compression with calling to the algorithms that do it
@@ -80,17 +78,11 @@ void compress_data(const U_08* input_buffer, size_t input_size, U_08** output_bu
 * *************************************************************************/
 void decompress_data(const U_08* input_buffer, size_t input_size, U_08** output_buffer, size_t* output_size)
 {
-    /*  printf("Decompress function ");
-      for (int i = 0; i < input_size; i++) {
-          printf("%02x ", input_buffer[i]);
-      }
-      printf("\n");*/
     file_metadata sizes;
     sizes = *(file_metadata*)input_buffer;
 
     *output_size = sizes.original_size;
 
-    //U_32 size = sizeof(Huffman_decode_node);
     U_08* huffman_output = (U_08*)malloc(sizes.size_output_huffman);
     if (huffman_output == NULL)
     {
@@ -104,7 +96,6 @@ void decompress_data(const U_08* input_buffer, size_t input_size, U_08** output_
     huffman_decode(input_huffman, &input_size_huffman, huffman_output, &output_size_huffman);
     assert(output_size_huffman == sizes.size_output_huffman);
     
-    //U_08* lz77_output = (U_08*)malloc((output_size_huffman * 16384) * sizeof(U_08));
     U_08* lz77_output = (U_08*)malloc(sizes.original_size);
     if (lz77_output == NULL)
     {
@@ -125,10 +116,8 @@ void decompress_data(const U_08* input_buffer, size_t input_size, U_08** output_
         exit(1);
     }
 
-    // Correct the memcpy call
     memcpy(*output_buffer, lz77_output, *output_size);
 
-    // Clean up
     if (huffman_output)
     {
         free(huffman_output);
@@ -140,23 +129,3 @@ void decompress_data(const U_08* input_buffer, size_t input_size, U_08** output_
         lz77_output = NULL;
     }
 }
-
-////Function to treat the metadata of the file
-//void metadata_treatment(const U_08* file_path, U_08* extension, U_08* metadata_path, FILE* metadata_file,
-//    U_08* buffer, const U_08* read_write_mode)
-//{
-//    assert(read_write_mode != NULL && (strcmp(read_write_mode, "w") == 0 || strcmp(read_write_mode, "r") == 0));
-//    snprintf(metadata_path, sizeof(metadata_path), "%s.meta", file_path);
-//    if (fopen_s(&metadata_file, metadata_path, read_write_mode) != 0)
-//    {
-//        perror("Error opening metadata file");
-//        if (buffer != NULL)
-//        {
-//            free(buffer);
-//            buffer = NULL;
-//        }
-//        return;
-//    }
-//    fscanf_s(metadata_file, "%s", extension, (unsigned)_countof(extension));
-//    fclose(metadata_file);
-//}
