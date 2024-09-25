@@ -144,16 +144,3 @@ error:
     if (filenameOut != NULL) free(filenameOut);
     exit(EXIT_FAILURE);
 }
-
-//const U_08* original_file = "tatauranga-umanga-maori-statistics-on-maori-businesses-2020-CSV-te-reo.csv";
-//const U_08* compressed_file = "decompressed_compressed_.bin";
-//const U_08* decompressed_file = "decompressed_decompressed";
-//
-//printf("compression...\n");
-//process_file(original_file, compressed_file, 6, 1);
-//
-//printf("\ndecompression...\n");
-//process_file(compressed_file, decompressed_file, 6, 0);
-//
-
-//}
