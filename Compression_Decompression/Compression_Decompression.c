@@ -35,9 +35,6 @@ int main(int argc, char* argv[])
     U_08* filenameIn = NULL, * filenameOut = NULL;
     U_32 compress_level = DEFAULT_COMPRESS_LEVEL;
 
-    //char fullPathIn[MAX_PATH];
-    //char fullPathOut[MAX_PATH];
-
     while ((opt = getopt(argc, argv, "cdi:o:l:h")) != -1)
     {
         switch (opt)
@@ -59,10 +56,6 @@ int main(int argc, char* argv[])
             filenameIn = (U_08*)malloc(strlen(optarg) + 1);
             strcpy_s((char*)filenameIn, strlen(optarg) + 1, optarg);
 
-          /*  if (!GetFullPathName((char*)filenameIn, MAX_PATH, fullPathIn, NULL)) {
-                fprintf(stderr, "Error getting full path for input file.\n");
-                goto error;
-            }*/
             break;
 
         case 'o':       /* output file name */
@@ -74,10 +67,6 @@ int main(int argc, char* argv[])
             filenameOut = (U_08*)malloc(strlen(optarg) + 1);
             strcpy_s((char*)filenameOut, strlen(optarg) + 1, optarg);
 
-            /*if (!GetFullPathName((char*)filenameOut, MAX_PATH, fullPathOut, NULL)) {
-                fprintf(stderr, "Error getting full path for output file.\n");
-                goto error;
-            }*/
             break;
 
         case 'l':       /* compression level */
