@@ -157,7 +157,7 @@ void huffman_encode(const U_08* data_to_compress_p, U_08* output_buffer_p, size_
     *output_size = compressed_data_size + metadata_size;
 
     // Log compression statistics
-    double compression_ratio = (double)*output_size / input_size;
+    double compression_ratio = input_size / (double)*output_size;
     double metadata_ratio = (double)metadata_size / *output_size;
     printf("Input size from LZ77: %zu bytes\n", input_size);
     printf("Compressed size: %zu bytes\n", *output_size);
@@ -209,10 +209,7 @@ Huffman_node_t huffman_build_tree(Huffman_node_t* nodes, U_32* start_index, U_32
             parent.right = min_node2;
             parent.frequency = min_node1->frequency + min_node2->frequency;
             parent.code = NULL;
-       //     printf("Pushing parent node with frequency: %d at index: %d\n", parent.frequency, current_parent_index);
             priority_queue_push(nodes, &current_parent_index, parent);
-       //     printf("After push, nodes[%d].frequency = %d\n", current_parent_index - 1, nodes[current_parent_index - 1].frequency);
-
         }
     }
     *last_index = current_parent_index - 1;
@@ -433,7 +430,6 @@ void find_ascii_last_byte(const U_08* input_pointer, Huffman_decode_node* nodes,
             i++;
 
         }
-      //  printf("by_ascii:%c ", current_node->by_ascii);
 
         *(output_pointer) = current_node->by_ascii;
         output_pointer++;
